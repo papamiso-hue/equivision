@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>주식회사 이퀴비전 AI | 차세대 비전 AI 및 데이터 플랫폼</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", Roboto, sans-serif; }
+    body { color: #1e293b; line-height: 1.6; background-color: #f8fafc; }
+    
+    /* Header */
+    header { background: #0f172a; color: white; padding: 1.2rem 2rem; position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #334155; }
+    .logo { font-size: 1.35rem; font-weight: 800; color: #38bdf8; letter-spacing: -0.5px; }
+    nav a { color: #cbd5e1; text-decoration: none; margin-left: 1.5rem; font-size: 0.95rem; font-weight: 500; transition: color 0.2s; }
+    nav a:hover { color: #38bdf8; }
+
+    /* Hero Section */
+    .hero { background: linear-gradient(145deg, #0b1120 0%, #1e293b 100%); color: white; padding: 5.5rem 1.5rem; text-align: center; }
+    .hero-badge { display: inline-block; background: rgba(56, 189, 248, 0.15); color: #38bdf8; font-size: 0.85rem; font-weight: 600; padding: 0.35rem 1rem; border-radius: 9999px; margin-bottom: 1.2rem; border: 1px solid rgba(56, 189, 248, 0.3); }
+    .hero h1 { font-size: 2.6rem; font-weight: 800; line-height: 1.3; margin-bottom: 1.2rem; word-break: keep-all; }
+    .hero p { font-size: 1.15rem; color: #94a3b8; max-width: 720px; margin: 0 auto; word-break: keep-all; }
+
+    /* Layout & Cards */
+    .container { max-width: 1080px; margin: 0 auto; padding: 4.5rem 1.5rem; }
+    .section-title { font-size: 1.85rem; font-weight: 800; text-align: center; margin-bottom: 0.8rem; color: #0f172a; letter-spacing: -0.5px; }
+    .section-desc { text-align: center; color: #64748b; margin-bottom: 3rem; font-size: 1rem; word-break: keep-all; }
+    
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+    .card { background: white; padding: 2rem; border-radius: 14px; border: 1px solid #e2e8f0; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.03); transition: transform 0.2s, box-shadow 0.2s; }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.08); }
+    .card-icon { font-size: 1.8rem; margin-bottom: 1rem; display: inline-block; }
+    .card h3 { color: #0f172a; margin-bottom: 0.8rem; font-size: 1.2rem; font-weight: 700; }
+    .card p { color: #475569; font-size: 0.95rem; line-height: 1.6; word-break: keep-all; }
+
+    /* Vision Highlight Box */
+    .vision-box { background: white; border: 1px solid #e2e8f0; border-left: 5px solid #0284c7; border-radius: 12px; padding: 2.2rem; margin-bottom: 2rem; }
+    .vision-box h3 { color: #0284c7; font-size: 1.3rem; margin-bottom: 0.8rem; }
+    .vision-box p { color: #334155; font-size: 1.05rem; line-height: 1.7; word-break: keep-all; }
+
+    /* Contact Box */
+    .contact-card { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: white; border-radius: 16px; padding: 3rem 2rem; text-align: center; }
+    .contact-card h3 { font-size: 1.6rem; margin-bottom: 1rem; color: #f8fafc; }
+    .contact-card p { color: #94a3b8; margin-bottom: 1.8rem; font-size: 1rem; word-break: keep-all; }
+    .contact-btn { display: inline-block; background: #0284c7; color: white; padding: 0.85rem 2rem; border-radius: 8px; font-weight: 600; text-decoration: none; transition: background 0.2s; }
+    .contact-btn:hover { background: #0369a1; }
+
+    /* Footer (Legal & Business Info) */
+    footer { background: #0b1120; color: #94a3b8; padding: 3.5rem 1.5rem 2.5rem; font-size: 0.82rem; line-height: 1.8; border-top: 1px solid #1e293b; }
+    .footer-container { max-width: 1080px; margin: 0 auto; }
+    .footer-links { margin-bottom: 1.5rem; padding-bottom: 1.2rem; border-bottom: 1px solid #1e293b; }
+    .footer-links a { color: #cbd5e1; text-decoration: none; margin-right: 1.2rem; font-size: 0.85rem; }
+    .footer-links a.privacy { color: #38bdf8; font-weight: 700; }
+    .footer-info { color: #94a3b8; margin-bottom: 1.2rem; }
+    .footer-info strong { color: #f1f5f9; }
+    .disclaimer { background: rgba(15, 23, 42, 0.6); border: 1px solid #1e293b; padding: 1rem; border-radius: 8px; font-size: 0.78rem; color: #64748b; line-height: 1.6; margin-bottom: 1.2rem; word-break: keep-all; }
+    .copyright { color: #475569; font-size: 0.78rem; }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header>
+    <div class="logo">EquiVision AI</div>
+    <nav>
+      <a href="#vision">기업 비전</a>
+      <a href="#services">사업 분야</a>
+      <a href="#contact">협력 및 문의</a>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-badge">Next-Gen Vision AI & Data Intelligence</div>
+    <h1>비전 AI와 데이터 통계로<br>말 산업의 새로운 패러다임을 만듭니다</h1>
+    <p>이퀴비전 ai 주식회사는 정밀 컴퓨터 비전 영상 분석과 다차원 통계 모델링 기술을 바탕으로 스포츠 데이터 분석, 미디어 콘텐츠, 플랫폼 솔루션을 선도하는 테크 기업입니다.</p>
+  </section>
+
+  <!-- Vision Section -->
+  <section class="container" id="vision">
+    <h2 class="section-title">비전 (Vision)</h2>
+    <p class="section-desc">객관적 데이터와 인공지능으로 산업 생태계에 신뢰와 지능형 가치를 제공합니다</p>
+    
+    <div class="vision-box">
+      <h3>동적 비전 데이터의 가치화</h3>
+      <p>육안과 직관에 의존하던 영역을 프레임 단위의 초정밀 컴퓨터 비전 기술로 정량화합니다. 생체 역학 및 트랙 주행 데이터를 결합하여 스포츠 분석, 콘텐츠 유통, 플랫폼 서비스까지 종합적인 지능형 인프라를 구축합니다.</p>
+    </div>
+  </section>
+
+  <!-- Business Fields Section -->
+  <section class="container" id="services" style="padding-top: 0;">
+    <h2 class="section-title">주요 사업 영역</h2>
+    <p class="section-desc">기술 개발부터 데이터 서비스, 미디어 배급까지 유기적인 포트폴리오를 전개합니다</p>
+    
+    <div class="grid">
+      <div class="card">
+        <div class="card-icon">🧠</div>
+        <h3>AI 비전 소프트웨어 개발</h3>
+        <p>영상 내 객체 탐지 및 정밀 추적 알고리즘을 활용한 보행(Gait) 역학 분석, 영상 분석 솔루션 R&D 및 기업 맞춤형 소프트웨어 공급업</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <h3>데이터베이스 및 정보 포털</h3>
+        <p>경주 및 스포츠 기록 데이터베이스 구축, 실시간 통계 분석 지표 산출, 인터넷 커뮤니티 및 지능형 온라인 정보 제공업 운영</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">🎥</div>
+        <h3>디지털 미디어 & 스트리밍</h3>
+        <p>고품질 영상물 제작 및 배급, 실시간 인터넷 방송 스트리밍 서비스, 디지털 미디어 콘텐츠 기획 및 온라인 마케팅 컨설팅</p>
+      </div>
+
+      <div class="card">
+        <div class="card-icon">⚖️</div>
+        <h3>이커머스 & IP 라이선스</h3>
+        <p>인터넷·모바일 전자상거래 및 통신판매업 운영, 자체 개발 분석 모델 및 특허·상표권 기반의 지식재산권(IP) 라이선스 및 출판 사업</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="container" id="contact" style="padding-top: 0;">
+    <div class="contact-card">
+      <h3>비즈니스 제휴 및 기술 도입 문의</h3>
+      <p>데이터 연동 파트너십, 비전 AI 소프트웨어 도입, 콘텐츠 제휴 등 이퀴비전 AI와의 협업을 환영합니다.</p>
+      <a href="mailto:papamiso@gmail.com" class="contact-btn">이메일 문의 보내기</a>
+    </div>
+  </section>
+
+  <!-- Legal & Business Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-links">
+        <a href="#none">이용약관</a>
+        <a href="#none" class="privacy">개인정보처리방침</a>
+        <a href="#none">책임의 한계 및 법적고지</a>
+        <a href="#none">이메일무단수집거부</a>
+      </div>
+
+      <div class="footer-info">
+        <strong>주식회사 이퀴비전 ai (EquiVision AI Corp.)</strong><br>
+        대표이사: 오영석 | 개인정보보호책임자: 오영석<br>
+        사업자등록번호: 000-00-00000 | 통신판매업신고번호: 제 2026-서울XX-00000호<br>
+        사업장 소재지: 서울시 금천구 벚꽃로 40<br>
+        대표전화: 010-3038-3349 | 공식 이메일: papamiso@gmail.com | 호스팅 제공자: GitHub Pages
+      </div>
+
+      <div class="disclaimer">
+        <strong>[데이터 분석 정보 및 서비스 면책 고지]</strong><br>
+        이퀴비전 ai 주식회사가 웹사이트 및 플랫폼을 통해 제공하는 모든 스포츠 데이터, AI 시뮬레이션 및 분석 지표는 객관적 통계에 기반한 연구·참고용 정보입니다. 본 정보를 바탕으로 행해진 최종적인 투자, 판단 및 베팅 행위의 결과에 대한 법적 책임은 이용자 본인에게 있습니다. 당사의 고유 분석 알고리즘, 영상물 및 가공 DB에 대한 무단 전재, 크롤링, 복제 및 상업적 재배포를 금합니다.
+      </div>
+
+      <div class="copyright">
+        &copy; 2026 주식회사 이퀴비전 ai (EquiVision AI Corp). All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
