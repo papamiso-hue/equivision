@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>이퀴비젼에이아이 주식회사 | EquiVision AI Corp.</title>
-  <!-- Google Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -31,14 +30,20 @@
     nav a:hover { color: var(--primary-glow); }
 
     /* Hero Section */
-    .hero { position: relative; padding: 7rem 1.5rem 6rem; text-align: center; background: radial-gradient(circle at 50% 20%, rgba(2, 132, 199, 0.15) 0%, transparent 60%); }
+    .hero { position: relative; padding: 7rem 1.5rem 5rem; text-align: center; background: radial-gradient(circle at 50% 20%, rgba(2, 132, 199, 0.15) 0%, transparent 60%); }
     .badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); color: var(--primary-glow); padding: 0.4rem 1.2rem; border-radius: 9999px; font-size: 0.88rem; font-weight: 600; margin-bottom: 1.8rem; }
     .hero h1 { font-size: 3.2rem; font-weight: 800; line-height: 1.25; margin-bottom: 1.5rem; letter-spacing: -1px; word-break: keep-all; }
     .hero h1 em { font-style: normal; color: transparent; background: linear-gradient(90deg, #38bdf8, #818cf8); -webkit-background-clip: text; }
-    .hero p { font-size: 1.2rem; color: var(--text-sub); max-width: 760px; margin: 0 auto 3rem; word-break: keep-all; }
+    .hero p { font-size: 1.2rem; color: var(--text-sub); max-width: 760px; margin: 0 auto 2.5rem; word-break: keep-all; }
     
+    .hero-actions { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 3.5rem; }
+    .btn-main { background: var(--primary); color: white; padding: 0.9rem 2rem; border-radius: 10px; font-weight: 600; text-decoration: none; transition: 0.2s; }
+    .btn-main:hover { background: #0369a1; }
+    .btn-outline { background: rgba(255,255,255,0.05); color: #cbd5e1; border: 1px solid #374151; padding: 0.9rem 2rem; border-radius: 10px; font-weight: 600; text-decoration: none; transition: 0.2s; }
+    .btn-outline:hover { background: rgba(255,255,255,0.1); color: white; border-color: #4b5563; }
+
     /* Metrics Banner */
-    .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; max-width: 1000px; margin: 0 auto; padding-top: 1rem; }
+    .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; max-width: 1000px; margin: 0 auto; }
     .metric-box { background: rgba(17, 24, 39, 0.8); border: 1px solid var(--border-dark); border-radius: 12px; padding: 1.5rem; }
     .metric-value { font-size: 2.2rem; font-weight: 800; color: var(--primary-glow); margin-bottom: 0.3rem; }
     .metric-label { font-size: 0.9rem; color: var(--text-sub); }
@@ -58,11 +63,19 @@
     .tech-card h3 { font-size: 1.4rem; font-weight: 700; margin-bottom: 1rem; }
     .tech-card p { color: var(--text-sub); font-size: 0.98rem; line-height: 1.7; word-break: keep-all; }
 
-    /* Patent Banner */
-    .patent-section { background: linear-gradient(180deg, rgba(17, 24, 39, 0.5) 0%, rgba(9, 13, 22, 1) 100%); border-top: 1px solid var(--border-dark); border-bottom: 1px solid var(--border-dark); }
-    .patent-card { background: rgba(2, 132, 199, 0.05); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 16px; padding: 3rem 2.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
-    .patent-badge { display: inline-block; background: #0369a1; color: white; padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.8rem; font-weight: 700; width: fit-content; }
-    .patent-title { font-size: 1.5rem; font-weight: 800; color: #ffffff; word-break: keep-all; }
+    /* Live Channel Showcase Section */
+    .live-section { background: linear-gradient(180deg, #090d16 0%, #111827 50%, #090d16 100%); border-top: 1px solid var(--border-dark); border-bottom: 1px solid var(--border-dark); padding: 6rem 1.5rem; }
+    .live-card { background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 20px; padding: 3.5rem 2.5rem; max-width: 1000px; margin: 0 auto; text-align: center; }
+    .live-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); padding: 0.35rem 1rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 700; margin-bottom: 1.5rem; }
+    .live-badge .dot { width: 8px; height: 8px; background-color: #22c55e; border-radius: 50%; }
+    .live-card h3 { font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem; word-break: keep-all; }
+    .live-card p { color: var(--text-sub); font-size: 1.08rem; max-width: 720px; margin: 0 auto 2.5rem; word-break: keep-all; }
+    .live-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; margin-bottom: 2.5rem; text-align: left; }
+    .feature-item { background: rgba(17, 24, 39, 0.9); border: 1px solid var(--border-dark); padding: 1.2rem; border-radius: 12px; }
+    .feature-item strong { color: var(--primary-glow); display: block; margin-bottom: 0.3rem; font-size: 0.95rem; }
+    .feature-item span { color: #cbd5e1; font-size: 0.88rem; }
+    .btn-telegram { display: inline-flex; align-items: center; gap: 10px; background: #229ED9; color: white; padding: 1rem 2.5rem; border-radius: 12px; font-weight: 700; font-size: 1.05rem; text-decoration: none; transition: 0.2s; box-shadow: 0 10px 25px -5px rgba(34, 158, 217, 0.3); }
+    .btn-telegram:hover { background: #1e8ec4; transform: translateY(-2px); }
 
     /* Pipeline Step */
     .pipeline-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
@@ -70,6 +83,12 @@
     .pipeline-step { font-size: 0.85rem; font-weight: 700; color: var(--primary-glow); margin-bottom: 0.5rem; }
     .pipeline-item h4 { font-size: 1.15rem; margin-bottom: 0.6rem; color: #ffffff; }
     .pipeline-item p { font-size: 0.9rem; color: var(--text-sub); }
+
+    /* Patent Section */
+    .patent-section { background: linear-gradient(180deg, rgba(17, 24, 39, 0.5) 0%, rgba(9, 13, 22, 1) 100%); border-top: 1px solid var(--border-dark); border-bottom: 1px solid var(--border-dark); }
+    .patent-card { background: rgba(2, 132, 199, 0.05); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 16px; padding: 3rem 2.5rem; display: flex; flex-direction: column; gap: 1.5rem; }
+    .patent-badge { display: inline-block; background: #0369a1; color: white; padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 0.8rem; font-weight: 700; width: fit-content; }
+    .patent-title { font-size: 1.5rem; font-weight: 800; color: #ffffff; word-break: keep-all; }
 
     /* Contact Section */
     .contact-wrap { background: radial-gradient(circle at 50% 50%, rgba(2, 132, 199, 0.12) 0%, rgba(17, 24, 39, 0.7) 100%); border: 1px solid var(--border-dark); border-radius: 20px; padding: 4rem 2rem; text-align: center; }
@@ -82,12 +101,22 @@
     footer { background: #05080e; color: #64748b; padding: 4rem 1.5rem 2.5rem; font-size: 0.84rem; line-height: 1.8; border-top: 1px solid #172033; }
     .footer-container { max-width: 1200px; margin: 0 auto; }
     .footer-nav { margin-bottom: 1.8rem; padding-bottom: 1.2rem; border-bottom: 1px solid #172033; display: flex; flex-wrap: wrap; gap: 1.5rem; }
-    .footer-nav a { color: #94a3b8; text-decoration: none; font-size: 0.88rem; }
-    .footer-nav a.highlight { color: var(--primary-glow); font-weight: 700; }
+    .footer-nav button { background: none; border: none; color: #94a3b8; font-size: 0.88rem; cursor: pointer; padding: 0; transition: color 0.2s; }
+    .footer-nav button:hover { color: var(--primary-glow); }
+    .footer-nav button.highlight { color: var(--primary-glow); font-weight: 700; }
     .company-details { margin-bottom: 1.5rem; color: #94a3b8; }
     .company-details strong { color: #f1f5f9; }
     .disclaimer-box { background: rgba(17, 24, 39, 0.6); border: 1px solid #1f2937; padding: 1.2rem; border-radius: 8px; font-size: 0.8rem; line-height: 1.6; color: #64748b; margin-bottom: 1.5rem; word-break: keep-all; }
     .copyright { font-size: 0.8rem; color: #475569; }
+
+    /* Modal */
+    .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(5px); z-index: 2000; align-items: center; justify-content: center; padding: 1.5rem; }
+    .modal-box { background: #111827; border: 1px solid #374151; border-radius: 16px; width: 100%; max-width: 680px; max-height: 80vh; display: flex; flex-direction: column; overflow: hidden; }
+    .modal-header { padding: 1.2rem 1.5rem; border-bottom: 1px solid #1f2937; display: flex; justify-content: space-between; align-items: center; }
+    .modal-header h3 { font-size: 1.15rem; font-weight: 700; color: #f8fafc; }
+    .modal-close { background: none; border: none; font-size: 1.5rem; color: #94a3b8; cursor: pointer; }
+    .modal-close:hover { color: white; }
+    .modal-body { padding: 1.5rem; overflow-y: auto; color: #cbd5e1; font-size: 0.9rem; line-height: 1.7; word-break: keep-all; white-space: pre-line; }
 
     @media (max-width: 768px) {
       .hero h1 { font-size: 2.2rem; }
@@ -104,7 +133,8 @@
       <a href="#" class="logo">EquiVision <span>AI</span></a>
       <nav>
         <a href="#technology">핵심 기술</a>
-        <a href="#pipeline">분석 아키텍처</a>
+        <a href="#pipeline">분석 파이프라인</a>
+        <a href="#live-data">실시간 데이터 브리핑</a>
         <a href="#services">사업 포트폴리오</a>
         <a href="#patent">지식재산권</a>
         <a href="#contact">협력 문의</a>
@@ -119,6 +149,11 @@
     </div>
     <h1>데이터와 컴퓨터 비전으로<br><em>말 산업의 정밀 예측 기준</em>을 세웁니다</h1>
     <p>이퀴비젼에이아이 주식회사는 다중 관절 비전 추적 기술과 시계열 생체역학 모델을 결합하여, 육안 중심의 경주마 분석을 정량적 데이터로 전환하는 인공지능 전문 기업입니다.</p>
+
+    <div class="hero-actions">
+      <a href="#live-data" class="btn-main">실시간 분석 데이터 보기</a>
+      <a href="#contact" class="btn-outline">기술 제휴 및 도입 문의</a>
+    </div>
 
     <div class="metrics">
       <div class="metric-box">
@@ -165,8 +200,41 @@
     </div>
   </section>
 
+  <!-- Live Channel Showcase Section -->
+  <section class="live-section" id="live-data">
+    <div class="live-card">
+      <div class="live-badge">
+        <span class="dot"></span> LIVE ENGINE DATA STREAM
+      </div>
+      <h3>실시간 AI 분석 데이터 브리핑 서비스</h3>
+      <p>이퀴비젼 AI 엔진이 처리하는 실제 데이터와 경기 분석 리포트를 공식 텔레그램 채널을 통해 실시간으로 확인하실 수 있습니다. 가식 없는 정량 지표의 가치를 직접 검증해 보세요.</p>
+      
+      <div class="live-features">
+        <div class="feature-item">
+          <strong>01. 예시장 생체역학 스코어</strong>
+          <span>출주 직전 다중 관절 비전 분석 기반 당일 컨디션 지표 즉시 전송</span>
+        </div>
+        <div class="feature-item">
+          <strong>02. 레이스 전개 퀀트 시뮬레이션</strong>
+          <span>주로 상태, 게이트, 중량 변수를 결합한 알고리즘 예측 리포트</span>
+        </div>
+        <div class="feature-item">
+          <strong>03. 실시간 배당 & 변동 알림</strong>
+          <span>시계열 데이터 융합을 통한 통계적 이상 징후 및 핵심 지표 공유</span>
+        </div>
+      </div>
+
+      <a href="https://t.me/equivision_official" target="_blank" class="btn-telegram">
+        공식 데이터 브리핑 채널 바로가기 →
+      </a>
+      <div style="margin-top: 1rem; color: #64748b; font-size: 0.85rem;">
+        * 별도의 유료 결제 없이 공개 채널을 통해 이퀴비젼 AI의 실시간 분석 결과를 투명하게 확인하실 수 있습니다.
+      </div>
+    </div>
+  </section>
+
   <!-- Pipeline Section -->
-  <section class="container" id="pipeline" style="padding-top: 0;">
+  <section class="container" id="pipeline">
     <div class="section-header">
       <div class="section-tag">Analysis Architecture</div>
       <h2 class="section-title">데이터 분석 프로세스 파이프라인</h2>
@@ -258,10 +326,10 @@
   <footer>
     <div class="footer-container">
       <div class="footer-nav">
-        <a href="#none">이용약관</a>
-        <a href="#none" class="highlight">개인정보처리방침</a>
-        <a href="#none">책임의 한계 및 법적고지</a>
-        <a href="#none">이메일무단수집거부</a>
+        <button onclick="openModal('terms')">이용약관</button>
+        <button onclick="openModal('privacy')" class="highlight">개인정보처리방침</button>
+        <button onclick="openModal('disclaimer')">책임의 한계 및 법적고지</button>
+        <button onclick="openModal('noEmail')">이메일무단수집거부</button>
       </div>
 
       <div class="company-details">
@@ -282,6 +350,92 @@
       </div>
     </div>
   </footer>
+
+  <!-- Modal Popup Box -->
+  <div id="modalOverlay" class="modal-overlay" onclick="closeModal(event)">
+    <div class="modal-box" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h3 id="modalTitle">약관 제목</h3>
+        <button class="modal-close" onclick="closeModalDirect()">&times;</button>
+      </div>
+      <div class="modal-body" id="modalBody">약관 내용이 표시됩니다.</div>
+    </div>
+  </div>
+
+  <script>
+    const modalData = {
+      terms: {
+        title: "서비스 이용약관",
+        content: `제1조 (목적)
+본 약관은 이퀴비젼에이아이 주식회사(이하 "회사")가 제공하는 제반 서비스의 이용과 관련하여 회사와 이용자 간의 권리, 의무 및 책임사항을 규정함을 목적으로 합니다.
+
+제2조 (정보의 제공 및 한계)
+1. 회사가 제공하는 AI 영상 분석, 생체역학 지표 및 퀀트 예측 데이터는 학술·연구 및 데이터 기반 의사결정을 위한 참고 자료입니다.
+2. 회사는 제공되는 데이터의 완전성이나 특정 목적에 대한 적합성을 보증하지 않으며, 이를 활용한 최종 판단 및 결과에 대한 법적 책임은 이용자 본인에게 있습니다.
+
+제3조 (지식재산권)
+1. 회사가 독자 개발한 분석 알고리즘, 특허 기술, 가공 데이터베이스 및 미디어 콘텐츠에 대한 모든 지식재산권은 회사에 귀속됩니다.
+2. 이용자는 사전 서면 동의 없이 회사의 자료를 복제, 배포, 크롤링 또는 상업적으로 재가공할 수 없습니다.`
+      },
+      privacy: {
+        title: "개인정보처리방침",
+        content: `이퀴비젼에이아이 주식회사(이하 "회사")는 정보주체의 자유와 권리 보호를 위해 「개인정보 보호법」 및 관계 법령이 정한 바를 준수합니다.
+
+1. 수집하는 개인정보 항목
+- 수집 항목: 회사명, 담당자 성명, 연락처, 이메일 주소, 문의 내용 (공식 제휴 문의 시)
+- 수집 방법: 웹사이트 제휴 문의 및 이메일 인콰이어리
+
+2. 개인정보의 수집 및 이용 목적
+- 비즈니스 제휴 검토, 기술 도입 상담, 고객 문의 대응 및 처리 결과 회신
+
+3. 보유 및 이용 기간
+- 문의 접수 및 상담 완료 시점으로부터 1년간 보관 후 지체 없이 파기합니다.
+
+4. 개인정보보호책임자
+- 성명: 오성수 대표이사
+- 연락처: 010-3038-3349 | 이메일: papamiso@gmail.com`
+      },
+      disclaimer: {
+        title: "책임의 한계 및 법적고지",
+        content: `1. 분석 데이터의 성격
+이퀴비젼에이아이 주식회사가 웹사이트 및 연결 플랫폼을 통해 제공하는 모든 경주마 생체역학 수치, 시계열 분석 결과 및 퀀트 시뮬레이션 지표는 과학적·통계적 방법에 따라 산출된 참고 정보입니다.
+
+2. 법적 책임의 부인
+회사는 서비스에서 제공되는 정보의 절대적인 정확성을 보증하지 않으며, 이용자가 해당 정보를 신뢰하여 행한 투자, 금융 거래, 베팅 등 일체의 행위로 인해 발생한 직·간접적 손해에 대해 어떠한 법적 책임도 부담하지 않습니다.
+
+3. 링크 및 외부 사이트에 대한 고지
+웹사이트에 포함된 외부 링크나 서드파티 플랫폼의 경우 당사의 통제 범위를 벗어나므로 해당 사이트의 내용이나 거래 안전성에 대해 책임을 지지 않습니다.`
+      },
+      noEmail: {
+        title: "이메일무단수집거부 고지",
+        content: `본 웹사이트에 게시된 이메일 주소가 전자우편 수집 프로그램이나 그 밖의 기술적 장치를 이용하여 무단으로 수집되는 것을 엄격히 거부합니다.
+
+이를 위반하여 이메일 주소를 무단 수집, 판매, 유통하거나 이를 이용해 영리 목적의 광고성 정보를 전송할 경우 「정보통신망 이용촉진 및 정보보호 등에 관한 법률」 제50조의2에 의해 형사 처벌될 수 있음을 유념하시기 바랍니다.
+
+게시일자: 2026년 9월 21일`
+      }
+    };
+
+    function openModal(type) {
+      const data = modalData[type];
+      if (!data) return;
+      document.getElementById('modalTitle').innerText = data.title;
+      document.getElementById('modalBody').innerText = data.content;
+      document.getElementById('modalOverlay').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal(event) {
+      if (event.target.id === 'modalOverlay') {
+        closeModalDirect();
+      }
+    }
+
+    function closeModalDirect() {
+      document.getElementById('modalOverlay').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+  </script>
 
 </body>
 </html>
