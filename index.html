@@ -26,7 +26,7 @@
     .nav-container { max-width: 1200px; margin: 0 auto; padding: 1.2rem 1.5rem; display: flex; justify-content: space-between; align-items: center; }
     .logo { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; color: #ffffff; text-decoration: none; display: flex; align-items: center; gap: 8px; }
     .logo span { color: var(--primary-glow); }
-    nav a { color: var(--text-sub); text-decoration: none; margin-left: 2rem; font-size: 0.95rem; font-weight: 500; transition: color 0.2s; }
+    nav a { color: var(--text-sub); text-decoration: none; margin-left: 1.8rem; font-size: 0.95rem; font-weight: 500; transition: color 0.2s; }
     nav a:hover { color: var(--primary-glow); }
 
     /* Hero Section */
@@ -50,10 +50,37 @@
 
     /* Content Layout */
     .container { max-width: 1200px; margin: 0 auto; padding: 6rem 1.5rem; }
-    .section-header { text-align: center; margin-bottom: 4rem; }
+    .section-header { text-align: center; margin-bottom: 3.5rem; }
     .section-tag { color: var(--primary-glow); font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 0.5rem; }
     .section-title { font-size: 2.3rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 1rem; }
-    .section-desc { color: var(--text-sub); font-size: 1.1rem; max-width: 680px; margin: 0 auto; word-break: keep-all; }
+    .section-desc { color: var(--text-sub); font-size: 1.1rem; max-width: 780px; margin: 0 auto; word-break: keep-all; }
+
+    /* Quant Racing Section Styles */
+    .quant-intro-box { background: rgba(17, 24, 39, 0.7); border: 1px solid var(--border-dark); border-left: 5px solid var(--primary-glow); border-radius: 14px; padding: 2.2rem; margin-bottom: 3.5rem; }
+    .quant-intro-box p { font-size: 1.12rem; color: #e2e8f0; line-height: 1.8; word-break: keep-all; }
+    .quant-intro-box p strong { color: var(--primary-glow); }
+
+    .concept-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem; margin-bottom: 4rem; }
+    .concept-card { background: var(--bg-card); border: 1px solid var(--border-dark); border-radius: 14px; padding: 2rem 1.8rem; display: flex; flex-direction: column; justify-content: flex-start; }
+    .concept-card h4 { font-size: 1.25rem; font-weight: 700; color: #ffffff; margin-bottom: 0.8rem; display: flex; align-items: center; gap: 8px; }
+    .concept-card h4 span { color: var(--primary-glow); font-size: 1.1rem; }
+    .concept-card p { color: var(--text-sub); font-size: 0.95rem; line-height: 1.7; word-break: keep-all; }
+
+    /* Quant Comparison Table */
+    .table-container { width: 100%; overflow-x: auto; margin-bottom: 3.5rem; background: var(--bg-card); border: 1px solid var(--border-dark); border-radius: 16px; padding: 1.5rem; }
+    .quant-table { width: 100%; border-collapse: collapse; text-align: left; min-width: 650px; }
+    .quant-table th, .quant-table td { padding: 1.2rem 1rem; border-bottom: 1px solid var(--border-dark); }
+    .quant-table th { background: rgba(15, 23, 42, 0.9); color: #f8fafc; font-weight: 700; font-size: 1rem; }
+    .quant-table th.highlight-th { color: var(--primary-glow); }
+    .quant-table td { font-size: 0.93rem; color: #cbd5e1; vertical-align: middle; }
+    .quant-table td.col-category { font-weight: 700; color: #ffffff; width: 18%; }
+    .quant-table td.col-traditional { color: #94a3b8; width: 41%; }
+    .quant-table td.col-quant { color: #e2e8f0; width: 41%; font-weight: 500; background: rgba(2, 132, 199, 0.04); }
+    .quant-table tr:last-child td { border-bottom: none; }
+
+    .quant-summary-card { background: linear-gradient(135deg, rgba(2, 132, 199, 0.15) 0%, rgba(17, 24, 39, 0.9) 100%); border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 14px; padding: 2.2rem; text-align: center; }
+    .quant-summary-card h4 { font-size: 1.3rem; font-weight: 800; color: #ffffff; margin-bottom: 0.8rem; }
+    .quant-summary-card p { font-size: 1.05rem; color: #e2e8f0; max-width: 900px; margin: 0 auto; line-height: 1.8; word-break: keep-all; }
 
     /* Tech Grid */
     .tech-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
@@ -134,6 +161,7 @@
     <div class="nav-container">
       <a href="#" class="logo">EquiVision <span>AI</span></a>
       <nav>
+        <a href="#quant-racing">퀀트 경마란?</a>
         <a href="#technology">핵심 기술</a>
         <a href="#pipeline">분석 파이프라인</a>
         <a href="#live-data">실시간 데이터 브리핑</a>
@@ -153,8 +181,8 @@
     <p>이퀴비젼에이아이 주식회사는 다중 관절 비전 추적 기술과 시계열 생체역학 모델을 결합하여, 육안 중심의 경주마 분석을 정량적 데이터로 전환하는 인공지능 전문 기업입니다.</p>
 
     <div class="hero-actions">
-      <a href="#live-data" class="btn-main">실시간 분석 데이터 보기</a>
-      <a href="mailto:papamiso@gmail.com?subject=[이퀴비젼AI]%20기술%20제휴%20및%20도입%20문의" class="btn-outline">기술 제휴 및 도입 문의</a>
+      <a href="#quant-racing" class="btn-main">퀀트 경마 방법론 보기</a>
+      <a href="#live-data" class="btn-outline">실시간 분석 채널 확인</a>
     </div>
 
     <div class="metrics">
@@ -173,8 +201,100 @@
     </div>
   </section>
 
+  <!-- Quant Racing Section (요청하신 전체 내용 누락 없이 완벽 수록) -->
+  <section class="container" id="quant-racing">
+    <div class="section-header">
+      <div class="section-tag">Quantitative Methodology</div>
+      <h2 class="section-title">퀀트 경마 (Quantitative Horse Racing)</h2>
+      <p class="section-desc">사람의 주관적 직관과 감을 배제하고, 금융공학적 퀀트 모델링과 데이터 알고리즘으로 경주를 계량화합니다.</p>
+    </div>
+
+    <!-- 정의 소개 박스 -->
+    <div class="quant-intro-box">
+      <p>
+        <strong>퀀트 경마(Quantitative Horse Racing)</strong>는 사람의 주관적인 직관이나 감, 단순한 혈통·인기도에 의존하는 전통적인 방식에서 벗어나, <strong>수학·통계학적 모델링과 데이터 알고리즘(AI·빅데이터·컴퓨터 비전 등)을 기반으로 경주를 계량화하여 분석하는 과학적 접근 방식</strong>을 의미합니다.<br>
+        금융 시장의 퀀트 투자(Quantitative Investing) 방법론을 경마 데이터에 정밀하게 적용한 혁신적 분석 체계입니다.
+      </p>
+    </div>
+
+    <!-- 1. 퀀트 경마의 4대 핵심 개념 -->
+    <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; color: #ffffff;">1. 퀀트 경마의 핵심 개념</h3>
+    <div class="concept-grid">
+      <div class="concept-card">
+        <h4><span>01</span> 내재 승률 계산 (Intrinsic Probability)</h4>
+        <p>과거 주행 기록, 구간별 속도(S1F, G3F), 코너링 궤적, 주로 상태, 부담중량, 게이트 이점, 그리고 <strong>예시장(Paddock)에서의 생체역학적 컨디션(비절 각도, 보행 탄력 등)</strong>을 다차원 변수로 정량화합니다. 이를 머신러닝·통계 모델에 입력하여 각 경주마가 우승하거나 입상할 객관적인 수학적 확률을 산출합니다.</p>
+      </div>
+
+      <div class="concept-card">
+        <h4><span>02</span> 기대값(EV)과 오버레이(Overlay) 탐색</h4>
+        <p>퀀트 경마의 목적은 단순히 "누가 1등 할 것인가"를 맞히는 것이 아니라, <strong>"시장의 배당률이 실제 승률에 비해 저평가되었는가?"</strong>를 찾는 것입니다.<br><br>
+        <strong>오버레이(Overlay):</strong> 대중의 심리에 의해 특정 마번의 배당률이 모델이 계산한 내재 승률보다 높게 형성되어, 수수료를 감안하고도 장기적인 기대 수익률(Expected Value)이 양(+)이 되는 구간을 정확히 포착합니다.</p>
+      </div>
+
+      <div class="concept-card">
+        <h4><span>03</span> 실시간 시장 데이터 및 스마트 머니 추적</h4>
+        <p>마감 직전 배당률 변동 추이, 베팅 풀(Pool)의 자금 유입 속도, 이상 급락 징후 등을 실시간으로 감지하여 모델의 가중치에 동적으로 반영합니다.</p>
+      </div>
+
+      <div class="concept-card">
+        <h4><span>04</span> 자금 관리 및 백테스팅 (Bankroll Management)</h4>
+        <p>감정적인 베팅을 배제하고, 통계적으로 입증된 자금 관리 원칙(예: 켈리 공식, 고정 비율 베팅)을 통해 리스크를 철저히 분산합니다.<br><br>
+        과거 수천~수만 건의 경주 데이터로 전략을 사전에 시뮬레이션(Backtesting)하여 장기 환급률(ROI)과 최대 낙폭(MDD)을 사전에 철저히 검증합니다.</p>
+      </div>
+    </div>
+
+    <!-- 2. 전통적 경마와 퀀트 경마의 비교 표 -->
+    <h3 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; color: #ffffff;">2. 전통적 경마와 퀀트 경마의 비교</h3>
+    <div class="table-container">
+      <table class="quant-table">
+        <thead>
+          <tr>
+            <th>구분</th>
+            <th>전통적 경마 (Handicapping)</th>
+            <th class="highlight-th">퀀트 경마 (Quantitative Racing)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-category">판단 기준</td>
+            <td class="col-traditional">직관, 주관적 마필 상태 관찰, 과거 명성</td>
+            <td class="col-quant">정량화된 수치, 통계 모델, 알고리즘</td>
+          </tr>
+          <tr>
+            <td class="col-category">접근 목적</td>
+            <td class="col-traditional">1등 마번 적중 (승패 중심)</td>
+            <td class="col-quant">기대값(EV &gt; 0) 중심의 가치 투자</td>
+          </tr>
+          <tr>
+            <td class="col-category">데이터 활용</td>
+            <td class="col-traditional">기본 전적표, 단순 착순 위주</td>
+            <td class="col-quant">시계열 주행 데이터, 센서/비전 AI 지표, 실시간 배당률 변동</td>
+          </tr>
+          <tr>
+            <td class="col-category">감정 통제</td>
+            <td class="col-traditional">연패 시 베팅 금액 증가 등 감정 개입</td>
+            <td class="col-quant">사전에 정의된 알고리즘 및 자금 관리 원칙 준수</td>
+          </tr>
+          <tr>
+            <td class="col-category">검증 방식</td>
+            <td class="col-traditional">사후 주관적 복기</td>
+            <td class="col-quant">과거 대량 데이터 기반의 통계적 백테스팅</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 퀀트 경마 요약 정리 -->
+    <div class="quant-summary-card">
+      <h4>퀀트 경마의 본질 요약</h4>
+      <p>
+        "퀀트 경마는 경주마의 주행 데이터와 현장 생체역학(비전 AI), 실시간 배당 데이터를 종합하여 <strong>수학적 기대값이 우수한 최적의 조합을 데이터 기반으로 도출하고 리스크를 통제하는 체계적인 시스템 경마 분석 기법</strong>입니다."
+      </p>
+    </div>
+  </section>
+
   <!-- Core Technology Section -->
-  <section class="container" id="technology">
+  <section class="container" id="technology" style="padding-top: 0;">
     <div class="section-header">
       <div class="section-tag">Core Technology</div>
       <h2 class="section-title">독자적인 비전 AI 원천 기술</h2>
