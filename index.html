@@ -55,7 +55,7 @@
     .section-title { font-size: 2.3rem; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 1rem; }
     .section-desc { color: var(--text-sub); font-size: 1.1rem; max-width: 780px; margin: 0 auto; word-break: keep-all; }
 
-    /* Quant Racing Section Styles */
+    /* Quant Racing Section */
     .quant-intro-box { background: rgba(17, 24, 39, 0.7); border: 1px solid var(--border-dark); border-left: 5px solid var(--primary-glow); border-radius: 14px; padding: 2.2rem; margin-bottom: 3.5rem; }
     .quant-intro-box p { font-size: 1.12rem; color: #e2e8f0; line-height: 1.8; word-break: keep-all; }
     .quant-intro-box p strong { color: var(--primary-glow); }
@@ -66,7 +66,6 @@
     .concept-card h4 span { color: var(--primary-glow); font-size: 1.1rem; }
     .concept-card p { color: var(--text-sub); font-size: 0.95rem; line-height: 1.7; word-break: keep-all; }
 
-    /* Quant Comparison Table */
     .table-container { width: 100%; overflow-x: auto; margin-bottom: 3.5rem; background: var(--bg-card); border: 1px solid var(--border-dark); border-radius: 16px; padding: 1.5rem; }
     .quant-table { width: 100%; border-collapse: collapse; text-align: left; min-width: 650px; }
     .quant-table th, .quant-table td { padding: 1.2rem 1rem; border-bottom: 1px solid var(--border-dark); }
@@ -136,7 +135,11 @@
     .company-details a { color: var(--primary-glow); text-decoration: none; }
     .company-details a:hover { text-decoration: underline; }
     .disclaimer-box { background: rgba(17, 24, 39, 0.6); border: 1px solid #1f2937; padding: 1.2rem; border-radius: 8px; font-size: 0.8rem; line-height: 1.6; color: #64748b; margin-bottom: 1.5rem; word-break: keep-all; }
-    .copyright { font-size: 0.8rem; color: #475569; }
+    
+    /* Visitor Badge Styling */
+    .visitor-badge-box { margin: 1.5rem 0 1rem; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .visitor-badge-box span { font-size: 0.82rem; color: #94a3b8; font-weight: 500; }
+    .copyright { font-size: 0.8rem; color: #475569; text-align: center; }
 
     /* Modal */
     .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(5px); z-index: 2000; align-items: center; justify-content: center; padding: 1.5rem; }
@@ -201,7 +204,7 @@
     </div>
   </section>
 
-  <!-- Quant Racing Section (요청하신 전체 내용 누락 없이 완벽 수록) -->
+  <!-- Quant Racing Section -->
   <section class="container" id="quant-racing">
     <div class="section-header">
       <div class="section-tag">Quantitative Methodology</div>
@@ -465,6 +468,12 @@
       <div class="disclaimer-box">
         <strong>[면책 고지 및 지식재산권 안내]</strong><br>
         이퀴비젼에이아이 주식회사가 웹사이트 및 플랫폼을 통해 제공하는 모든 스포츠 데이터, AI 시뮬레이션 지표 및 분석 결과는 객관적 통계에 기반한 학술·연구 목적의 참고 정보입니다. 본 정보를 바탕으로 행해진 최종적인 투자, 판단 및 베팅 행위의 결과에 대한 법적 책임은 이용자 본인에게 있습니다. 당사의 고유 분석 알고리즘, 영상물 및 가공 DB에 대한 무단 전재, 크롤링, 복제 및 상업적 재배포를 엄격히 금합니다.
+      </div>
+
+      <!-- 방문자 카운터 배지 (푸터 내부 중앙 정렬) -->
+      <div class="visitor-badge-box">
+        <span>Total Visitors:</span>
+        <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fpapamiso-hue.github.io%2Fequivision&count_bg=%230284C7&title_bg=%231E293B&icon=&icon_color=%23E7E7E7&title=Hits&edge_flat=false" alt="방문자수" />
       </div>
 
       <div class="copyright">
