@@ -89,20 +89,6 @@
     .tech-card h3 { font-size: 1.4rem; font-weight: 700; margin-bottom: 1rem; }
     .tech-card p { color: var(--text-sub); font-size: 0.98rem; line-height: 1.7; word-break: keep-all; }
 
-    /* Live Channel Showcase Section */
-    .live-section { background: linear-gradient(180deg, #090d16 0%, #111827 50%, #090d16 100%); border-top: 1px solid var(--border-dark); border-bottom: 1px solid var(--border-dark); padding: 6rem 1.5rem; }
-    .live-card { background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 20px; padding: 3.5rem 2.5rem; max-width: 1000px; margin: 0 auto; text-align: center; }
-    .live-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); padding: 0.35rem 1rem; border-radius: 9999px; font-size: 0.85rem; font-weight: 700; margin-bottom: 1.5rem; }
-    .live-badge .dot { width: 8px; height: 8px; background-color: #22c55e; border-radius: 50%; }
-    .live-card h3 { font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem; word-break: keep-all; }
-    .live-card p { color: var(--text-sub); font-size: 1.08rem; max-width: 720px; margin: 0 auto 2.5rem; word-break: keep-all; }
-    .live-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; margin-bottom: 2.5rem; text-align: left; }
-    .feature-item { background: rgba(17, 24, 39, 0.9); border: 1px solid var(--border-dark); padding: 1.2rem; border-radius: 12px; }
-    .feature-item strong { color: var(--primary-glow); display: block; margin-bottom: 0.3rem; font-size: 0.95rem; }
-    .feature-item span { color: #cbd5e1; font-size: 0.88rem; }
-    .btn-telegram { display: inline-flex; align-items: center; gap: 10px; background: #229ED9; color: white; padding: 1rem 2.5rem; border-radius: 12px; font-weight: 700; font-size: 1.05rem; text-decoration: none; transition: 0.2s; box-shadow: 0 10px 25px -5px rgba(34, 158, 217, 0.3); }
-    .btn-telegram:hover { background: #1e8ec4; transform: translateY(-2px); }
-
     /* Pipeline Step */
     .pipeline-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
     .pipeline-item { background: var(--bg-card); border: 1px solid var(--border-dark); border-radius: 12px; padding: 1.8rem; position: relative; }
@@ -135,10 +121,6 @@
     .company-details a { color: var(--primary-glow); text-decoration: none; }
     .company-details a:hover { text-decoration: underline; }
     .disclaimer-box { background: rgba(17, 24, 39, 0.6); border: 1px solid #1f2937; padding: 1.2rem; border-radius: 8px; font-size: 0.8rem; line-height: 1.6; color: #64748b; margin-bottom: 1.5rem; word-break: keep-all; }
-    
-    /* Visitor Badge Styling */
-    .visitor-badge-box { margin: 1.5rem 0 1rem; display: flex; align-items: center; justify-content: center; gap: 8px; }
-    .visitor-badge-box span { font-size: 0.82rem; color: #94a3b8; font-weight: 500; }
     .copyright { font-size: 0.8rem; color: #475569; text-align: center; }
 
     /* Modal */
@@ -167,7 +149,6 @@
         <a href="#quant-racing">퀀트 경마란?</a>
         <a href="#technology">핵심 기술</a>
         <a href="#pipeline">분석 파이프라인</a>
-        <a href="#live-data">실시간 데이터 브리핑</a>
         <a href="#services">사업 포트폴리오</a>
         <a href="#patent">지식재산권</a>
         <a href="mailto:papamiso@gmail.com?subject=[이퀴비젼AI]%20공식%20협력%20및%20도입%20문의">협력 문의</a>
@@ -185,7 +166,7 @@
 
     <div class="hero-actions">
       <a href="#quant-racing" class="btn-main">퀀트 경마 방법론 보기</a>
-      <a href="#live-data" class="btn-outline">실시간 분석 채널 확인</a>
+      <a href="mailto:papamiso@gmail.com?subject=[이퀴비젼AI]%20기술%20제휴%20및%20도입%20문의" class="btn-outline">기술 제휴 및 도입 문의</a>
     </div>
 
     <div class="metrics">
@@ -325,39 +306,6 @@
     </div>
   </section>
 
-  <!-- Live Channel Showcase Section -->
-  <section class="live-section" id="live-data">
-    <div class="live-card">
-      <div class="live-badge">
-        <span class="dot"></span> LIVE ENGINE DATA STREAM
-      </div>
-      <h3>실시간 AI 분석 데이터 브리핑 서비스</h3>
-      <p>이퀴비젼 AI 엔진이 처리하는 실제 데이터와 경기 분석 리포트를 공식 텔레그램 채널을 통해 실시간으로 확인하실 수 있습니다. 가식 없는 정량 지표의 가치를 직접 검증해 보세요.</p>
-      
-      <div class="live-features">
-        <div class="feature-item">
-          <strong>01. 예시장 생체역학 스코어</strong>
-          <span>출주 직전 다중 관절 비전 분석 기반 당일 컨디션 지표 즉시 전송</span>
-        </div>
-        <div class="feature-item">
-          <strong>02. 레이스 전개 퀀트 시뮬레이션</strong>
-          <span>주로 상태, 게이트, 중량 변수를 결합한 알고리즘 예측 리포트</span>
-        </div>
-        <div class="feature-item">
-          <strong>03. 실시간 배당 & 변동 알림</strong>
-          <span>시계열 데이터 융합을 통한 통계적 이상 징후 및 핵심 지표 공유</span>
-        </div>
-      </div>
-
-      <a href="https://t.me/equivision_official" target="_blank" class="btn-telegram">
-        공식 데이터 브리핑 채널 바로가기 →
-      </a>
-      <div style="margin-top: 1rem; color: #64748b; font-size: 0.85rem;">
-        * 별도의 유료 결제 없이 공개 채널을 통해 이퀴비젼 AI의 실시간 분석 결과를 투명하게 확인하실 수 있습니다.
-      </div>
-    </div>
-  </section>
-
   <!-- Pipeline Section -->
   <section class="container" id="pipeline">
     <div class="section-header">
@@ -468,12 +416,6 @@
       <div class="disclaimer-box">
         <strong>[면책 고지 및 지식재산권 안내]</strong><br>
         이퀴비젼에이아이 주식회사가 웹사이트 및 플랫폼을 통해 제공하는 모든 스포츠 데이터, AI 시뮬레이션 지표 및 분석 결과는 객관적 통계에 기반한 학술·연구 목적의 참고 정보입니다. 본 정보를 바탕으로 행해진 최종적인 투자, 판단 및 베팅 행위의 결과에 대한 법적 책임은 이용자 본인에게 있습니다. 당사의 고유 분석 알고리즘, 영상물 및 가공 DB에 대한 무단 전재, 크롤링, 복제 및 상업적 재배포를 엄격히 금합니다.
-      </div>
-
-      <!-- 방문자 카운터 배지 (푸터 내부 중앙 정렬) -->
-      <div class="visitor-badge-box">
-        <span>Total Visitors:</span>
-        <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fpapamiso-hue.github.io%2Fequivision&count_bg=%230284C7&title_bg=%231E293B&icon=&icon_color=%23E7E7E7&title=Hits&edge_flat=false" alt="방문자수" />
       </div>
 
       <div class="copyright">
