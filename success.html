@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>결제 결과 | EquiVision AI</title>
+  <meta name="theme-color" content="#090d16">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23090d16'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial,sans-serif' font-weight='800' font-size='38' fill='%2338bdf8'%3EE%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <script src="toss-config.js"></script>
+  <style>
+    :root { --primary: #0284c7; --glow: #38bdf8; --bg: #090d16; --card: #111827; --soft: #0f1624; --border: #1f2937; --mid: #374151; --text: #f8fafc; --body: #e2e8f0; --sub: #a3b0c2; --ok: #86efac; --warn: #fde68a; --danger: #fca5a5; }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Pretendard Variable", Pretendard, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; }
+    body { background: var(--bg); color: var(--text); font-size: 17px; line-height: 1.75; word-break: keep-all; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
+    .box { width: 100%; max-width: 560px; background: var(--card); border: 1px solid var(--mid); border-radius: 18px; padding: 2rem 1.6rem; }
+    .icon { font-size: 2.6rem; text-align: center; }
+    h1 { font-size: 1.55rem; text-align: center; margin: 0.4rem 0 0.4rem; }
+    .lead { text-align: center; color: var(--sub); margin-bottom: 1.4rem; }
+    .row { display: flex; justify-content: space-between; gap: 1rem; padding: 0.55rem 0; border-bottom: 1px dashed var(--border); }
+    .row span:first-child { color: var(--sub); }
+    .row span:last-child { font-weight: 700; text-align: right; word-break: break-all; }
+    .panel { margin-top: 1.3rem; border-radius: 12px; padding: 1rem 1.1rem; font-size: 0.95rem; }
+    .panel.ok { background: rgba(134, 239, 172, 0.08); border: 1px solid rgba(134, 239, 172, 0.4); }
+    .panel.warn { background: rgba(250, 204, 21, 0.07); border: 1px solid rgba(250, 204, 21, 0.35); }
+    .panel.err { background: rgba(252, 165, 165, 0.08); border: 1px solid rgba(252, 165, 165, 0.4); }
+    .panel strong { color: #fff; }
+    .panel ol, .panel ul { padding-left: 1.2rem; margin-top: 0.3rem; }
+    .actions { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.5rem; justify-content: center; }
+    .btn { display: inline-block; text-decoration: none; font-weight: 700; padding: 0.8rem 1.3rem; border-radius: 10px; }
+    .btn.primary { background: var(--primary); color: #fff; }
+    .btn.ghost { border: 1px solid var(--mid); color: #cbd5e1; }
+    .spinner { width: 34px; height: 34px; border: 4px solid var(--mid); border-top-color: var(--glow); border-radius: 50%; margin: 0 auto; animation: spin 0.9s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    code { font-size: 0.85em; background: var(--soft); padding: 0 0.3rem; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <main class="box">
+    <div id="icon" class="icon"><div class="spinner" aria-hidden="true"></div></div>
+    <h1 id="title">결제를 확인하고 있습니다</h1>
+    <p class="lead" id="lead">잠시만 기다려 주세요. 이 창을 닫지 마세요.</p>
+
+    <div id="details" hidden>
+      <div class="row"><span>주문번호</span><span id="dOrder"></span></div>
+      <div class="row"><span>상품</span><span id="dName"></span></div>
+      <div class="row"><span>결제 금액</span><span id="dAmount"></span></div>
+      <div class="row" id="rowTg" hidden><span>텔레그램</span><span id="dTg"></span></div>
+    </div>
+
+    <div id="panel" class="panel" hidden></div>
+
+    <div class="actions">
+      <a class="btn primary" href="store.html#telegram">텔레그램 안내 보기</a>
+      <a class="btn ghost" href="index.html">홈으로</a>
+    </div>
+  </main>
+
+  <script>
+    (async function () {
+      const T = window.TOSS_CONFIG || {};
+      const $ = function (id) { return document.getElementById(id); };
+      const esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
+      const won = function (n) { return Number(n).toLocaleString('ko-KR') + '원'; };
+
+      const q = new URLSearchParams(location.search);
+      const paymentKey = q.get('paymentKey');
+      const orderId = q.get('orderId');
+      const amount = q.get('amount');
+
+      let order = null;
+      try { order = JSON.parse(sessionStorage.getItem('ev_order_' + orderId) || 'null'); } catch (e) {}
+      const isTest = /^test_/.test(String(T.clientKey || ''));
+
+      function show(kind, icon, title, lead, panelHtml) {
+        $('icon').textContent = icon;
+        $('title').textContent = title;
+        $('lead').textContent = lead;
+        const p = $('panel');
+        p.className = 'panel ' + kind;
+        p.innerHTML = panelHtml;
+        p.hidden = !panelHtml;
+      }
+
+      /* 1) 필수 값 확인 */
+      if (!paymentKey || !orderId || !amount) {
+        show('err', '⚠️', '잘못된 접근입니다', '결제 정보가 없습니다.', '<a href="store.html#checkout">결제 페이지로 돌아가기</a>');
+        return;
+      }
+
+      $('details').hidden = false;
+      $('dOrder').textContent = orderId;
+      $('dName').textContent = order ? order.orderName : '-';
+      $('dAmount').textContent = won(amount);
+      if (order && order.telegram) { $('rowTg').hidden = false; $('dTg').textContent = order.telegram; }
+
+      /* 2) 금액 위변조 1차 확인 (최종 검증은 반드시 승인 서버에서) */
+      if (order && Number(amount) !== Number(order.amount)) {
+        show('err', '⚠️', '결제 금액이 일치하지 않습니다', '결제가 완료되지 않았습니다.',
+          '주문 금액(' + won(order.amount) + ')과 결제 요청 금액(' + won(amount) + ')이 달라 결제를 진행하지 않았습니다. 다시 시도하거나 고객센터로 문의해 주세요.');
+        return;
+      }
+
+      const inviteMsg = order && order.telegram
+        ? '<strong>' + esc(order.telegram) + '</strong>로 텔레그램 초대 링크를 보내드립니다.'
+        : '결제 시 입력하신 텔레그램 아이디로 초대 링크를 보내드립니다.';
+
+      /* 3) 승인 서버가 없을 때: 테스트 모드에서는 '인증 완료'까지만 확인 */
+      if (!/^https:\/\//i.test(T.confirmUrl || '')) {
+        if (isTest) {
+          show('warn', '🧪', '테스트 결제 인증 완료', '결제창 연동이 정상적으로 동작했습니다.',
+            '<strong>운영자 확인용 안내</strong><ul>' +
+            '<li>토스 결제창에서 <strong>결제 인증</strong>까지 성공했습니다.</li>' +
+            '<li>실제 결제가 끝나려면 서버가 시크릿 키로 <strong>결제 승인(confirm)</strong>을 10분 안에 요청해야 합니다. 현재 <code>toss-config.js</code>의 <code>confirmUrl</code>이 비어 있어 승인은 하지 않았습니다.</li>' +
+            '<li>paymentKey: <code>' + esc(paymentKey) + '</code></li></ul>');
+        } else {
+          show('err', '⚠️', '결제를 완료하지 못했습니다', '결제 승인 설정이 필요합니다.', '고객센터로 문의해 주세요. 카드 승인은 이루어지지 않았습니다.');
+        }
+        return;
+      }
+
+      /* 4) 승인 서버에 결제 승인 요청 */
+      try {
+        const res = await fetch(T.confirmUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ paymentKey: paymentKey, orderId: orderId, amount: Number(amount) })
+        });
+        const data = await res.json().catch(function () { return {}; });
+        if (res.ok && data.status === 'DONE') {
+          const receipt = data.receipt && data.receipt.url ? '<p style="margin-top:0.6rem;"><a href="' + esc(data.receipt.url) + '" target="_blank" rel="noopener">영수증 보기</a></p>' : '';
+          show('ok', '✅', isTest ? '테스트 결제 완료' : '결제가 완료되었습니다', '구독해 주셔서 감사합니다.',
+            inviteMsg + '<ol><li>텔레그램 알림이 켜져 있는지 확인해 주세요.</li><li>초대 링크를 누르고 <strong>채널 참여</strong>를 누르면 끝입니다.</li></ol>' + receipt);
+          try { sessionStorage.removeItem('ev_order_' + orderId); } catch (e) {}
+        } else {
+          show('err', '⚠️', '결제를 완료하지 못했습니다', '결제 승인 중 문제가 발생했습니다.',
+            esc(data.message || '알 수 없는 오류') + (data.code ? ' <code>' + esc(data.code) + '</code>' : '') +
+            '<p style="margin-top:0.5rem;">돈이 빠져나갔다면 자동으로 취소되거나 환불됩니다. 계속되면 고객센터로 문의해 주세요.</p>');
+        }
+      } catch (e) {
+        show('err', '⚠️', '결제 확인에 실패했습니다', '네트워크 오류가 발생했습니다.',
+          '이 페이지를 새로고침하거나 고객센터로 문의해 주세요. 주문번호: <code>' + esc(orderId) + '</code>');
+      }
+    })();
+  </script>
+</body>
+</html>
