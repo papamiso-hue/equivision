@@ -187,6 +187,13 @@
     .modal-close:hover { color: white; }
     .modal-body { padding: 1.5rem; overflow-y: auto; color: #cbd5e1; font-size: 0.9rem; line-height: 1.75; word-break: keep-all; white-space: pre-line; }
 
+    /* Report Subscription CTA */
+    .store-cta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; background: linear-gradient(135deg, rgba(2, 132, 199, 0.18) 0%, rgba(17, 24, 39, 0.95) 100%); border: 1px solid rgba(56, 189, 248, 0.4); border-radius: 18px; padding: 2.5rem; }
+    .store-cta h3 { font-size: 1.6rem; font-weight: 800; margin-bottom: 0.5rem; word-break: keep-all; }
+    .store-cta p { color: #cbd5e1; font-size: 1.02rem; max-width: 620px; word-break: keep-all; }
+    .store-cta .cta-note { color: var(--text-sub); font-size: 0.85rem; margin-top: 0.6rem; }
+    nav a.nav-store { color: var(--primary-glow); font-weight: 700; }
+
     @media (max-width: 900px) {
       .nav-toggle { display: inline-flex; }
       nav { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; align-items: stretch; background: rgba(9, 13, 22, 0.98); border-bottom: 1px solid var(--border-dark); padding: 0.5rem 1.5rem 1rem; }
@@ -208,6 +215,8 @@
       .contact-wrap { padding: 3rem 1.25rem; }
       .contact-wrap h3 { font-size: 1.5rem; }
       .btn-contact { padding: 1rem 1.5rem; font-size: 0.98rem; }
+      .store-cta { padding: 1.75rem 1.25rem; }
+      .store-cta h3 { font-size: 1.3rem; }
       footer { padding: 3rem 1rem 2rem; }
     }
     @media (prefers-reduced-motion: reduce) {
@@ -231,6 +240,7 @@
         <a href="#methodology">분석 방법론</a>
         <a href="#services">사업 포트폴리오</a>
         <a href="#patent">지식재산권</a>
+        <a href="store.html" class="nav-store">리포트 구독</a>
         <a href="#contact">협력 문의</a>
       </nav>
     </div>
@@ -466,6 +476,18 @@
     </div>
   </section>
 
+  <!-- Report Subscription CTA -->
+  <section class="container" id="report" style="padding-bottom: 0;">
+    <div class="store-cta">
+      <div>
+        <h3>경주마 컨디션 분석 리포트</h3>
+        <p>예시장 비전 AI로 측정한 출전마별 생체역학 컨디션 지수를 PDF 리포트로 받아보세요. <strong style="color:#fff;">월간 정기 구독 월 40,000원</strong> (VAT 포함, 언제든 해지 가능)</p>
+        <p class="cta-note">만 19세 이상 이용 가능 · 참고용 분석 정보이며 결과나 수익을 보장하지 않습니다.</p>
+      </div>
+      <a href="store.html" class="btn-main">상품 및 요금 보기</a>
+    </div>
+  </section>
+
   <!-- Contact Section -->
   <section class="container" id="contact">
     <div class="contact-wrap">
@@ -487,6 +509,7 @@
         <button type="button" onclick="openModal('privacy', this)" class="highlight">개인정보처리방침</button>
         <button type="button" onclick="openModal('disclaimer', this)">책임의 한계 및 법적고지</button>
         <button type="button" onclick="openModal('noEmail', this)">이메일무단수집거부</button>
+        <button type="button" onclick="location.href='store.html#refund'">환불정책</button>
       </div>
 
       <div class="company-details">
