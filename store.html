@@ -41,6 +41,11 @@
       telegramNoticeChannel: '@equivision_official',               // 누구나 볼 수 있는 '공지' 채널 (유료 리포트 채널 아님)
       telegramNoticeUrl: 'https://t.me/equivision_official',       // 공지 채널이 아직 없으면 '' 로 비워 두세요 (QR이 숨겨짐)
 
+      // 해지·고객 문의 창구
+      supportPhone: '010-3038-3349',
+      supportTelegram: '',                  // 고객센터 텔레그램 계정. 예: '@equivision_help' (비워 두면 버튼 숨김)
+      supportTelegramUrl: '',               // 예: 'https://t.me/equivision_help'
+
       refundEffectiveDate: '',              // 예: '2026년 10월 15일'
       products: [
         {
@@ -82,7 +87,8 @@
     .nav { max-width: 1000px; margin: 0 auto; padding: 1rem 1rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
     .logo { font-size: 1.3rem; font-weight: 800; color: #fff; text-decoration: none; white-space: nowrap; }
     .logo span { color: var(--primary-glow); }
-    .nav-links { display: flex; gap: 1.2rem; }
+    .nav-links { display: flex; gap: 1.2rem; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+    .nav-links::-webkit-scrollbar { display: none; }
     .nav-links a { color: var(--text-sub); text-decoration: none; font-weight: 600; font-size: 0.95rem; white-space: nowrap; }
     .nav-links a:hover { color: var(--primary-glow); }
 
@@ -164,6 +170,19 @@
     .guide-body .tip strong { color: var(--warn); }
     .kbd { display: inline-block; background: var(--bg-soft); border: 1px solid var(--border-mid); border-radius: 6px; padding: 0 0.4rem; font-size: 0.9em; font-weight: 700; white-space: nowrap; }
 
+    /* 해지 */
+    .cancel-box { background: var(--bg-card); border: 1px solid var(--border-mid); border-radius: 16px; padding: 1.5rem; }
+    .cancel-box h3 { font-size: 1.1rem; margin: 1.3rem 0 0.6rem; }
+    .cancel-box h3:first-child { margin-top: 0; }
+    .cancel-actions { display: flex; flex-wrap: wrap; gap: 0.7rem; }
+    .cancel-actions a { display: inline-flex; align-items: center; gap: 0.4rem; background: var(--bg-soft); border: 1px solid var(--border-mid); color: #fff; text-decoration: none; font-weight: 700; padding: 0.8rem 1.2rem; border-radius: 10px; font-size: 1rem; }
+    .cancel-actions a:hover { border-color: var(--primary-glow); color: var(--primary-glow); }
+    .cancel-actions a[hidden] { display: none; }
+    .cancel-box ol, .cancel-box ul { padding-left: 1.3rem; color: var(--text-body); }
+    .cancel-box li { margin: 0.35rem 0; }
+    .cancel-box strong { color: #fff; }
+    .cancel-template { background: var(--bg-soft); border: 1px dashed var(--border-mid); border-radius: 10px; padding: 0.9rem 1.1rem; font-size: 0.95rem; color: var(--text-body); white-space: pre-line; }
+
     /* 환불 */
     .refund-summary { background: var(--bg-card); border: 1px solid var(--border-dark); border-left: 5px solid var(--primary-glow); border-radius: 14px; padding: 1.4rem 1.5rem; }
     .refund-summary ul { padding-left: 1.2rem; }
@@ -241,8 +260,9 @@
       <a href="index.html" class="logo">EquiVision <span>AI</span></a>
       <div class="nav-links">
         <a href="index.html">← 홈</a>
-        <a href="#products">상품</a>
+        <a href="#products" class="hide-sm">상품</a>
         <a href="#telegram">텔레그램 안내</a>
+        <a href="#cancel">해지 방법</a>
         <a href="#refund" class="hide-sm">환불정책</a>
       </div>
     </div>
@@ -399,6 +419,33 @@
       </details>
     </section>
 
+    <!-- 해지 방법 -->
+    <section id="cancel" aria-labelledby="cancelTitle">
+      <h2 id="cancelTitle">정기 구독 해지 방법</h2>
+      <p class="lead">위약금 없이 언제든 해지할 수 있습니다. 아래 방법 중 편한 것 하나로 신청하세요.</p>
+      <div class="cancel-box">
+        <h3>① 해지 신청하기</h3>
+        <div class="cancel-actions">
+          <a href="#" id="cancelMail">✉ 이메일로 해지 신청</a>
+          <a href="#" id="cancelTelegram" target="_blank" rel="noopener" hidden>💬 텔레그램으로 해지 신청</a>
+          <a href="#" id="cancelPhone">📞 전화로 해지 신청</a>
+        </div>
+        <p class="note" style="margin-top:0.7rem;color:var(--text-sub);font-size:0.9rem;">이메일 버튼을 누르면 아래 양식이 자동으로 채워진 메일 창이 열립니다.</p>
+
+        <h3>② 신청할 때 알려주실 내용</h3>
+        <div class="cancel-template" id="cancelTemplate"></div>
+
+        <h3>③ 해지 처리 기준</h3>
+        <ul>
+          <li><strong>다음 결제 예정일 전날까지</strong> 신청하시면 다음 달 요금이 결제되지 않습니다.</li>
+          <li>해지해도 <strong>이미 결제한 기간이 끝날 때까지</strong> 리포트를 계속 받으실 수 있습니다. 기간이 끝나면 유료 채널에서 자동으로 제외됩니다.</li>
+          <li>남은 기간을 환불받고 바로 종료하려면 신청할 때 <strong>"환불 요청"</strong>이라고 적어 주세요. 이용 일수 금액과 잔여 금액의 10%를 공제하고 환불합니다. (결제 후 7일 이내라면 청약철회 기준 적용)</li>
+          <li>결제일 당일에 신청이 늦어 이미 결제되었고 그 기간의 리포트를 아직 받지 않았다면, <strong>7일 이내 전액 환불</strong>됩니다.</li>
+          <li>접수되면 <strong id="cancelConfirmText">해지 완료 안내</strong>를 보내드립니다. 안내를 받지 못하셨다면 다시 연락 주세요.</li>
+        </ul>
+      </div>
+    </section>
+
     <!-- 환불 요약 -->
     <section id="refund" aria-labelledby="refundTitle">
       <h2 id="refundTitle">청약철회 및 환불</h2>
@@ -406,7 +453,7 @@
         <ul>
           <li>결제 후 <strong>7일 이내</strong>, 리포트를 <strong>한 건도 받지 않았다면 전액 환불</strong>됩니다.</li>
           <li>디지털콘텐츠 특성상 <strong>이미 받은 리포트는 청약철회가 제한</strong>되며, 7일 이내 철회 시 이용한 일수만큼 공제하고 환불합니다. 결제 전 샘플 리포트로 내용을 확인하실 수 있습니다.</li>
-          <li>정기 구독은 언제든 해지할 수 있으며, 중도 해지 시 이용 일수 금액과 잔여 금액의 10%를 공제하고 환불합니다.</li>
+          <li>정기 구독은 언제든 해지할 수 있으며(<a href="#cancel">해지 방법 보기</a>), 중도 해지 후 환불을 요청하면 이용 일수 금액과 잔여 금액의 10%를 공제하고 환불합니다.</li>
           <li>월 요금은 <strong>경주 수와 관계없는 정액</strong>입니다. 경주 취소·순연 등 회사가 통제할 수 없는 사유로 발송되지 않은 리포트는 <strong>별도 환불이나 기간 연장 대상이 아닙니다.</strong></li>
           <li>시스템 장애 등 회사 사정으로 서비스가 중단된 경우에는 「소비자분쟁해결기준」에 따라 보상합니다.</li>
           <li>분석 결과가 실제 경주 결과와 다르다는 이유로는 환불되지 않습니다.</li>
@@ -424,6 +471,7 @@
         <div class="summary-row"><span>이용 기간</span><span id="sumPeriod">-</span></div>
         <div class="summary-row"><span>결제 방식</span><span id="sumCycle">-</span></div>
         <div class="summary-row"><span>채널 초대</span><span id="sumInvite">-</span></div>
+        <div class="summary-row"><span>해지</span><span>언제든 가능 · <a href="#cancel">해지 방법</a></span></div>
         <div class="summary-total"><span>월 결제 금액 (VAT 포함)</span><span class="amount" id="sumPrice">-</span></div>
 
         <div class="consents">
@@ -453,6 +501,7 @@
       <div class="links">
         <a href="index.html">홈</a>
         <a href="#telegram">텔레그램 안내</a>
+        <a href="#cancel">해지 방법</a>
         <a href="#refund">환불정책</a>
         <a href="index.html#contact">문의</a>
       </div>
@@ -526,6 +575,27 @@
       $('guideInvite').textContent = C.inviteDeadline;
       $('escrowLine').textContent = C.escrowText;
       if (C.sampleUrl) { $('sampleLink').href = C.sampleUrl; $('sampleLink').hidden = false; }
+
+      /* 해지 신청 */
+      const cancelTemplate =
+        '[정기 구독 해지 신청]\n' +
+        '결제자 성명: \n' +
+        '결제일(첫 결제일): \n' +
+        '휴대폰 번호 뒤 4자리: \n' +
+        '텔레그램 사용자명: @\n' +
+        '환불 요청 여부: 예 / 아니오 (예: 남은 기간 환불 후 즉시 종료, 아니오: 결제 기간 끝까지 이용)';
+      $('cancelTemplate').textContent = cancelTemplate;
+      $('cancelMail').href = 'mailto:' + addr +
+        '?subject=' + encodeURIComponent('[이퀴비젼AI] 정기 구독 해지 신청') +
+        '&body=' + encodeURIComponent(cancelTemplate);
+      $('cancelPhone').href = 'tel:' + C.supportPhone.replace(/[^0-9]/g, '');
+      $('cancelPhone').textContent = '📞 전화로 해지 신청 (' + C.supportPhone + ')';
+      if (isHttps(C.supportTelegramUrl)) {
+        $('cancelTelegram').href = C.supportTelegramUrl;
+        $('cancelTelegram').textContent = '💬 텔레그램으로 해지 신청 (' + C.supportTelegram + ')';
+        $('cancelTelegram').hidden = false;
+      }
+      $('cancelConfirmText').textContent = '해지 완료 안내(해지 일자, 마지막 이용일, 환불 금액)';
 
       /* 텔레그램 QR코드 */
       function makeQR(boxId, url) {
@@ -624,7 +694,8 @@
           '<li>결제 후 아직 리포트를 한 건도 받지 않은 경우 전액 환불합니다.</li>' +
           '<li>디지털콘텐츠의 특성상 리포트 제공이 시작된 경우 이미 제공된 부분은 전자상거래법 제17조 제2항 제5호에 따라 청약철회가 제한됩니다. 이 경우 결제일부터 철회일까지의 이용 일수에 해당하는 금액을 공제하고 환불합니다. 회사는 결제 전 내용을 확인할 수 있도록 샘플 리포트를 제공합니다.</li></ol>' +
           '<h4>3. 중도 해지 및 환불 (정기 구독)</h4><ol>' +
-          '<li>이용자는 언제든지 구독을 해지할 수 있으며, 해지 시 다음 결제일부터 자동 결제가 중단됩니다.</li>' +
+          '<li>이용자는 위약금 없이 언제든지 구독을 해지할 수 있습니다. 해지는 이메일(' + esc(addr) + '), 전화(' + esc(C.supportPhone) + ')' + (C.supportTelegram ? ', 텔레그램(' + esc(C.supportTelegram) + ')' : '') + '으로 신청합니다.</li>' +
+          '<li>다음 결제 예정일 전날까지 해지를 신청하면 다음 결제부터 자동 결제가 중단되며, 이미 결제한 기간이 끝날 때까지 서비스를 이용할 수 있습니다. 회사는 해지 접수 후 해지 일자와 마지막 이용일을 안내합니다.</li>' +
           '<li>이용 기간 중 해지하여 환불을 요청하는 경우, 해지일까지의 이용 일수에 해당하는 금액과 잔여 기간 이용 금액의 10%를 공제한 금액을 환불합니다.</li>' +
           '<li>무료 체험 후 유료 전환 또는 가격 인상 시, 회사는 30일 전까지 알리고 동의를 받습니다. 동의하지 않으면 전환·인상된 금액으로 결제되지 않습니다.</li></ol>' +
           '<h4>4. 경주 취소 및 서비스 중단</h4><ol>' +
@@ -638,7 +709,7 @@
           '<li>이용자의 알림 설정, 기기·통신 환경 등으로 리포트를 늦게 확인한 경우</li>' +
           '<li>리포트 무단 복제·배포 또는 초대 링크 공유로 이용 계약이 해지된 경우</li></ul>' +
           '<h4>6. 신청 방법 및 처리 기한</h4><ol>' +
-          '<li>이메일(' + esc(addr) + ') 또는 전화(010-3038-3349)로 결제자 성명과 결제일을 알려 신청합니다.</li>' +
+          '<li>이메일(' + esc(addr) + ') 또는 전화(' + esc(C.supportPhone) + ')로 결제자 성명과 결제일을 알려 신청합니다.</li>' +
           '<li>회사는 요청을 받은 날로부터 3영업일 이내에 환불합니다. 신용카드 결제는 같은 기간 내 카드사에 취소를 요청하며, 반영 시기는 카드사 정책에 따릅니다.</li>' +
           '<li>회사가 환불을 늦춘 경우 전자상거래법에서 정한 지연이자를 지급합니다.</li></ol>' +
           '<h4>7. 이용 자격</h4><p>서비스는 만 19세 이상만 이용할 수 있습니다. 만 19세 미만임이 확인되면 계약을 해지하고 결제 금액 전액을 환불합니다.</p>' +
