@@ -1,77 +1,514 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EquiVision AI - 실전 경주마 분석 리포트 구매</title>
-    <!-- 나이 있으신 분들도 보기 편하도록 큼직하고 깔끔한 나눔고딕 적용 -->
-    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap" rel="stylesheet">
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Nanum Gothic', sans-serif; background-color: #f8fafc; color: #1e293b; line-height: 1.6; padding: 20px; }
-        .container { max-width: 650px; margin: 0 auto; background: #ffffff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); overflow: hidden; padding: 30px; }
-        
-        /* 상단 헤더 */
-        .header { text-align: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 20px; margin-bottom: 25px; }
-        .header h1 { font-size: 24px; font-weight: 800; color: #0f172a; margin-bottom: 8px; }
-        .header p { font-size: 15px; color: #64748b; font-weight: 700; }
-        
-        /* 상품 카드 박스 */
-        .product-card { background: #f0fdf4; border: 2px solid #bbf7d0; border-radius: 10px; padding: 25px; margin-bottom: 25px; text-align: center; }
-        .product-title { font-size: 20px; font-weight: 800; color: #166534; margin-bottom: 10px; }
-        .product-desc { font-size: 15px; color: #334155; margin-bottom: 15px; }
-        .product-price { font-size: 28px; font-weight: 800; color: #e11d48; margin-bottom: 15px; }
-        
-        /* 안내 사항 및 혜택 */
-        .info-box { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 8px; padding: 20px; margin-bottom: 25px; font-size: 14px; color: #334155; text-align: left; }
-        .info-box h3 { font-size: 16px; font-weight: 800; color: #0f172a; margin-bottom: 10px; }
-        .info-box ul { padding-left: 20px; }
-        .info-box li { margin-bottom: 6px; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>리포트 구독 안내 | EquiVision AI</title>
+  <meta name="description" content="이퀴비젼에이아이 경주마 컨디션 분석 리포트 월간 정기 구독(월 40,000원)의 상품 구성, 제공 방법, 환불 정책을 안내합니다.">
+  <meta name="theme-color" content="#090d16">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ko_KR">
+  <meta property="og:site_name" content="EquiVision AI">
+  <meta property="og:title" content="경주마 컨디션 분석 리포트 | EquiVision AI">
+  <meta property="og:description" content="예시장 비전 AI 기반 출전마 컨디션 분석 리포트 월간 정기 구독 안내">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23090d16'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial,sans-serif' font-weight='800' font-size='38' fill='%2338bdf8'%3EE%3C/text%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 
-        /* 결제 버튼 (어르신들 눈에 띄게 아주 크게 만듦) */
-        .btn-pay { display: block; width: 100%; background: #2563eb; color: #ffffff; text-align: center; font-size: 20px; font-weight: 800; padding: 18px 0; border-radius: 8px; text-decoration: none; box-shadow: 0 4px 10px rgba(37, 99, 235, 0.3); transition: background 0.2s; margin-bottom: 15px; }
-        .btn-pay:hover { background: #1d4ed8; }
-        
-        /* 고객센터 안내 */
-        .support { text-align: center; font-size: 14px; color: #64748b; margin-top: 20px; }
-        .support span { font-weight: 800; color: #0f172a; }
-    </style>
+  <script>
+    /* =====================================================================
+       ★ 운영 설정 — 이 블록만 수정하면 됩니다 ★
+       - mailOrderNo(통신판매업 신고번호)가 비어 있으면 결제 버튼이 잠깁니다.
+       - payUrl이 비어 있으면 결제할 수 없습니다.
+       - payUrl에는 PG사가 발급한 '정기결제 링크'(https://...)를 넣습니다.
+         GitHub Pages는 서버가 없으므로 PG 비밀키를 이 파일에 넣으면 절대 안 됩니다.
+       ===================================================================== */
+    const STORE_CONFIG = {
+      mailOrderNo: '',                      // 예: '제2026-서울금천-1234호'
+      escrowText: '',                       // 예: '토스페이먼츠 구매안전(에스크로) 서비스 가입 사실 확인' — PG 확인증 문구
+      telegramChannel: '@equivision_official',
+      sampleUrl: '',                        // 샘플 리포트 PDF 주소 (예: 'sample-report.pdf')
+      inviteDeadline: '결제 확인 후 영업일 기준 24시간 이내',
+      deliveryTime: '경주일 오전 10시까지',
+      refundEffectiveDate: '',              // 예: '2026년 10월 15일'
+      products: [
+        {
+          id: 'monthly',
+          name: '월간 정기 구독',
+          price: 40000,                     // 부가세 포함 금액(원)
+          recurring: true,
+          period: '결제일로부터 1개월 (매월 자동 결제)',
+          features: ['기간 내 모든 경주일 출전마 컨디션 리포트(PDF)', '경주 직전 데이터 갱신 알림', '공식 텔레그램 채널 이용', '언제든 해지 가능'],
+          payUrl: ''                        // PG 정기결제 링크 (https://...)
+        }
+      ]
+    };
+  </script>
+
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-glow: #38bdf8;
+      --bg-dark: #090d16;
+      --bg-card: #111827;
+      --bg-soft: #0f1624;
+      --border-dark: #1f2937;
+      --border-mid: #374151;
+      --text-main: #f8fafc;
+      --text-body: #e2e8f0;
+      --text-sub: #a3b0c2;
+      --warn: #fde68a;
+      --danger: #fca5a5;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; }
+    html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+    /* 큰 글씨 기본값: 중장년 이용자도 읽기 편하도록 17px */
+    body { background: var(--bg-dark); color: var(--text-main); line-height: 1.75; font-size: 17px; word-break: keep-all; }
+    a { color: var(--primary-glow); }
+    a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid var(--primary-glow); outline-offset: 3px; border-radius: 6px; }
+
+    header { background: rgba(9, 13, 22, 0.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--border-dark); }
+    .nav { max-width: 1000px; margin: 0 auto; padding: 1rem 1rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+    .logo { font-size: 1.3rem; font-weight: 800; color: #fff; text-decoration: none; white-space: nowrap; }
+    .logo span { color: var(--primary-glow); }
+    .nav-links { display: flex; gap: 1.2rem; }
+    .nav-links a { color: var(--text-sub); text-decoration: none; font-weight: 600; font-size: 0.95rem; white-space: nowrap; }
+    .nav-links a:hover { color: var(--primary-glow); }
+
+    main { max-width: 1000px; margin: 0 auto; padding: 0 1rem 4rem; }
+    section { margin-top: 3.5rem; }
+    h2 { font-size: 1.6rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.3px; }
+    .lead { color: var(--text-sub); margin-bottom: 1.5rem; }
+
+    .status-bar { margin-top: 1.5rem; background: rgba(250, 204, 21, 0.08); border: 1px solid rgba(250, 204, 21, 0.35); color: var(--warn); border-radius: 12px; padding: 1rem 1.2rem; font-weight: 600; }
+    .status-bar[hidden] { display: none; }
+
+    .hero { padding-top: 3rem; text-align: center; }
+    .hero h1 { font-size: 2.3rem; font-weight: 800; line-height: 1.3; letter-spacing: -0.8px; margin-bottom: 1rem; }
+    .hero h1 em { font-style: normal; color: transparent; background: linear-gradient(90deg, #38bdf8, #818cf8); -webkit-background-clip: text; background-clip: text; }
+    .hero p { color: var(--text-sub); font-size: 1.1rem; max-width: 680px; margin: 0 auto; }
+    .hero .sample-link { display: inline-block; margin-top: 1.3rem; font-weight: 700; }
+
+    /* 상품 카드 */
+    .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); gap: 1.2rem; max-width: 520px; margin: 0 auto; }
+    .product { position: relative; display: block; background: var(--bg-card); border: 2px solid var(--border-dark); border-radius: 16px; padding: 1.6rem; cursor: pointer; transition: border-color 0.2s; }
+    .product:hover { border-color: var(--border-mid); }
+    .product:has(input:focus-visible) { outline: 3px solid var(--primary-glow); outline-offset: 3px; }
+    .product.selected { border-color: var(--primary-glow); background: linear-gradient(180deg, rgba(2, 132, 199, 0.12), var(--bg-card) 60%); }
+    .product input { position: absolute; opacity: 0; pointer-events: none; }
+    .product .badge { position: absolute; top: -12px; right: 16px; background: var(--primary); color: #fff; font-size: 0.8rem; font-weight: 700; padding: 0.2rem 0.7rem; border-radius: 999px; }
+    .product h3 { font-size: 1.25rem; font-weight: 800; margin-bottom: 0.3rem; }
+    .product .price { font-size: 1.9rem; font-weight: 800; color: var(--primary-glow); font-variant-numeric: tabular-nums; }
+    .product .price small { font-size: 0.9rem; color: var(--text-sub); font-weight: 600; margin-left: 0.3rem; }
+    .product .price.tbd { font-size: 1.3rem; color: var(--text-sub); }
+    .product .period { color: var(--text-sub); font-size: 0.95rem; margin: 0.2rem 0 1rem; }
+    .product ul { list-style: none; border-top: 1px solid var(--border-dark); padding-top: 0.9rem; }
+    .product li { padding-left: 1.5rem; position: relative; margin: 0.35rem 0; color: var(--text-body); font-size: 0.98rem; }
+    .product li::before { content: "✓"; position: absolute; left: 0; color: var(--primary-glow); font-weight: 800; }
+    .product .radio-dot { position: absolute; top: 1.6rem; right: 1.6rem; width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--border-mid); }
+    .products.single .radio-dot { display: none; }
+    .product.selected .radio-dot { border-color: var(--primary-glow); box-shadow: inset 0 0 0 5px var(--bg-card); background: var(--primary-glow); }
+
+    /* 이용 방법 */
+    .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 1rem; counter-reset: step; }
+    .step { background: var(--bg-card); border: 1px solid var(--border-dark); border-radius: 14px; padding: 1.3rem; }
+    .step::before { counter-increment: step; content: "STEP " counter(step); display: block; color: var(--primary-glow); font-weight: 800; font-size: 0.85rem; margin-bottom: 0.3rem; }
+    .step h3 { font-size: 1.08rem; margin-bottom: 0.3rem; }
+    .step p { color: var(--text-sub); font-size: 0.95rem; }
+
+    /* 정보 표 */
+    .info-table { width: 100%; border-collapse: collapse; background: var(--bg-card); border: 1px solid var(--border-dark); border-radius: 14px; overflow: hidden; }
+    .info-table th, .info-table td { padding: 0.9rem 1.1rem; border-bottom: 1px solid var(--border-dark); text-align: left; vertical-align: top; font-size: 0.98rem; }
+    .info-table th { width: 30%; color: var(--text-sub); font-weight: 600; background: var(--bg-soft); }
+    .info-table tr:last-child th, .info-table tr:last-child td { border-bottom: none; }
+
+    /* 환불 */
+    .refund-summary { background: var(--bg-card); border: 1px solid var(--border-dark); border-left: 5px solid var(--primary-glow); border-radius: 14px; padding: 1.4rem 1.5rem; }
+    .refund-summary ul { padding-left: 1.2rem; }
+    .refund-summary li { margin: 0.35rem 0; color: var(--text-body); }
+    .refund-summary strong { color: #fff; }
+    .btn-text { background: none; border: none; color: var(--primary-glow); font-weight: 700; font-size: 1rem; cursor: pointer; text-decoration: underline; margin-top: 0.8rem; padding: 0; }
+
+    /* 결제 영역 */
+    .checkout { background: var(--bg-card); border: 1px solid var(--border-mid); border-radius: 18px; padding: 1.8rem; }
+    .summary-row { display: flex; justify-content: space-between; gap: 1rem; padding: 0.55rem 0; border-bottom: 1px dashed var(--border-dark); }
+    .summary-row span:first-child { color: var(--text-sub); }
+    .summary-row span:last-child { font-weight: 700; text-align: right; }
+    .summary-total { display: flex; justify-content: space-between; align-items: baseline; padding: 1rem 0 0.5rem; font-weight: 800; }
+    .summary-total .amount { font-size: 1.8rem; color: var(--primary-glow); font-variant-numeric: tabular-nums; }
+
+    .consents { margin: 1.3rem 0; border: 1px solid var(--border-dark); border-radius: 12px; overflow: hidden; }
+    .consent { display: flex; gap: 0.8rem; align-items: flex-start; padding: 0.9rem 1rem; border-bottom: 1px solid var(--border-dark); cursor: pointer; font-size: 0.98rem; }
+    .consent:last-child { border-bottom: none; }
+    .consent.all { background: var(--bg-soft); font-weight: 800; }
+    .consent input { width: 22px; height: 22px; margin-top: 0.2rem; accent-color: var(--primary-glow); flex-shrink: 0; cursor: pointer; }
+    .consent .req { color: var(--danger); font-weight: 700; margin-right: 0.2rem; }
+
+    .btn-pay { display: block; width: 100%; background: var(--primary); color: #fff; font-size: 1.2rem; font-weight: 800; padding: 1.1rem; border: none; border-radius: 12px; cursor: pointer; transition: background 0.2s; }
+    .btn-pay:hover:not(:disabled) { background: #0369a1; }
+    .btn-pay:disabled { background: #1f2937; color: #6b7280; cursor: not-allowed; }
+    .pay-hint { text-align: center; color: var(--text-sub); font-size: 0.9rem; margin-top: 0.7rem; min-height: 1.5em; }
+
+    .notice { margin-top: 1.5rem; background: rgba(250, 204, 21, 0.06); border: 1px solid rgba(250, 204, 21, 0.3); border-radius: 12px; padding: 1rem 1.2rem; font-size: 0.93rem; color: var(--text-body); }
+    .notice strong { color: var(--warn); }
+
+    /* 푸터 */
+    footer { background: #05080e; border-top: 1px solid #172033; padding: 3rem 1rem 2rem; color: #94a3b8; font-size: 0.88rem; line-height: 1.85; }
+    .footer-inner { max-width: 1000px; margin: 0 auto; }
+    footer strong { color: #f1f5f9; }
+    footer .links { margin-bottom: 1.2rem; display: flex; flex-wrap: wrap; gap: 1.2rem; }
+    footer .links a { color: #cbd5e1; text-decoration: none; font-weight: 600; }
+    footer .links a:hover { color: var(--primary-glow); }
+    footer .copy { margin-top: 1.2rem; color: #475569; text-align: center; font-size: 0.8rem; }
+
+    /* 모달 */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(4px); z-index: 200; align-items: center; justify-content: center; padding: 1rem; }
+    .modal-overlay.open { display: flex; }
+    .modal-box { background: #111827; border: 1px solid var(--border-mid); border-radius: 16px; width: 100%; max-width: 680px; max-height: 86vh; display: flex; flex-direction: column; overflow: hidden; }
+    .modal-head { display: flex; justify-content: space-between; align-items: center; padding: 1.1rem 1.4rem; border-bottom: 1px solid var(--border-dark); }
+    .modal-head h3 { font-size: 1.15rem; }
+    .modal-close { background: none; border: none; color: #94a3b8; font-size: 1.7rem; line-height: 1; cursor: pointer; padding: 0.2rem 0.5rem; }
+    .modal-body { padding: 1.4rem; overflow-y: auto; font-size: 0.95rem; color: var(--text-body); }
+    .modal-body h4 { font-size: 1rem; margin: 1.1rem 0 0.3rem; color: #fff; }
+    .modal-body h4:first-child { margin-top: 0; }
+    .modal-body ol, .modal-body ul { padding-left: 1.3rem; }
+    .modal-body li { margin: 0.25rem 0; }
+    .modal-foot { padding: 1rem 1.4rem; border-top: 1px solid var(--border-dark); display: flex; gap: 0.7rem; justify-content: flex-end; flex-wrap: wrap; }
+    .btn-secondary { background: transparent; color: #cbd5e1; border: 1px solid var(--border-mid); border-radius: 10px; padding: 0.75rem 1.3rem; font-size: 1rem; font-weight: 700; cursor: pointer; }
+    .btn-primary { background: var(--primary); color: #fff; border: none; border-radius: 10px; padding: 0.75rem 1.3rem; font-size: 1rem; font-weight: 700; cursor: pointer; }
+
+    @media (max-width: 640px) {
+      body { font-size: 16px; }
+      .nav-links { gap: 0.9rem; }
+      .nav-links a { font-size: 0.88rem; }
+      .nav-links .hide-sm { display: none; }
+      .hero h1 { font-size: 1.75rem; }
+      h2 { font-size: 1.35rem; }
+      .checkout { padding: 1.3rem; }
+      .info-table th { width: 36%; }
+      .info-table th, .info-table td { padding: 0.8rem; font-size: 0.93rem; }
+    }
+  </style>
 </head>
 <body>
 
-<div class="container">
-    <!-- 상단 타이틀 -->
-    <div class="header">
-        <h1>🐎 EquiVision AI 분석 리포트</h1>
-        <p>인공지능 퀀트 엔진 & 현장 예시장 비전 통합 예상지</p>
+  <header>
+    <div class="nav">
+      <a href="index.html" class="logo">EquiVision <span>AI</span></a>
+      <div class="nav-links">
+        <a href="index.html">← 홈</a>
+        <a href="#products">상품</a>
+        <a href="#refund">환불정책</a>
+        <a href="#business" class="hide-sm">사업자정보</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="status-bar" id="statusBar" role="status" hidden>
+      🛠 현재 결제 준비 중입니다. 통신판매업 신고와 결제 시스템 연동이 끝나면 구매하실 수 있습니다.
     </div>
 
-    <!-- 상품 정보 카드 -->
-    <div class="product-card">
-        <div class="product-title">🎯 [당일 경주] 실전 통합 예상지 PDF 구독권</div>
-        <div class="product-desc">선택하신 경주의 전두수 퀀트 지표, 예시장 1보 주기, 베팅 추천 조합이 담긴 프리미엄 PDF 리포트와 텔레그램 실시간 알림을 제공합니다.</div>
-        <div class="product-price">5,000원 <span style="font-size: 14px; color: #64748b; font-weight: 400;">(1회 이용권)</span></div>
-    </div>
+    <section class="hero">
+      <h1>예시장 비전 AI로 측정한<br><em>경주마 컨디션 분석 리포트</em></h1>
+      <p>출전마의 보행 리듬, 보폭, 좌우 대칭성을 영상으로 분석해 평소 대비 컨디션 변화를 지수로 정리한 PDF 리포트입니다.</p>
+      <a href="#" class="sample-link" id="sampleLink" hidden>📄 샘플 리포트 먼저 보기</a>
+    </section>
 
-    <!-- 상세 안내 및 환불 규정 -->
-    <div class="info-box">
-        <h3>📌 이용 안내 및 환불 규정</h3>
+    <!-- 상품 -->
+    <section id="products" aria-labelledby="productsTitle">
+      <h2 id="productsTitle" style="text-align:center;">상품 안내</h2>
+      <p class="lead" style="text-align:center;">표시된 금액은 부가가치세가 포함된 매월 결제 금액입니다. 추가 비용은 없습니다.</p>
+      <div class="products" id="productList" role="radiogroup" aria-label="상품 선택"></div>
+    </section>
+
+    <!-- 이용 방법 -->
+    <section aria-labelledby="howTitle">
+      <h2 id="howTitle">이용 방법</h2>
+      <div class="steps">
+        <div class="step"><h3>내용 확인·동의</h3><p>이 페이지에서 상품 내용과 환불 정책을 확인하고 필수 항목에 동의합니다.</p></div>
+        <div class="step"><h3>결제</h3><p>결제 대행사(PG) 결제창에서 카드·간편결제로 결제합니다. 결제창에 텔레그램 아이디를 적어 주세요.</p></div>
+        <div class="step"><h3>채널 초대</h3><p id="stepInvite">결제 확인 후 텔레그램 채널 초대 링크를 보내드립니다.</p></div>
+        <div class="step"><h3>리포트 수신</h3><p id="stepDelivery">경주일에 텔레그램으로 PDF 리포트를 받습니다.</p></div>
+      </div>
+    </section>
+
+    <!-- 상품 정보 고지 -->
+    <section aria-labelledby="infoTitle">
+      <h2 id="infoTitle">상품 정보</h2>
+      <table class="info-table">
+        <tbody>
+          <tr><th scope="row">상품 형태</th><td>디지털콘텐츠 (PDF 분석 리포트)</td></tr>
+          <tr><th scope="row">제공 방법</th><td>회사 공식 텔레그램 채널 <strong id="infoChannel"></strong> 초대 후 발송</td></tr>
+          <tr><th scope="row">제공 시기</th><td id="infoDelivery"></td></tr>
+          <tr><th scope="row">필요 환경</th><td>텔레그램 앱 설치 및 계정 (스마트폰·PC)</td></tr>
+          <tr><th scope="row">이용 자격</th><td>만 19세 이상, 1인 1계정</td></tr>
+          <tr><th scope="row">이용 제한</th><td>리포트의 복제·재배포·재판매 금지 (위반 시 이용 계약 해지)</td></tr>
+          <tr><th scope="row">성격</th><td>통계 모델에 기반한 참고용 분석 정보이며, 특정 결과나 수익을 보장하지 않습니다.</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- 환불 요약 -->
+    <section id="refund" aria-labelledby="refundTitle">
+      <h2 id="refundTitle">청약철회 및 환불</h2>
+      <div class="refund-summary">
         <ul>
-            <li><strong>제공 상품:</strong> 디지털 AI 분석 예상지 PDF 파일 (웹 및 텔레그램 전송)</li>
-            <li><strong>이용 방법:</strong> 결제 완료 후 화면 또는 텔레그램 채널을 통해 즉시 리포트가 발송됩니다.</li>
-            <li><strong>환불 규정:</strong> 디지털 콘텐츠(정보 서비스) 특성상 리포트가 발송(다운로드)된 이후에는 단순 변심에 의한 환불이 불가합니다. 단, 경주 취소 등 주최측 사유로 경주가 무효가 된 경우 100% 전액 환불해 드립니다.</li>
+          <li>결제 후 <strong>7일 이내</strong>, 리포트를 <strong>한 건도 받지 않았다면 전액 환불</strong>됩니다.</li>
+          <li>디지털콘텐츠 특성상 <strong>이미 받은 리포트는 청약철회가 제한</strong>됩니다. 결제 전에 샘플 리포트로 내용을 확인하실 수 있습니다.</li>
+          <li>정기 구독은 언제든 해지할 수 있으며, 중도 해지 시 이용 일수 금액과 잔여 금액의 10%를 공제하고 환불합니다.</li>
+          <li>회사 사정으로 리포트가 제공되지 않은 회차는 환불하거나 기간을 연장합니다.</li>
+          <li>분석 결과가 실제 경주 결과와 다르다는 이유로는 환불되지 않습니다.</li>
+          <li>환불은 요청일로부터 <strong>3영업일 이내</strong>에 처리합니다.</li>
         </ul>
+        <button type="button" class="btn-text" id="openRefund">환불 정책 전문 보기</button>
+      </div>
+    </section>
+
+    <!-- 주문·결제 -->
+    <section id="checkout" aria-labelledby="checkoutTitle">
+      <h2 id="checkoutTitle">주문 확인 및 결제</h2>
+      <div class="checkout">
+        <div class="summary-row"><span>상품</span><span id="sumName">-</span></div>
+        <div class="summary-row"><span>이용 기간</span><span id="sumPeriod">-</span></div>
+        <div class="summary-row"><span>결제 방식</span><span id="sumCycle">-</span></div>
+        <div class="summary-total"><span>월 결제 금액 (VAT 포함)</span><span class="amount" id="sumPrice">-</span></div>
+
+        <div class="consents">
+          <label class="consent all"><input type="checkbox" id="agreeAll"> 아래 필수 항목에 모두 동의합니다</label>
+          <label class="consent"><input type="checkbox" class="agree"><span><span class="req">[필수]</span>본 상품은 디지털콘텐츠로, <strong>리포트 제공이 시작되면 이미 제공된 부분은 청약철회가 제한</strong>됨을 확인했습니다.</span></label>
+          <label class="consent" id="consentRecurring"><input type="checkbox" class="agree"><span><span class="req">[필수]</span><span id="recurringText">정기 구독은 매월 결제일에 같은 금액이 자동 결제되며, 언제든 해지할 수 있음을 확인했습니다.</span></span></label>
+          <label class="consent"><input type="checkbox" class="agree"><span><span class="req">[필수]</span>본 리포트는 참고용 분석 정보이며 <strong>특정 결과나 수익을 보장하지 않음</strong>을 확인했습니다.</span></label>
+          <label class="consent"><input type="checkbox" class="agree"><span><span class="req">[필수]</span>본인은 <strong>만 19세 이상</strong>입니다.</span></label>
+          <label class="consent"><input type="checkbox" class="agree"><span><span class="req">[필수]</span><a href="#" id="openRefund2">환불 정책</a>과 <a href="index.html" target="_blank" rel="noopener">이용약관·개인정보처리방침</a>을 확인했습니다.</span></label>
+        </div>
+
+        <button type="button" class="btn-pay" id="btnPay" disabled>결제하기</button>
+        <p class="pay-hint" id="payHint" aria-live="polite"></p>
+        <p class="pay-hint" id="escrowLine"></p>
+      </div>
+
+      <div class="notice">
+        <strong>안내</strong> 이퀴비젼에이아이는 승마투표권의 구매대행·알선이나 베팅 권유를 하지 않으며, 텔레그램 채널에서도 자금 모집·공동 구매를 하지 않습니다. 회사를 사칭한 권유에 주의하세요.<br>
+        도박 문제로 어려움을 겪고 계시다면 한국도박문제예방치유원 헬프라인 <strong>☎1336</strong>(24시간, 무료)에서 상담받으실 수 있습니다.
+      </div>
+    </section>
+  </main>
+
+  <footer id="business">
+    <div class="footer-inner">
+      <div class="links">
+        <a href="index.html">홈</a>
+        <a href="#refund">환불정책</a>
+        <a href="index.html#contact">문의</a>
+      </div>
+      <strong>이퀴비젼에이아이 주식회사 (EquiVision AI Corp.)</strong><br>
+      대표이사: 오성수 | 사업자등록번호: 302-88-04351
+      (<a href="https://www.ftc.go.kr/bizCommPop.do?wrkr_no=3028804351" target="_blank" rel="noopener">사업자정보확인</a>)<br>
+      통신판매업신고: <span id="footMailOrder"></span><br>
+      주소: 서울특별시 금천구 벚꽃로 30, 206동 318호(독산동, 금천 롯데캐슬 골드파크 2차)<br>
+      대표전화: 010-3038-3349 | 이메일: <a href="#" id="footMail">papamiso [at] gmail.com</a> | 호스팅 제공자: GitHub Pages<br>
+      소비자 상담: 회사 고객센터에서 해결되지 않는 경우 한국소비자원(☎1372) 또는 전자거래분쟁조정위원회에 조정을 신청할 수 있습니다.
+      <div class="copy">&copy; 2026 이퀴비젼에이아이 주식회사 (EquiVision AI Corp.). All rights reserved.</div>
     </div>
+  </footer>
 
-    <!-- 결제하기 버튼 (토스페이먼츠 결제 링크 또는 결제 페이지 주소로 연결) -->
-    <!-- href="#" 부분에 PG사에서 발급받은 결제 링크나 쇼핑몰 주소를 넣으시면 됩니다 -->
-    <a href="#" class="btn-pay">💳 토스·네이버·카카오 간편결제하기</a>
-
-    <!-- 고객 센터 -->
-    <div class="support">
-        결제에 어려움이 있으신가요? <br>고객센터 전화문의: <span>010-0000-0000</span>
+  <!-- 환불 정책 전문 모달 -->
+  <div class="modal-overlay" id="refundModal">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="refundModalTitle">
+      <div class="modal-head">
+        <h3 id="refundModalTitle">유료 서비스 청약철회 및 환불 정책</h3>
+        <button type="button" class="modal-close" data-close aria-label="닫기">&times;</button>
+      </div>
+      <div class="modal-body" id="refundBody" tabindex="0"></div>
+      <div class="modal-foot"><button type="button" class="btn-primary" data-close>확인</button></div>
     </div>
-</div>
+  </div>
 
+  <!-- 주문 최종 확인 모달 -->
+  <div class="modal-overlay" id="confirmModal">
+    <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+      <div class="modal-head">
+        <h3 id="confirmTitle">주문 내용을 확인해 주세요</h3>
+        <button type="button" class="modal-close" data-close aria-label="닫기">&times;</button>
+      </div>
+      <div class="modal-body" id="confirmBody"></div>
+      <div class="modal-foot">
+        <button type="button" class="btn-secondary" data-close>수정하기</button>
+        <button type="button" class="btn-primary" id="btnGoPay">결제창으로 이동</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const C = STORE_CONFIG;
+      const $ = function (id) { return document.getElementById(id); };
+      const won = function (n) { return n.toLocaleString('ko-KR') + '원'; };
+      const isHttps = function (u) { return /^https:\/\//i.test(u || ''); };
+      const productReady = function (p) { return p && p.price > 0 && isHttps(p.payUrl); };
+      const storeOpen = !!C.mailOrderNo;
+      let selected = C.products.find(function (p) { return p.recommended; }) || C.products[0];
+
+      /* 이메일 (원문 노출 최소화) */
+      const addr = ['papamiso', 'gmail.com'].join('@');
+      $('footMail').href = 'mailto:' + addr + '?subject=' + encodeURIComponent('[이퀴비젼AI] 리포트 구독 문의');
+      $('footMail').textContent = addr;
+
+      /* 운영 설정 반영 */
+      $('footMailOrder').textContent = storeOpen ? C.mailOrderNo : '신고 진행 중';
+      $('statusBar').hidden = storeOpen && C.products.some(productReady);
+      $('infoChannel').textContent = C.telegramChannel;
+      $('infoDelivery').textContent = C.deliveryTime + ' (경주 취소·순연 시 대체 리포트 제공 또는 해당 회차 환불)';
+      $('stepInvite').textContent = C.inviteDeadline + '에 텔레그램 채널 초대 링크를 보내드립니다.';
+      $('stepDelivery').textContent = C.deliveryTime + ' 텔레그램으로 PDF 리포트를 받습니다.';
+      $('escrowLine').textContent = C.escrowText;
+      if (C.sampleUrl) { $('sampleLink').href = C.sampleUrl; $('sampleLink').hidden = false; }
+
+      /* 상품 카드 */
+      const list = $('productList');
+      list.classList.toggle('single', C.products.length === 1);
+      C.products.forEach(function (p) {
+        const label = document.createElement('label');
+        label.className = 'product';
+        label.dataset.id = p.id;
+        const priceHtml = p.price > 0
+          ? '<div class="price">' + won(p.price) + '<small>' + (p.recurring ? '/ 월' : '/ 1회') + '</small></div>'
+          : '<div class="price tbd">가격 확정 전</div>';
+        label.innerHTML =
+          (p.recommended ? '<span class="badge">추천</span>' : '') +
+          '<input type="radio" name="product" value="' + p.id + '">' +
+          '<span class="radio-dot" aria-hidden="true"></span>' +
+          '<h3></h3>' + priceHtml + '<div class="period"></div><ul></ul>';
+        label.querySelector('h3').textContent = p.name;
+        label.querySelector('.period').textContent = p.period;
+        const ul = label.querySelector('ul');
+        p.features.forEach(function (f) { const li = document.createElement('li'); li.textContent = f; ul.appendChild(li); });
+        label.querySelector('input').addEventListener('change', function () { selected = p; render(); });
+        list.appendChild(label);
+      });
+
+      /* 동의 체크박스 (기본값은 모두 해제 — 사전 선택 금지) */
+      const agreeAll = $('agreeAll');
+      function visibleAgrees() {
+        return Array.from(document.querySelectorAll('.agree')).filter(function (b) { return b.closest('.consent').style.display !== 'none'; });
+      }
+      agreeAll.addEventListener('change', function () { visibleAgrees().forEach(function (b) { b.checked = agreeAll.checked; }); render(); });
+      document.querySelectorAll('.agree').forEach(function (b) { b.addEventListener('change', render); });
+
+      function render() {
+        document.querySelectorAll('.product').forEach(function (el) {
+          const on = el.dataset.id === selected.id;
+          el.classList.toggle('selected', on);
+          el.querySelector('input').checked = on;
+        });
+        $('sumName').textContent = selected.name;
+        $('sumPeriod').textContent = selected.period;
+        $('sumCycle').textContent = selected.recurring ? '매월 자동 결제 (언제든 해지 가능)' : '1회 결제';
+        $('sumPrice').textContent = selected.price > 0 ? won(selected.price) : '가격 확정 전';
+
+        const rec = $('consentRecurring');
+        rec.style.display = selected.recurring ? '' : 'none';
+        if (!selected.recurring) rec.querySelector('input').checked = false;
+        if (selected.recurring && selected.price > 0) {
+          $('recurringText').textContent = '매월 결제일에 ' + won(selected.price) + '이 자동 결제되며, 언제든 해지할 수 있음을 확인했습니다. 가격이 바뀌면 30일 전에 알리고 다시 동의를 받습니다.';
+        }
+
+        const agrees = visibleAgrees();
+        const allChecked = agrees.every(function (b) { return b.checked; });
+        agreeAll.checked = allChecked;
+
+        let hint = '';
+        if (!storeOpen) hint = '통신판매업 신고 완료 후 결제가 열립니다.';
+        else if (!productReady(selected)) hint = '이 상품은 현재 결제 준비 중입니다.';
+        else if (!allChecked) hint = '필수 항목에 모두 동의해야 결제할 수 있습니다.';
+        $('payHint').textContent = hint;
+        $('btnPay').disabled = !!hint;
+      }
+
+      /* 환불 정책 전문 */
+      function refundHtml() {
+        const priceText = C.products.map(function (p) {
+          return p.name + ' ' + (p.price > 0 ? won(p.price) : '가격 확정 전') + (p.recurring ? '(월)' : '');
+        }).join(', ');
+        return '' +
+          '<p>이퀴비젼에이아이 주식회사(이하 "회사")가 제공하는 유료 분석 리포트 서비스(이하 "서비스")의 청약철회 및 환불은 「전자상거래 등에서의 소비자보호에 관한 법률」(이하 "전자상거래법") 및 「소비자분쟁해결기준」에 따릅니다.</p>' +
+          '<h4>1. 서비스의 내용</h4><ul>' +
+          '<li>상품 및 가격(부가세 포함): ' + esc(priceText) + '</li>' +
+          '<li>제공 방법: 회사 공식 텔레그램 채널 ' + esc(C.telegramChannel) + '을 통한 PDF 리포트 발송</li>' +
+          '<li>제공 시기: ' + esc(C.deliveryTime) + '</li></ul>' +
+          '<h4>2. 청약철회 (결제 후 7일 이내)</h4><ol>' +
+          '<li>이용자는 결제일로부터 7일 이내에 청약을 철회할 수 있습니다.</li>' +
+          '<li>결제 후 아직 리포트를 한 건도 받지 않은 경우 전액 환불합니다.</li>' +
+          '<li>디지털콘텐츠의 특성상 리포트 제공이 시작된 경우 이미 제공된 부분은 전자상거래법 제17조 제2항 제5호에 따라 청약철회가 제한됩니다. 회사는 결제 전 내용을 확인할 수 있도록 샘플 리포트를 제공합니다.</li>' +
+          '<li>여러 회차로 나누어 제공되는 서비스는 아직 제공되지 않은 회차에 대해 청약철회가 가능합니다.</li></ol>' +
+          '<h4>3. 중도 해지 및 환불 (정기 구독)</h4><ol>' +
+          '<li>이용자는 언제든지 구독을 해지할 수 있으며, 해지 시 다음 결제일부터 자동 결제가 중단됩니다.</li>' +
+          '<li>이용 기간 중 해지하여 환불을 요청하는 경우, 해지일까지의 이용 일수에 해당하는 금액과 잔여 기간 이용 금액의 10%를 공제한 금액을 환불합니다.</li>' +
+          '<li>무료 체험 후 유료 전환 또는 가격 인상 시, 회사는 30일 전까지 알리고 동의를 받습니다. 동의하지 않으면 전환·인상된 금액으로 결제되지 않습니다.</li></ol>' +
+          '<h4>4. 회사 사정으로 인한 환불·보상</h4><ol>' +
+          '<li>회사 사정으로 리포트가 약속한 시기에 제공되지 않은 경우 해당 회차 요금을 환불하거나 이용 기간을 연장합니다.</li>' +
+          '<li>회사 사정으로 서비스를 계속 제공할 수 없게 된 경우 잔여 기간 이용 금액 전액을 환불합니다.</li>' +
+          '<li>경주가 취소·순연된 경우 대체 리포트를 제공하거나 해당 회차 요금을 환불합니다.</li></ol>' +
+          '<h4>5. 환불 사유에 해당하지 않는 경우</h4><ul>' +
+          '<li>분석 결과가 실제 경주 결과와 다르다는 이유 (회사는 특정 결과나 수익을 보장하지 않습니다)</li>' +
+          '<li>이용자가 리포트를 참고하여 한 판단이나 행위로 발생한 손실</li>' +
+          '<li>리포트 무단 복제·배포로 이용 계약이 해지된 경우</li></ul>' +
+          '<h4>6. 신청 방법 및 처리 기한</h4><ol>' +
+          '<li>이메일(' + esc(addr) + ') 또는 전화(010-3038-3349)로 결제자 성명과 결제일을 알려 신청합니다.</li>' +
+          '<li>회사는 요청을 받은 날로부터 3영업일 이내에 환불합니다. 신용카드 결제는 같은 기간 내 카드사에 취소를 요청하며, 반영 시기는 카드사 정책에 따릅니다.</li>' +
+          '<li>회사가 환불을 늦춘 경우 전자상거래법에서 정한 지연이자를 지급합니다.</li></ol>' +
+          '<h4>7. 이용 자격</h4><p>서비스는 만 19세 이상만 이용할 수 있습니다. 만 19세 미만임이 확인되면 계약을 해지하고 결제 금액 전액을 환불합니다.</p>' +
+          '<h4>8. 분쟁 해결</h4><p>회사 고객센터에서 해결되지 않는 경우 한국소비자원(☎1372) 또는 전자거래분쟁조정위원회에 조정을 신청할 수 있습니다.</p>' +
+          (C.refundEffectiveDate ? '<p style="margin-top:1rem;color:#a3b0c2;">시행일자: ' + esc(C.refundEffectiveDate) + '</p>' : '');
+      }
+      function esc(s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+
+      /* 모달 공통 */
+      let lastFocus = null;
+      function openModal(id) {
+        lastFocus = document.activeElement;
+        const m = $(id);
+        m.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        m.querySelector('.modal-close').focus();
+      }
+      function closeModals() {
+        document.querySelectorAll('.modal-overlay.open').forEach(function (m) { m.classList.remove('open'); });
+        document.body.style.overflow = '';
+        if (lastFocus) lastFocus.focus();
+      }
+      document.querySelectorAll('[data-close]').forEach(function (b) { b.addEventListener('click', closeModals); });
+      document.querySelectorAll('.modal-overlay').forEach(function (m) {
+        m.addEventListener('click', function (e) { if (e.target === m) closeModals(); });
+      });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModals(); });
+
+      function showRefund(e) { if (e) e.preventDefault(); $('refundBody').innerHTML = refundHtml(); openModal('refundModal'); }
+      $('openRefund').addEventListener('click', showRefund);
+      $('openRefund2').addEventListener('click', showRefund);
+
+      /* 결제 전 최종 확인 (전자상거래법 제7조: 조작 실수 방지) */
+      $('btnPay').addEventListener('click', function () {
+        if ($('btnPay').disabled) return;
+        $('confirmBody').innerHTML =
+          '<div class="summary-row"><span>상품</span><span>' + esc(selected.name) + '</span></div>' +
+          '<div class="summary-row"><span>이용 기간</span><span>' + esc(selected.period) + '</span></div>' +
+          '<div class="summary-row"><span>결제 방식</span><span>' + (selected.recurring ? '매월 자동 결제' : '1회 결제') + '</span></div>' +
+          '<div class="summary-total"><span>월 결제 금액</span><span class="amount">' + won(selected.price) + '</span></div>' +
+          '<p style="margin-top:1rem;">결제창에서 <strong>텔레그램 아이디</strong>를 요청사항(메모)란에 꼭 적어 주세요. ' + esc(C.inviteDeadline) + '에 초대 링크를 보내드립니다.</p>' +
+          '<p style="margin-top:0.6rem;color:#a3b0c2;font-size:0.9rem;">결제는 결제 대행사(PG) 페이지에서 진행되며, 결제 정보는 이퀴비젼에이아이 서버에 저장되지 않습니다.</p>';
+        openModal('confirmModal');
+      });
+      $('btnGoPay').addEventListener('click', function () {
+        if (!productReady(selected) || !storeOpen) return;
+        window.open(selected.payUrl, '_blank', 'noopener');
+        closeModals();
+      });
+
+      render();
+      if (location.hash === '#refund-full') showRefund();
+    })();
+  </script>
 </body>
 </html>
