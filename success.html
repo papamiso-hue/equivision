@@ -12,6 +12,7 @@
   <style>
     :root { --primary: #0284c7; --glow: #38bdf8; --bg: #090d16; --card: #111827; --soft: #0f1624; --border: #1f2937; --mid: #374151; --text: #f8fafc; --body: #e2e8f0; --sub: #a3b0c2; --ok: #86efac; --warn: #fde68a; --danger: #fca5a5; }
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Pretendard Variable", Pretendard, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; }
+    [hidden] { display: none !important; }
     body { background: var(--bg); color: var(--text); font-size: 17px; line-height: 1.75; word-break: keep-all; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
     .box { width: 100%; max-width: 560px; background: var(--card); border: 1px solid var(--mid); border-radius: 18px; padding: 2rem 1.6rem; }
     .icon { font-size: 2.6rem; text-align: center; }
@@ -33,7 +34,16 @@
     .spinner { width: 34px; height: 34px; border: 4px solid var(--mid); border-top-color: var(--glow); border-radius: 50%; margin: 0 auto; animation: spin 0.9s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
     code { font-size: 0.85em; background: var(--soft); padding: 0 0.3rem; border-radius: 4px; }
+    .join { margin-top: 1.3rem; text-align: center; background: var(--soft); border: 2px solid var(--glow); border-radius: 14px; padding: 1.3rem 1rem; }
+    .join h2 { font-size: 1.15rem; margin-bottom: 0.3rem; }
+    .join p { color: var(--sub); font-size: 0.93rem; }
+    .btn-join { display: block; margin: 0.9rem auto 0; max-width: 360px; background: #229ED9; color: #fff; text-decoration: none; font-size: 1.2rem; font-weight: 800; padding: 1rem; border-radius: 12px; }
+    .join ol { text-align: left; max-width: 360px; margin: 0.9rem auto 0; padding-left: 1.3rem; color: var(--body); font-size: 0.95rem; }
+    .join-qr { margin: 1rem auto 0; width: 150px; height: 150px; background: #fff; border-radius: 10px; padding: 9px; }
+    .join-qr img, .join-qr canvas { width: 132px !important; height: 132px !important; }
+    .join .pc { margin-top: 0.4rem; font-size: 0.85rem; }
   </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
   <main class="box">
@@ -46,6 +56,19 @@
       <div class="row"><span>상품</span><span id="dName"></span></div>
       <div class="row"><span>결제 금액</span><span id="dAmount"></span></div>
       <div class="row" id="rowTg" hidden><span>텔레그램</span><span id="dTg"></span></div>
+    </div>
+
+    <div id="join" class="join" hidden>
+      <h2>📲 이제 채널에 참여하세요</h2>
+      <p>아래 버튼 하나면 됩니다. 텔레그램 사용자명은 몰라도 됩니다.</p>
+      <a class="btn-join" id="btnJoin" href="#" target="_blank" rel="noopener">텔레그램에서 채널 참여하기</a>
+      <ol>
+        <li>위 파란 버튼을 누르면 텔레그램이 열립니다.</li>
+        <li>화면 아래 <strong>[시작]</strong>(START)을 누릅니다.</li>
+        <li>바로 오는 메시지의 <strong>[채널 참여하기]</strong> → <strong>[참여]</strong>를 누르면 끝!</li>
+      </ol>
+      <div class="join-qr" id="joinQr" aria-label="텔레그램 참여 QR코드"></div>
+      <p class="pc">💻 PC로 보고 계시면 휴대폰 카메라로 이 QR코드를 비추세요.</p>
     </div>
 
     <div id="panel" class="panel" hidden></div>
@@ -92,7 +115,7 @@
       $('dOrder').textContent = orderId;
       $('dName').textContent = order ? order.orderName : '-';
       $('dAmount').textContent = won(amount);
-      if (order && order.telegram) { $('rowTg').hidden = false; $('dTg').textContent = order.telegram; }
+      if (order && order.telegram && order.telegram !== '-') { $('rowTg').hidden = false; $('dTg').textContent = order.telegram; }
 
       /* 2) 금액 위변조 1차 확인 (최종 검증은 반드시 승인 서버에서) */
       if (order && Number(amount) !== Number(order.amount)) {
@@ -101,9 +124,23 @@
         return;
       }
 
-      const inviteMsg = order && order.telegram
-        ? '<strong>' + esc(order.telegram) + '</strong>로 텔레그램 초대 링크를 보내드립니다.'
-        : '결제 시 입력하신 텔레그램 아이디로 초대 링크를 보내드립니다.';
+      const botName = String(T.telegramBot || '').replace(/^@/, '');
+      const hasBot = /^[A-Za-z][A-Za-z0-9_]{3,31}$/.test(botName);
+      const inviteMsg = hasBot
+        ? '위 <strong>[텔레그램에서 채널 참여하기]</strong> 버튼으로 바로 참여하실 수 있습니다. 버튼이 잘 안 되면 운영자가 확인 후 직접 연락드립니다.'
+        : '운영자가 결제를 확인한 뒤 텔레그램으로 채널 초대 링크를 보내드립니다.';
+
+      function showJoin() {
+        if (!hasBot) return;
+        const link = 'https://t.me/' + botName + '?start=' + encodeURIComponent(orderId);
+        $('btnJoin').href = link;
+        $('join').hidden = false;
+        if (typeof QRCode === 'function') {
+          new QRCode($('joinQr'), { text: link, width: 132, height: 132, colorDark: '#000000', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+        } else {
+          $('joinQr').hidden = true;
+        }
+      }
 
       /* 3) 승인 서버가 없을 때: 테스트 모드에서는 '인증 완료'까지만 확인 */
       if (!/^https:\/\//i.test(T.confirmUrl || '')) {
@@ -130,8 +167,8 @@
         if (res.ok && data.status === 'DONE') {
           const receipt = data.receipt && data.receipt.url ? '<p style="margin-top:0.6rem;"><a href="' + esc(data.receipt.url) + '" target="_blank" rel="noopener">영수증 보기</a></p>' : '';
           show('ok', '✅', isTest ? '테스트 결제 완료' : '결제가 완료되었습니다', '구독해 주셔서 감사합니다.',
-            inviteMsg + '<ol><li>텔레그램 알림이 켜져 있는지 확인해 주세요.</li><li>초대 링크를 누르고 <strong>채널 참여</strong>를 누르면 끝입니다.</li></ol>' + receipt);
-          try { sessionStorage.removeItem('ev_order_' + orderId); } catch (e) {}
+            inviteMsg + '<ul><li>🔔 리포트는 경주 출발 약 7분 전에 오므로 <strong>채널 알림을 꼭 켜 주세요.</strong></li></ul>' + receipt);
+          showJoin();
         } else {
           show('err', '⚠️', '결제를 완료하지 못했습니다', '결제 승인 중 문제가 발생했습니다.',
             esc(data.message || '알 수 없는 오류') + (data.code ? ' <code>' + esc(data.code) + '</code>' : '') +
