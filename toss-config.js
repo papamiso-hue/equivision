@@ -11,5 +11,5 @@
 window.TOSS_CONFIG = {
   clientKey: 'test_ck_Z1aOwX7K8mzdyYOJWj9P3yQxzvNP',
   confirmUrl: 'https://equivision-pay.papamiso.workers.dev/confirm',
-  telegramBot: 'EquivisionReportBot'
+  telegramBot: 'EquivisionReport_bot'
 };
