@@ -54,12 +54,12 @@
       products: [
         {
           id: 'monthly',
-          name: '월간 정기 구독',
+          name: '월간 구독',
           orderName: '경주마 컨디션 리포트 월간 구독 (1개월)',   // 결제창·영수증에 표시되는 상품명
           price: 40000,                     // 부가세 포함 금액(원)
           recurring: true,
-          period: '결제일로부터 1개월 (매월 자동 결제)',
-          features: ['기간 내 경주일 매 경주 출발 약 7분 전 리포트 발송', '출전마 생체역학 컨디션 지수', '유료 전용 텔레그램 채널 이용', '언제든 해지 가능']
+          period: '결제일로부터 1개월',
+          features: ['기간 내 경주일 매 경주 출발 약 7분 전 리포트 발송', '출전마 생체역학 컨디션 지수', '유료 전용 텔레그램 채널 이용', '1개월만 결제 또는 매월 자동결제 중 선택']
         }
       ]
     };
@@ -208,6 +208,15 @@
     .summary-total { display: flex; justify-content: space-between; align-items: baseline; padding: 1rem 0 0.5rem; font-weight: 800; }
     .summary-total .amount { font-size: 1.8rem; color: var(--primary-glow); font-variant-numeric: tabular-nums; }
 
+    .plan-pick { display: grid; gap: 0.7rem; margin-bottom: 1.2rem; }
+    .plan-pick h3 { font-size: 1.1rem; }
+    .plan-opt { display: flex; gap: 0.8rem; align-items: flex-start; background: var(--bg-soft); border: 2px solid var(--border-dark); border-radius: 12px; padding: 0.9rem 1rem; cursor: pointer; }
+    .plan-opt:has(input:checked) { border-color: var(--primary-glow); background: rgba(2, 132, 199, 0.12); }
+    .plan-opt:has(input:focus-visible) { outline: 3px solid var(--primary-glow); outline-offset: 3px; }
+    .plan-opt input { width: 22px; height: 22px; margin-top: 0.2rem; accent-color: var(--primary-glow); flex-shrink: 0; }
+    .plan-body strong { display: block; font-size: 1.08rem; }
+    .plan-body small { display: block; color: var(--text-sub); font-size: 0.88rem; line-height: 1.5; margin-top: 0.15rem; }
+
     .buyer { margin-top: 1.3rem; display: grid; gap: 1rem; }
     .buyer h3 { font-size: 1.1rem; }
     .field label { display: block; font-weight: 700; margin-bottom: 0.35rem; font-size: 0.98rem; }
@@ -316,6 +325,19 @@
       <h2 id="checkoutTitle">주문 확인 및 결제</h2>
       <p class="pre-links">결제 전에 <a href="#infoTitle">상품 정보</a> · <a href="#refund">환불 정책</a> · <a href="#cancel">해지 방법</a> · <a href="#telegram">텔레그램 설치 안내</a>를 확인해 주세요.</p>
       <div class="checkout">
+        <!-- 결제 방식 선택 (두 방식을 모두 제공할 때만 표시) -->
+        <div class="plan-pick" id="planPick" role="radiogroup" aria-label="결제 방식 선택" hidden>
+          <h3>결제 방식을 선택하세요</h3>
+          <label class="plan-opt" data-plan="single">
+            <input type="radio" name="plan" value="single" checked>
+            <span class="plan-body"><strong>1개월만 결제</strong><small>간편결제(토스페이·네이버페이·카카오페이)와 카드 · 자동 갱신 없음 · 1개월 후 이용 종료</small></span>
+          </label>
+          <label class="plan-opt" data-plan="billing">
+            <input type="radio" name="plan" value="billing">
+            <span class="plan-body"><strong>매월 자동결제</strong><small>카드 등록 · 매월 같은 날 자동 결제 · 결제 3일 전 안내 · 언제든 해지</small></span>
+          </label>
+        </div>
+
         <div class="summary-row"><span>상품</span><span id="sumName">-</span></div>
         <div class="summary-row"><span>이용 기간</span><span id="sumPeriod">-</span></div>
         <div class="summary-row"><span>결제 방식</span><span id="sumCycle">-</span></div>
@@ -349,6 +371,7 @@
           <label class="consent all"><input type="checkbox" id="agreeAll"> 아래 필수 항목에 모두 동의합니다</label>
           <label class="consent"><input type="checkbox" class="agree"><span><span class="req">[필수]</span>본 상품은 디지털콘텐츠로, <strong>리포트 제공이 시작되면 이미 제공된 부분은 청약철회가 제한</strong>됨을 확인했습니다.</span></label>
           <label class="consent" id="consentRecurring"><input type="checkbox" class="agree"><span><span class="req">[필수]</span><span id="recurringText">정기 구독은 매월 결제일에 같은 금액이 자동 결제되며, 언제든 해지할 수 있음을 확인했습니다.</span></span></label>
+          <label class="consent" id="consentSingle" style="display:none"><input type="checkbox" class="agree"><span><span class="req">[필수]</span>이 이용권은 <strong>결제일부터 1개월</strong> 동안 이용하며 <strong>자동으로 갱신되지 않습니다.</strong> 이용기간이 끝나면 유료 채널에서 제외되고, 계속 이용하려면 다시 결제해야 함을 확인했습니다.</span></label>
           <label class="consent"><input type="checkbox" class="agree"><span><span class="req">[필수]</span>월 요금은 <strong>경주 수와 관계없는 정액</strong>이며, 경주 취소·순연 등으로 발송되지 않은 리포트는 <strong>환불·기간 연장 대상이 아님</strong>을 확인했습니다.</span></label>
           <label class="consent"><input type="checkbox" class="agree"><span><span class="req">[필수]</span>본 리포트는 참고용 분석 정보이며 <strong>특정 결과나 수익을 보장하지 않음</strong>을 확인했습니다.</span></label>
           <label class="consent"><input type="checkbox" class="agree"><span><span class="req">[필수]</span>본인은 <strong>만 19세 이상</strong>입니다.</span></label>
@@ -506,8 +529,8 @@
 
     <!-- 해지 방법 -->
     <section id="cancel" aria-labelledby="cancelTitle">
-      <h2 id="cancelTitle">정기 구독 해지 방법</h2>
-      <p class="lead">위약금 없이 언제든 해지할 수 있습니다. 아래 방법 중 편한 것 하나로 신청하세요.</p>
+      <h2 id="cancelTitle">자동결제 해지 방법</h2>
+      <p class="lead">위약금 없이 언제든 해지할 수 있습니다. 아래 방법 중 편한 것 하나로 신청하세요. <strong>「1개월만 결제」를 선택하셨다면 자동 갱신이 없어 해지할 필요가 없습니다.</strong> 이용기간이 끝나면 자동으로 종료됩니다.</p>
       <div class="cancel-box">
         <h3>① 해지 신청하기</h3>
         <div class="cancel-actions">
@@ -624,11 +647,16 @@
       else if (isLive && !C.mailOrderNo) blockReason = '통신판매업 신고 완료 후 결제가 열립니다.';
       else if (isLive && !isHttps(T.confirmUrl)) blockReason = '결제 시스템 연동 준비 중입니다.';
 
-      /* 결제 방식: 자동결제(카드 등록, 기본) / 단건 결제 */
-      const billing = String(T.paymentMode || 'single') === 'billing';
+      /* 결제 방식: 'both'(고객이 선택, 기본) / 'billing'(자동결제만) / 'single'(1개월만) */
+      const modeCfg = String(T.paymentMode || 'both');
       const billingBase = String(T.confirmUrl || '').replace(/\/confirm\/?$/, '');
-      if (!blockReason && billing && !isHttps(T.confirmUrl)) blockReason = '결제 시스템 연동 준비 중입니다.';
-      const payLabel = billing ? '카드 등록하고 구독 시작' : '간편결제하기';
+      const billingReady = isHttps(T.confirmUrl);                 // 자동결제는 결제 서버가 꼭 필요
+      const allowSingle = modeCfg !== 'billing';
+      const allowBilling = modeCfg !== 'single' && billingReady;
+      if (!blockReason && modeCfg === 'billing' && !billingReady) blockReason = '결제 시스템 연동 준비 중입니다.';
+      let plan = allowSingle ? 'single' : 'billing';              // 자동결제는 사전 선택하지 않음(기본: 1개월만)
+      const isBilling = function () { return plan === 'billing'; };
+      const payLabel = function () { return isBilling() ? '카드 등록하고 구독 시작' : '간편결제하기'; };
       const botName = String(T.telegramBot || '').replace(/^@/, '');
 
       let selected = C.products.find(function (p) { return p.recommended; }) || C.products[0];
@@ -663,13 +691,25 @@
       $('escrowLine').textContent = C.escrowText;
       if (C.sampleUrl) { $('sampleLink').href = C.sampleUrl; $('sampleLink').hidden = false; }
 
-      /* 결제 방식에 따른 문구 */
-      $('btnPay').textContent = payLabel;
-      if (billing) {
-        $('payMethods').textContent = '신용·체크카드를 등록합니다. 등록하면 첫 달 요금이 바로 결제되고, 이후 매월 같은 날 자동 결제됩니다. (카드 번호는 토스페이먼츠가 보관하며 회사는 저장하지 않습니다)';
-        $('payMethodInfo').textContent = '신용·체크카드 등록 후 매월 자동 결제 (토스페이먼츠). 카드 인증은 카드사 앱 등으로 진행되며, 간편결제(토스페이·카카오페이 등)의 자동결제는 지원하지 않습니다.';
-        $('stepPay').innerHTML = '이 페이지 아래에서 이름·휴대폰 번호를 입력하고 <strong>[카드 등록하고 구독 시작]</strong>을 누르면 카드 등록 창이 열립니다. 등록하면 <strong>첫 달 요금이 바로 결제</strong>되고, 이후 매월 자동 결제됩니다.';
-        $('btnGoPay').textContent = '카드 등록 창 열기';
+      /* 결제 방식 선택 표시 + 선택에 따른 문구 */
+      $('planPick').hidden = !(allowSingle && allowBilling);
+      document.querySelectorAll('input[name="plan"]').forEach(function (r) {
+        r.addEventListener('change', function () { plan = r.value; render(); });
+      });
+      function applyPlanTexts() {
+        const b = isBilling();
+        $('btnPay').textContent = payLabel();
+        $('btnGoPay').textContent = b ? '카드 등록 창 열기' : '결제창 열기';
+        $('payMethods').textContent = b
+          ? '신용·체크카드를 등록합니다. 등록하면 첫 달 요금이 바로 결제되고, 이후 매월 같은 날 자동 결제됩니다. (카드 번호는 토스페이먼츠가 보관하며 회사는 저장하지 않습니다)'
+          : '토스페이먼츠 결제창에서 카드 · 토스페이 · 네이버페이 · 카카오페이 등을 선택할 수 있습니다.';
+        $('payMethodInfo').textContent = (allowSingle && allowBilling)
+          ? '[1개월만 결제] 카드·간편결제(토스페이·네이버페이·카카오페이 등) / [매월 자동결제] 신용·체크카드 등록 (간편결제 자동결제는 지원하지 않음). 결제는 토스페이먼츠에서 처리됩니다.'
+          : (b ? '신용·체크카드 등록 후 매월 자동 결제 (토스페이먼츠). 간편결제 자동결제는 지원하지 않습니다.'
+               : '토스페이먼츠 결제창 — 신용·체크카드, 토스페이·네이버페이·카카오페이 등 간편결제 (계약된 결제수단에 따라 다를 수 있음)');
+        $('stepPay').innerHTML = b
+          ? '이 페이지 아래에서 이름·휴대폰 번호를 입력하고 <strong>[카드 등록하고 구독 시작]</strong>을 누르면 카드 등록 창이 열립니다. 등록하면 <strong>첫 달 요금이 바로 결제</strong>되고, 이후 매월 자동 결제됩니다.'
+          : '이 페이지 아래에서 이름·휴대폰 번호를 입력하고 ' + ((allowSingle && allowBilling) ? '<strong>결제 방식(1개월만 / 매월 자동)</strong>을 고른 뒤 ' : '') + '<strong>[간편결제하기]</strong>를 누르면 토스페이먼츠 결제창이 열립니다.';
       }
       if (botName) {
         $('cancelBot').href = 'https://t.me/' + botName + '?start=cancel';
@@ -772,19 +812,22 @@
           el.classList.toggle('selected', on);
           el.querySelector('input').checked = on;
         });
+        applyPlanTexts();
+        document.querySelectorAll('input[name="plan"]').forEach(function (r) { r.checked = (r.value === plan); });
         $('sumName').textContent = selected.name;
-        $('sumPeriod').textContent = selected.period;
-        $('sumCycle').textContent = selected.recurring ? '매월 자동 결제 (언제든 해지 가능)' : '1회 결제';
+        $('sumPeriod').textContent = isBilling() ? '결제일로부터 1개월 (매월 자동 결제)' : '결제일로부터 1개월 (자동 갱신 없음)';
+        $('sumCycle').textContent = isBilling() ? '매월 자동 결제 (언제든 해지 가능)' : '1개월만 결제 (자동 갱신 없음)';
         $('sumInvite').textContent = C.inviteDeadline;
         $('sumPrice').textContent = selected.price > 0 ? won(selected.price) : '가격 확정 전';
 
-        const rec = $('consentRecurring');
-        rec.style.display = selected.recurring ? '' : 'none';
-        if (!selected.recurring) rec.querySelector('input').checked = false;
-        if (selected.recurring && selected.price > 0) {
-          $('recurringText').textContent = billing
-            ? '등록한 카드로 지금 첫 달 ' + won(selected.price) + '이 결제되고, 이후 매월 같은 날 자동 결제되며(결제 3일 전 텔레그램 안내), 결제일 전날까지 언제든 해지할 수 있음을 확인했습니다. 자동결제가 3회 연속 실패하면 이용이 정지되고, 가격이 바뀌면 30일 전에 알리고 다시 동의를 받습니다.'
-            : '매월 결제일에 ' + won(selected.price) + '이 자동 결제되며, 언제든 해지할 수 있음을 확인했습니다. 가격이 바뀌면 30일 전에 알리고 다시 동의를 받습니다.';
+        // 방식별 동의 문구: 자동결제 동의는 자동결제를 고른 경우에만, 갱신 없음 확인은 1개월만 고른 경우에만
+        const rec = $('consentRecurring'), one = $('consentSingle');
+        rec.style.display = isBilling() ? '' : 'none';
+        one.style.display = isBilling() ? 'none' : '';
+        if (!isBilling()) rec.querySelector('input').checked = false;
+        if (isBilling()) one.querySelector('input').checked = false;
+        if (isBilling() && selected.price > 0) {
+          $('recurringText').textContent = '등록한 카드로 지금 첫 달 ' + won(selected.price) + '이 결제되고, 이후 매월 같은 날 자동 결제되며(결제 3일 전 텔레그램 안내), 결제일 전날까지 언제든 해지할 수 있음을 확인했습니다. 자동결제가 3회 연속 실패하면 이용이 정지되고, 가격이 바뀌면 30일 전에 알리고 다시 동의를 받습니다.';
         }
 
         const b = buyer(), errs = buyerErrors(b);
@@ -827,7 +870,9 @@
           '<li>이용자는 결제일로부터 7일 이내에 청약을 철회할 수 있습니다.</li>' +
           '<li>결제 후 아직 리포트를 한 건도 받지 않은 경우 전액 환불합니다.</li>' +
           '<li>디지털콘텐츠의 특성상 리포트 제공이 시작된 경우 이미 제공된 부분은 전자상거래법 제17조 제2항 제5호에 따라 청약철회가 제한됩니다. 이 경우 결제일부터 철회일까지의 이용 일수에 해당하는 금액을 공제하고 환불합니다. 회사는 결제 전 내용을 확인할 수 있도록 샘플 리포트를 제공합니다.</li></ol>' +
-          '<h4>3. 중도 해지 및 환불 (정기 구독)</h4><ol>' +
+          '<h4>3. 이용 종료·해지 및 환불</h4><ol>' +
+          '<li>「1개월만 결제」를 선택한 경우 자동으로 갱신되지 않으며, 결제일부터 1개월이 지나면 이용이 종료되고 유료 채널에서 제외됩니다. 회사는 종료 3일 전에 텔레그램 봇으로 안내합니다(봇을 시작하지 않은 이용자 제외). 계속 이용하려면 다시 결제해야 합니다.</li>' +
+          '<li>「매월 자동결제」를 선택한 경우 아래 규정이 적용됩니다.</li>' +
           '<li>이용자는 위약금 없이 언제든지 구독을 해지할 수 있습니다. 해지는 결제 후 채널 참여에 사용한 텔레그램 계정으로 회사 봇에게 /cancel 을 보내거나, 이메일(' + esc(addr) + '), 전화(' + esc(C.supportPhone) + ')' + (C.supportTelegram ? ', 텔레그램(' + esc(C.supportTelegram) + ')' : '') + '으로 신청합니다.</li>' +
           '<li>회사는 결제 예정일 3일 전에 텔레그램 봇으로 결제 예정 안내를 보냅니다. (봇을 시작하지 않은 이용자 제외)</li>' +
           '<li>자동결제가 카드 한도·잔액·유효기간 등으로 실패하면 회사는 매일 1회, 최대 3일간 다시 시도하며, 3회 연속 실패하면 이용이 정지되고 등록된 카드 정보는 삭제됩니다. 다시 이용하려면 새로 구독해야 합니다.</li>' +
@@ -887,16 +932,16 @@
           (isTest ? '<p style="margin-bottom:0.8rem;color:#86efac;font-weight:700;">🧪 테스트 결제입니다. 실제 돈은 빠져나가지 않습니다.</p>' : '') +
           '<div class="summary-row"><span>상품</span><span>' + esc(selected.name) + '</span></div>' +
           '<div class="summary-row"><span>이용 기간</span><span>' + esc(selected.period) + '</span></div>' +
-          '<div class="summary-row"><span>결제 방식</span><span>' + (selected.recurring ? '매월 자동 결제' : '1회 결제') + '</span></div>' +
+          '<div class="summary-row"><span>결제 방식</span><span>' + (isBilling() ? '매월 자동 결제' : '1개월만 결제 (자동 갱신 없음)') + '</span></div>' +
           '<div class="summary-row"><span>이름</span><span>' + esc(b.name) + '</span></div>' +
           '<div class="summary-row"><span>휴대폰</span><span>' + esc(maskedPhone) + '</span></div>' +
           '<div class="summary-row"><span>텔레그램</span><span>' + (b.telegram ? esc(b.telegram) : '미입력 (결제 후 버튼으로 참여)') + '</span></div>' +
-          '<div class="summary-total"><span>' + (billing ? '지금 결제할 금액' : '결제 금액') + '</span><span class="amount">' + won(selected.price) + '</span></div>' +
-          (billing
+          '<div class="summary-total"><span>' + (isBilling() ? '지금 결제할 금액' : '결제 금액') + '</span><span class="amount">' + won(selected.price) + '</span></div>' +
+          (isBilling()
             ? '<p style="margin-top:1rem;">다음 화면에서 <strong>카드를 등록</strong>하면 <strong>바로 ' + won(selected.price) + '이 결제</strong>되고, <strong>이후 매월 같은 날 자동 결제</strong>됩니다. 결제 3일 전에 텔레그램으로 안내해 드리며, 결제일 전날까지 언제든 해지할 수 있습니다.</p>'
             : '') +
           '<p style="margin-top:1rem;">결제가 끝나면 나오는 화면의 <strong>[텔레그램에서 채널 참여하기]</strong> 버튼을 눌러 주세요. 텔레그램이 열리면 <strong>[시작]</strong>만 누르면 초대 링크가 바로 옵니다.</p>' +
-          '<p style="margin-top:0.6rem;color:#a3b0c2;font-size:0.9rem;">' + (billing ? '카드 등록과 결제는 토스페이먼츠 창에서 진행되며, 카드 번호 등은 이퀴비젼에이아이에 저장되지 않습니다.' : '결제는 토스페이먼츠 결제창에서 진행되며, 카드 번호 등 결제 정보는 이퀴비젼에이아이에 저장되지 않습니다.') + '</p>';
+          '<p style="margin-top:0.6rem;color:#a3b0c2;font-size:0.9rem;">' + (isBilling() ? '카드 등록과 결제는 토스페이먼츠 창에서 진행되며, 카드 번호 등은 이퀴비젼에이아이에 저장되지 않습니다.' : '결제는 토스페이먼츠 결제창에서 진행되며, 카드 번호 등 결제 정보는 이퀴비젼에이아이에 저장되지 않습니다.') + '</p>';
         openModal('confirmModal');
       });
 
@@ -947,7 +992,7 @@
         if (blockReason) return;
         const btn = $('btnGoPay');
         const b = buyer();
-        if (billing) {
+        if (isBilling()) {
           btn.disabled = true;
           btn.textContent = '카드 등록창 여는 중…';
           try {
@@ -957,7 +1002,7 @@
             const hintEl = $('payHint');
             const code = err && err.code ? String(err.code) : '';
             if (code === 'USER_CANCEL' || code === 'PAY_PROCESS_CANCELED') {
-              hintEl.textContent = '카드 등록을 취소하셨습니다. 다시 시도하려면 [' + payLabel + ']를 눌러 주세요.';
+              hintEl.textContent = '카드 등록을 취소하셨습니다. 다시 시도하려면 [' + payLabel() + ']를 눌러 주세요.';
             } else if (err && err.message === 'SDK_NOT_LOADED') {
               hintEl.textContent = '결제 모듈을 불러오지 못했습니다. 인터넷 연결을 확인하고 새로고침해 주세요.';
             } else if (err && err.message === 'PREPARE_FAILED') {
@@ -1008,7 +1053,7 @@
           const hintEl = $('payHint');
           const code = err && err.code ? String(err.code) : '';
           if (code === 'USER_CANCEL' || code === 'PAY_PROCESS_CANCELED') {
-            hintEl.textContent = '결제를 취소하셨습니다. 다시 시도하려면 [' + payLabel + ']를 눌러 주세요.';
+            hintEl.textContent = '결제를 취소하셨습니다. 다시 시도하려면 [' + payLabel() + ']를 눌러 주세요.';
           } else if (err && err.message === 'SDK_NOT_LOADED') {
             hintEl.textContent = '결제 모듈을 불러오지 못했습니다. 인터넷 연결을 확인하고 새로고침해 주세요.';
           } else {
