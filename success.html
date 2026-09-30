@@ -58,6 +58,7 @@
       <div class="row"><span>결제 금액</span><span id="dAmount"></span></div>
       <div class="row" id="rowCard" hidden><span>등록 카드</span><span id="dCard"></span></div>
       <div class="row" id="rowNext" hidden><span>다음 결제일</span><span id="dNext"></span></div>
+      <div class="row" id="rowExp" hidden><span>이용 종료일</span><span id="dExp"></span></div>
       <div class="row" id="rowTg" hidden><span>텔레그램</span><span id="dTg"></span></div>
     </div>
 
@@ -220,8 +221,15 @@
         const data = await res.json().catch(function () { return {}; });
         if (res.ok && data.status === 'DONE') {
           const receipt = data.receipt && data.receipt.url ? '<p style="margin-top:0.6rem;"><a href="' + esc(data.receipt.url) + '" target="_blank" rel="noopener">영수증 보기</a></p>' : '';
+          let expInfo = '';
+          if (data.expiresAt) {
+            $('rowExp').hidden = false;
+            $('dExp').textContent = fmtDate(data.expiresAt) + ' (자동 갱신 없음)';
+            expInfo = '<li>📅 <strong>1개월 이용권</strong>이며 자동으로 갱신되지 않습니다. 종료 3일 전에 텔레그램으로 안내해 드리고, 종료일에 유료 채널에서 제외됩니다.</li>' +
+                      '<li>🔁 계속 이용하시려면 종료 전후에 <a href="store.html#checkout">다시 결제</a>하시면 됩니다. 매월 자동결제를 원하시면 결제 화면에서 <strong>[매월 자동결제]</strong>를 선택하세요.</li>';
+          }
           show('ok', '✅', isTest ? '테스트 결제 완료' : '결제가 완료되었습니다', '구독해 주셔서 감사합니다.',
-            inviteMsg + '<ul><li>🔔 리포트는 경주 출발 약 7분 전에 오므로 <strong>채널 알림을 꼭 켜 주세요.</strong></li></ul>' + receipt);
+            inviteMsg + '<ul><li>🔔 리포트는 경주 출발 약 7분 전에 오므로 <strong>채널 알림을 꼭 켜 주세요.</strong></li>' + expInfo + '</ul>' + receipt);
           showJoin(orderId);
         } else {
           show('err', '⚠️', '결제를 완료하지 못했습니다', '결제 승인 중 문제가 발생했습니다.',
