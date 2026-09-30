@@ -19,7 +19,7 @@
     h1 { font-size: 1.55rem; text-align: center; margin: 0.4rem 0 0.4rem; }
     .lead { text-align: center; color: var(--sub); margin-bottom: 1.4rem; }
     .row { display: flex; justify-content: space-between; gap: 1rem; padding: 0.55rem 0; border-bottom: 1px dashed var(--border); }
-    .row span:first-child { color: var(--sub); }
+    .row span:first-child { color: var(--sub); flex-shrink: 0; }
     .row span:last-child { font-weight: 700; text-align: right; word-break: break-all; }
     .panel { margin-top: 1.3rem; border-radius: 12px; padding: 1rem 1.1rem; font-size: 0.95rem; }
     .panel.ok { background: rgba(134, 239, 172, 0.08); border: 1px solid rgba(134, 239, 172, 0.4); }
@@ -27,6 +27,7 @@
     .panel.err { background: rgba(252, 165, 165, 0.08); border: 1px solid rgba(252, 165, 165, 0.4); }
     .panel strong { color: #fff; }
     .panel ol, .panel ul { padding-left: 1.2rem; margin-top: 0.3rem; }
+    .panel li { margin: 0.25rem 0; }
     .actions { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.5rem; justify-content: center; }
     .btn { display: inline-block; text-decoration: none; font-weight: 700; padding: 0.8rem 1.3rem; border-radius: 10px; }
     .btn.primary { background: var(--primary); color: #fff; }
@@ -55,6 +56,8 @@
       <div class="row"><span>주문번호</span><span id="dOrder"></span></div>
       <div class="row"><span>상품</span><span id="dName"></span></div>
       <div class="row"><span>결제 금액</span><span id="dAmount"></span></div>
+      <div class="row" id="rowCard" hidden><span>등록 카드</span><span id="dCard"></span></div>
+      <div class="row" id="rowNext" hidden><span>다음 결제일</span><span id="dNext"></span></div>
       <div class="row" id="rowTg" hidden><span>텔레그램</span><span id="dTg"></span></div>
     </div>
 
@@ -69,6 +72,7 @@
       </ol>
       <div class="join-qr" id="joinQr" aria-label="텔레그램 참여 QR코드"></div>
       <p class="pc">💻 PC로 보고 계시면 휴대폰 카메라로 이 QR코드를 비추세요.</p>
+      <p class="pc" style="margin-top:0.8rem;">📌 <strong>이 화면을 닫으셨나요?</strong> 텔레그램에서 <strong id="botHandle"></strong>에게 위 <strong>주문번호</strong>를 그대로 보내면 초대 링크가 옵니다. 주문번호를 꼭 저장해 두세요.</p>
     </div>
 
     <div id="panel" class="panel" hidden></div>
@@ -85,15 +89,20 @@
       const $ = function (id) { return document.getElementById(id); };
       const esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
       const won = function (n) { return Number(n).toLocaleString('ko-KR') + '원'; };
+      const fmtDate = function (ms) { const d = new Date(Number(ms) + 9 * 3600 * 1000); return d.getUTCFullYear() + '년 ' + (d.getUTCMonth() + 1) + '월 ' + d.getUTCDate() + '일'; };
+      const isHttps = function (u) { return /^https:\/\//i.test(u || ''); };
 
       const q = new URLSearchParams(location.search);
       const paymentKey = q.get('paymentKey');
-      const orderId = q.get('orderId');
+      const orderIdParam = q.get('orderId');
       const amount = q.get('amount');
-
-      let order = null;
-      try { order = JSON.parse(sessionStorage.getItem('ev_order_' + orderId) || 'null'); } catch (e) {}
+      const authKey = q.get('authKey');
+      const customerKey = q.get('customerKey');
       const isTest = /^test_/.test(String(T.clientKey || ''));
+      const workerBase = String(T.confirmUrl || '').replace(/\/confirm\/?$/, '');
+
+      const botName = String(T.telegramBot || '').replace(/^@/, '');
+      const hasBot = /^[A-Za-z][A-Za-z0-9_]{3,31}$/.test(botName);
 
       function show(kind, icon, title, lead, panelHtml) {
         $('icon').textContent = icon;
@@ -105,7 +114,71 @@
         p.hidden = !panelHtml;
       }
 
-      /* 1) 필수 값 확인 */
+      function showJoin(oid) {
+        if (!hasBot) return;
+        const link = 'https://t.me/' + botName + '?start=' + encodeURIComponent(oid);
+        $('btnJoin').href = link;
+        $('botHandle').textContent = '@' + botName;
+        $('join').hidden = false;
+        if (typeof QRCode === 'function') {
+          new QRCode($('joinQr'), { text: link, width: 132, height: 132, colorDark: '#000000', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
+        } else {
+          $('joinQr').hidden = true;
+        }
+      }
+
+      const inviteMsg = hasBot
+        ? '위 <strong>[텔레그램에서 채널 참여하기]</strong> 버튼으로 바로 참여하실 수 있습니다. 버튼이 잘 안 되면 운영자가 확인 후 직접 연락드립니다.'
+        : '운영자가 결제를 확인한 뒤 텔레그램으로 채널 초대 링크를 보내드립니다.';
+
+      /* ================= 자동결제: 카드 등록 완료 → 서버에서 첫 결제 ================= */
+      if (authKey && customerKey) {
+        $('details').hidden = false;
+        $('dOrder').textContent = '확인 중…';
+        $('dName').textContent = '경주마 컨디션 리포트 월간 구독';
+        $('dAmount').textContent = '-';
+        if (!isHttps(T.confirmUrl)) {
+          show('err', '⚠️', '결제를 완료하지 못했습니다', '결제 서버 설정이 필요합니다.', '고객센터로 문의해 주세요. 카드가 등록되었더라도 결제는 이루어지지 않았습니다.');
+          return;
+        }
+        try {
+          const res = await fetch(workerBase + '/billing/start', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ authKey: authKey, customerKey: customerKey })
+          });
+          const data = await res.json().catch(function () { return {}; });
+          if (res.ok && data.status === 'DONE') {
+            const oid = data.orderId;
+            $('dOrder').textContent = oid;
+            $('dName').textContent = data.orderName || '경주마 컨디션 리포트 월간 구독';
+            $('dAmount').textContent = won(data.totalAmount);
+            if (data.card) { $('rowCard').hidden = false; $('dCard').textContent = data.card; }
+            if (data.nextChargeAt) { $('rowNext').hidden = false; $('dNext').textContent = fmtDate(data.nextChargeAt) + ' (자동결제)'; }
+            const receipt = data.receipt && data.receipt.url ? '<p style="margin-top:0.6rem;"><a href="' + esc(data.receipt.url) + '" target="_blank" rel="noopener">영수증 보기</a></p>' : '';
+            show('ok', '✅', isTest ? '테스트 구독 시작' : '구독이 시작되었습니다', '카드가 등록되고 첫 달 요금이 결제되었습니다.',
+              inviteMsg +
+              '<ul><li>🔔 리포트는 경주 출발 약 7분 전에 오므로 <strong>채널 알림을 꼭 켜 주세요.</strong></li>' +
+              '<li>📅 <strong>매월 같은 날 자동 결제</strong>되며, 결제 3일 전에 텔레그램으로 안내해 드립니다.</li>' +
+              '<li>🛑 해지는 텔레그램 봇 대화창에 <strong>/cancel</strong> 을 보내면 바로 접수됩니다. (결제일 전날까지)</li></ul>' + receipt);
+            showJoin(oid);
+          } else {
+            show('err', '⚠️', '구독을 시작하지 못했습니다', '카드 등록 또는 첫 결제 중 문제가 발생했습니다.',
+              esc(data.message || '알 수 없는 오류') + (data.code ? ' <code>' + esc(data.code) + '</code>' : '') +
+              '<p style="margin-top:0.5rem;">결제가 이루어지지 않았다면 청구되지 않습니다. 카드 한도·잔액을 확인하고 <a href="store.html#checkout">다시 시도</a>해 주세요. 계속되면 고객센터로 문의해 주세요.</p>');
+          }
+        } catch (e) {
+          show('err', '⚠️', '결제 확인에 실패했습니다', '네트워크 오류가 발생했습니다.',
+            '이 페이지를 <strong>새로고침</strong>하거나 고객센터로 문의해 주세요. (새로고침해도 중복 결제되지 않습니다)');
+        }
+        return;
+      }
+
+      /* ================= 단건 결제: 결제 승인 ================= */
+      const orderId = orderIdParam;
+      let order = null;
+      try { order = JSON.parse(sessionStorage.getItem('ev_order_' + orderId) || 'null'); } catch (e) {}
+
       if (!paymentKey || !orderId || !amount) {
         show('err', '⚠️', '잘못된 접근입니다', '결제 정보가 없습니다.', '<a href="store.html#checkout">결제 페이지로 돌아가기</a>');
         return;
@@ -117,33 +190,15 @@
       $('dAmount').textContent = won(amount);
       if (order && order.telegram && order.telegram !== '-') { $('rowTg').hidden = false; $('dTg').textContent = order.telegram; }
 
-      /* 2) 금액 위변조 1차 확인 (최종 검증은 반드시 승인 서버에서) */
+      /* 금액 위변조 1차 확인 (최종 검증은 반드시 승인 서버에서) */
       if (order && Number(amount) !== Number(order.amount)) {
         show('err', '⚠️', '결제 금액이 일치하지 않습니다', '결제가 완료되지 않았습니다.',
           '주문 금액(' + won(order.amount) + ')과 결제 요청 금액(' + won(amount) + ')이 달라 결제를 진행하지 않았습니다. 다시 시도하거나 고객센터로 문의해 주세요.');
         return;
       }
 
-      const botName = String(T.telegramBot || '').replace(/^@/, '');
-      const hasBot = /^[A-Za-z][A-Za-z0-9_]{3,31}$/.test(botName);
-      const inviteMsg = hasBot
-        ? '위 <strong>[텔레그램에서 채널 참여하기]</strong> 버튼으로 바로 참여하실 수 있습니다. 버튼이 잘 안 되면 운영자가 확인 후 직접 연락드립니다.'
-        : '운영자가 결제를 확인한 뒤 텔레그램으로 채널 초대 링크를 보내드립니다.';
-
-      function showJoin() {
-        if (!hasBot) return;
-        const link = 'https://t.me/' + botName + '?start=' + encodeURIComponent(orderId);
-        $('btnJoin').href = link;
-        $('join').hidden = false;
-        if (typeof QRCode === 'function') {
-          new QRCode($('joinQr'), { text: link, width: 132, height: 132, colorDark: '#000000', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
-        } else {
-          $('joinQr').hidden = true;
-        }
-      }
-
-      /* 3) 승인 서버가 없을 때: 테스트 모드에서는 '인증 완료'까지만 확인 */
-      if (!/^https:\/\//i.test(T.confirmUrl || '')) {
+      /* 승인 서버가 없을 때: 테스트 모드에서는 '인증 완료'까지만 확인 */
+      if (!isHttps(T.confirmUrl)) {
         if (isTest) {
           show('warn', '🧪', '테스트 결제 인증 완료', '결제창 연동이 정상적으로 동작했습니다.',
             '<strong>운영자 확인용 안내</strong><ul>' +
@@ -156,7 +211,6 @@
         return;
       }
 
-      /* 4) 승인 서버에 결제 승인 요청 */
       try {
         const res = await fetch(T.confirmUrl, {
           method: 'POST',
@@ -168,7 +222,7 @@
           const receipt = data.receipt && data.receipt.url ? '<p style="margin-top:0.6rem;"><a href="' + esc(data.receipt.url) + '" target="_blank" rel="noopener">영수증 보기</a></p>' : '';
           show('ok', '✅', isTest ? '테스트 결제 완료' : '결제가 완료되었습니다', '구독해 주셔서 감사합니다.',
             inviteMsg + '<ul><li>🔔 리포트는 경주 출발 약 7분 전에 오므로 <strong>채널 알림을 꼭 켜 주세요.</strong></li></ul>' + receipt);
-          showJoin();
+          showJoin(orderId);
         } else {
           show('err', '⚠️', '결제를 완료하지 못했습니다', '결제 승인 중 문제가 발생했습니다.',
             esc(data.message || '알 수 없는 오류') + (data.code ? ' <code>' + esc(data.code) + '</code>' : '') +
