@@ -58,7 +58,7 @@
       telegramNoticeUrl: 'https://t.me/equivision_official',       // 공지 채널이 아직 없으면 '' 로 비워 두세요 (QR이 숨겨짐)
 
       // 해지·고객 문의 창구
-      supportPhone: '010-3038-3349',
+      supportPhone: '050-6798-3349',
       supportTelegram: '',                  // 고객센터 텔레그램 계정. 예: '@equivision_help' (비워 두면 버튼 숨김)
       supportTelegramUrl: '',               // 예: 'https://t.me/equivision_help'
 
@@ -553,7 +553,6 @@
           <a href="#" id="cancelBot" target="_blank" rel="noopener" hidden>💬 텔레그램에서 바로 해지 (가장 빠름)</a>
           <a href="#" id="cancelMail">✉ 이메일로 해지 신청</a>
           <a href="#" id="cancelTelegram" target="_blank" rel="noopener" hidden>💬 텔레그램으로 해지 신청</a>
-          <a href="#" id="cancelPhone">📞 전화로 해지 신청</a>
         </div>
         <p style="margin-top:0.7rem;color:var(--text-sub);font-size:0.9rem;">💬 <strong>텔레그램 해지</strong>는 결제 후 채널 참여에 쓰신 <strong>같은 텔레그램 계정</strong>으로 봇에게 <span class="kbd">/cancel</span> 을 보내면 바로 접수됩니다. 이메일 버튼을 누르면 아래 양식이 자동으로 채워진 메일 창이 열립니다.</p>
 
@@ -628,7 +627,7 @@
       (<a href="https://www.ftc.go.kr/bizCommPop.do?wrkr_no=3028804351" target="_blank" rel="noopener">사업자정보확인</a>)<br>
       통신판매업신고: <span id="footMailOrder"></span><br>
       주소: 서울특별시 금천구 벚꽃로 30, 206동 318호(독산동, 금천 롯데캐슬 골드파크 2차)<br>
-      대표전화: 010-3038-3349 | 이메일: <a href="#" id="footMail">help [at] equivisionai.kr</a> | 호스팅 제공자: GitHub Pages | 결제대행: 토스페이먼츠(주)<br>
+      대표전화: 050-6798-3349 | 이메일: <a href="#" id="footMail">help [at] equivisionai.kr</a> | 호스팅 제공자: GitHub Pages | 결제대행: 토스페이먼츠(주)<br>
       소비자 상담: 회사 고객센터에서 해결되지 않는 경우 한국소비자원(☎1372) 또는 전자거래분쟁조정위원회에 조정을 신청할 수 있습니다.
       <div class="copy">&copy; 2026 이퀴비젼에이아이 주식회사 (EquiVision AI Corp.). All rights reserved.</div>
     </div>
@@ -767,8 +766,6 @@
       $('cancelMail').href = 'mailto:' + addr +
         '?subject=' + encodeURIComponent('[이퀴비젼AI] 정기 구독 해지 신청') +
         '&body=' + encodeURIComponent(cancelTemplate);
-      $('cancelPhone').href = 'tel:' + C.supportPhone.replace(/[^0-9]/g, '');
-      $('cancelPhone').textContent = '📞 전화로 해지 신청 (' + C.supportPhone + ')';
       if (isHttps(C.supportTelegramUrl)) {
         $('cancelTelegram').href = C.supportTelegramUrl;
         $('cancelTelegram').textContent = '💬 텔레그램으로 해지 신청 (' + C.supportTelegram + ')';
@@ -912,7 +909,7 @@
           '<h4>3. 이용 종료·해지 및 환불</h4><ol>' +
           '<li>「1개월만 결제」를 선택한 경우 자동으로 갱신되지 않으며, 결제일부터 1개월이 지나면 이용이 종료되고 유료 채널에서 제외됩니다. 회사는 종료 3일 전에 텔레그램 봇으로 안내합니다(봇을 시작하지 않은 이용자 제외). 계속 이용하려면 다시 결제해야 합니다.</li>' +
           '<li>「매월 자동결제」를 선택한 경우 아래 규정이 적용됩니다.</li>' +
-          '<li>이용자는 위약금 없이 언제든지 구독을 해지할 수 있습니다. 해지는 결제 후 채널 참여에 사용한 텔레그램 계정으로 회사 봇에게 /cancel 을 보내거나, 이메일(' + esc(addr) + '), 전화(' + esc(C.supportPhone) + ')' + (C.supportTelegram ? ', 텔레그램(' + esc(C.supportTelegram) + ')' : '') + '으로 신청합니다.</li>' +
+          '<li>이용자는 위약금 없이 언제든지 구독을 해지할 수 있습니다. 해지는 결제 후 채널 참여에 사용한 텔레그램 계정으로 회사 봇에게 /cancel 을 보내거나, 이메일(' + esc(addr) + ')' + (C.supportTelegram ? ', 텔레그램(' + esc(C.supportTelegram) + ')' : '') + '으로 신청합니다.</li>' +
           '<li>회사는 결제 예정일 3일 전에 텔레그램 봇으로 결제 예정 안내를 보냅니다. (봇을 시작하지 않은 이용자 제외)</li>' +
           '<li>자동결제가 카드 한도·잔액·유효기간 등으로 실패하면 회사는 매일 1회, 최대 3일간 다시 시도하며, 3회 연속 실패하면 이용이 정지되고 등록된 카드 정보는 삭제됩니다. 다시 이용하려면 새로 구독해야 합니다.</li>' +
           '<li>다음 결제 예정일 전날까지 해지를 신청하면 다음 결제부터 자동 결제가 중단되며, 이미 결제한 기간이 끝날 때까지 서비스를 이용할 수 있습니다. 이용기간이 끝나면 유료 채널에서 자동으로 제외되고 등록된 카드 정보는 삭제됩니다. 회사는 해지 접수 후 해지 일자와 마지막 이용일을 안내합니다.</li>' +
@@ -929,7 +926,7 @@
           '<li>이용자의 알림 설정, 기기·통신 환경 등으로 리포트를 늦게 확인한 경우</li>' +
           '<li>리포트 무단 복제·배포 또는 초대 링크 공유로 이용 계약이 해지된 경우</li></ul>' +
           '<h4>6. 신청 방법 및 처리 기한</h4><ol>' +
-          '<li>이메일(' + esc(addr) + ') 또는 전화(' + esc(C.supportPhone) + ')로 결제자 성명과 결제일을 알려 신청합니다.</li>' +
+          '<li>이메일(' + esc(addr) + ') 또는 회사 안내 봇(텔레그램 문의)으로 결제자 성명과 결제일을 알려 신청합니다.</li>' +
           '<li>회사는 요청을 받은 날로부터 3영업일 이내에 환불합니다. 신용카드 결제는 같은 기간 내 카드사에 취소를 요청하며, 반영 시기는 카드사 정책에 따릅니다.</li>' +
           '<li>회사가 환불을 늦춘 경우 전자상거래법에서 정한 지연이자를 지급합니다.</li></ol>' +
           '<h4>7. 이용 자격</h4><p>서비스는 만 19세 이상만 이용할 수 있습니다. 만 19세 미만임이 확인되면 계약을 해지하고 결제 금액 전액을 환불합니다.</p>' +
