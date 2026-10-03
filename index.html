@@ -21,13 +21,18 @@
   <meta property="og:title" content="이퀴비젼에이아이 | 경주마 생체역학 비전 AI">
   <meta property="og:description" content="예시장 영상 다중 관절 추적과 시계열 생체역학 모델로 경주마 컨디션을 정량 데이터로 분석합니다.">
   <meta property="og:url" content="https://equivisionai.kr/">
-  <!-- 1200x630 대표 이미지(og-image.png)를 GitHub에 올린 뒤 주석 해제:
-  <meta property="og:image" content="https://equivisionai.kr/og-image.png"> -->
+  <meta property="og:image" content="https://equivisionai.kr/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="EquiVision AI 경주마 컨디션 분석 리포트">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://equivisionai.kr/og-image.png">
   <meta name="twitter:title" content="이퀴비젼에이아이 | 경주마 생체역학 비전 AI">
   <meta name="twitter:description" content="예시장 영상 다중 관절 추적과 시계열 생체역학 모델로 경주마 컨디션을 정량 데이터로 분석합니다.">
 
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23090d16'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial,sans-serif' font-weight='800' font-size='38' fill='%2338bdf8'%3EE%3C/text%3E%3C/svg%3E">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23090d16'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial,sans-serif' font-weight='800' font-size='38' fill='%2338bdf8'%3EE%3C/text%3E%3C/svg%3E">
 
   <script type="application/ld+json">
   {
@@ -35,6 +40,10 @@
     "@type": "Organization",
     "name": "이퀴비젼에이아이 주식회사",
     "alternateName": "EquiVision AI Corp.",
+    "url": "https://equivisionai.kr/",
+    "logo": "https://equivisionai.kr/apple-touch-icon.png",
+    "sameAs": ["https://t.me/equivision_official"],
+    "contactPoint": {"@type": "ContactPoint", "contactType": "customer support", "email": "help@equivisionai.kr", "telephone": "+82-10-3038-3349", "availableLanguage": "Korean"},
     "description": "예시장 영상 기반 다중 관절 비전 AI 및 경주마 시계열 생체역학 분석 기업",
     "address": {
       "@type": "PostalAddress",
@@ -91,6 +100,10 @@
     .btn-main:hover { background: #0369a1; }
     .btn-outline { background: rgba(255,255,255,0.05); color: #cbd5e1; border: 1px solid #374151; padding: 0.9rem 2rem; border-radius: 10px; font-weight: 600; text-decoration: none; transition: 0.2s; cursor: pointer; }
     .btn-outline:hover { background: rgba(255,255,255,0.1); color: white; border-color: #4b5563; }
+    .btn-tg { display: inline-flex; align-items: center; gap: 8px; background: #229ed9; color: #fff; padding: 0.9rem 2rem; border-radius: 10px; font-weight: 600; text-decoration: none; transition: 0.2s; }
+    .btn-tg:hover { background: #1b87b9; }
+    .btn-tg svg { width: 20px; height: 20px; fill: currentColor; flex: none; }
+    .cta-actions { display: flex; flex-wrap: wrap; gap: 0.8rem; align-items: center; }
 
     /* Metrics Banner */
     .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 1.5rem; max-width: 1000px; margin: 0 auto; }
@@ -256,6 +269,7 @@
 
     <div class="hero-actions">
       <a href="#technology" class="btn-main">핵심 기술 보기</a>
+      <a href="https://t.me/equivision_official" class="btn-tg" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.78 15.4l-.4 5.6c.57 0 .82-.25 1.12-.54l2.7-2.58 5.6 4.1c1.03.57 1.76.27 2.04-.95L24 3.4c.33-1.52-.55-2.12-1.55-1.75L1.1 9.8c-1.46.57-1.44 1.38-.25 1.75l5.5 1.72L19.1 6.2c.6-.38 1.15-.17.7.21z"/></svg> 텔레그램 공지 채널</a>
       <a href="#" class="btn-outline js-mail" data-subject="[이퀴비젼AI] 기술 제휴 및 도입 문의">기술 제휴 및 도입 문의</a>
     </div>
 
@@ -423,7 +437,7 @@
     </div>
 
     <div class="notice-box" role="note">
-      <strong>안내</strong> 본 방법론과 분석 결과는 데이터 연구 및 참고용 정보입니다. 당사는 승마투표권의 구매대행·알선이나 베팅 권유를 하지 않으며, 어떠한 수익도 보장하지 않습니다.
+      <strong>안내</strong> 본 방법론과 분석 결과는 데이터 연구 및 참고용 정보입니다. 당사는 경마투표권의 구매대행·알선이나 베팅 권유를 하지 않으며, 어떠한 수익도 보장하지 않습니다.
     </div>
   </section>
 
@@ -483,7 +497,10 @@
         <p>예시장 비전 AI로 측정한 출전마별 생체역학 컨디션 지수를 리포트로 받아보세요. <strong style="color:#fff;">월 40,000원</strong> (VAT 포함) · <strong style="color:#fff;">1개월만 결제</strong> 또는 <strong style="color:#fff;">매월 자동결제</strong>(언제든 해지) 중 선택</p>
         <p class="cta-note">만 19세 이상 이용 가능 · 참고용 분석 정보이며 결과나 수익을 보장하지 않습니다.</p>
       </div>
-      <a href="store.html" class="btn-main">상품 및 요금 보기</a>
+      <div class="cta-actions">
+        <a href="store.html" class="btn-main">상품 및 요금 보기</a>
+        <a href="https://t.me/equivision_official" class="btn-tg" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.78 15.4l-.4 5.6c.57 0 .82-.25 1.12-.54l2.7-2.58 5.6 4.1c1.03.57 1.76.27 2.04-.95L24 3.4c.33-1.52-.55-2.12-1.55-1.75L1.1 9.8c-1.46.57-1.44 1.38-.25 1.75l5.5 1.72L19.1 6.2c.6-.38 1.15-.17.7.21z"/></svg> 텔레그램 공지 채널</a>
+      </div>
     </div>
   </section>
 
@@ -509,6 +526,7 @@
         <button type="button" onclick="openModal('disclaimer', this)">책임의 한계 및 법적고지</button>
         <button type="button" onclick="openModal('noEmail', this)">이메일무단수집거부</button>
         <button type="button" onclick="location.href='store.html#refund'">환불정책</button>
+        <button type="button" onclick="window.open('https://t.me/equivision_official', '_blank', 'noopener')">텔레그램 공지 채널</button>
       </div>
 
       <div class="company-details">
@@ -524,7 +542,7 @@
 
       <div class="disclaimer-box">
         <strong>[면책 고지 및 지식재산권 안내]</strong><br>
-        이퀴비젼에이아이 주식회사가 웹사이트 및 플랫폼을 통해 제공하는 모든 스포츠 데이터, AI 분석 지표 및 결과는 통계 모델에 기반한 참고 정보이며, 특정 결과나 수익을 보장하지 않습니다. 당사는 승마투표권 구매대행·알선 및 베팅 권유를 하지 않습니다. 본 정보를 바탕으로 한 이용자의 판단과 행위의 결과에 대한 책임은 이용자 본인에게 있습니다. 당사의 분석 알고리즘, 영상물 및 가공 DB에 대한 무단 전재, 크롤링, 복제 및 상업적 재배포를 금합니다.<br>
+        이퀴비젼에이아이 주식회사가 웹사이트 및 플랫폼을 통해 제공하는 모든 스포츠 데이터, AI 분석 지표 및 결과는 통계 모델에 기반한 참고 정보이며, 특정 결과나 수익을 보장하지 않습니다. 당사는 경마투표권 구매대행·알선 및 베팅 권유를 하지 않습니다. 본 정보를 바탕으로 한 이용자의 판단과 행위의 결과에 대한 책임은 이용자 본인에게 있습니다. 당사의 분석 알고리즘, 영상물 및 가공 DB에 대한 무단 전재, 크롤링, 복제 및 상업적 재배포를 금합니다.<br>
         도박 문제로 어려움을 겪고 계시다면 한국도박문제예방치유원 헬프라인 ☎1336(24시간, 무료)에서 상담받으실 수 있습니다.
       </div>
 
@@ -580,7 +598,7 @@
 제2조 (정보의 제공 및 한계)
 1. 회사가 제공하는 AI 영상 분석, 생체역학 지표 및 경주 분석 데이터는 통계 모델에 기반한 참고 자료입니다.
 2. 회사는 제공 데이터의 완전성이나 특정 목적에 대한 적합성을 보증하지 않으며, 특정 결과나 수익을 보장하지 않습니다.
-3. 회사는 승마투표권의 구매대행·알선·중개 및 베팅 권유를 하지 않습니다.
+3. 회사는 경마투표권의 구매대행·알선·중개 및 베팅 권유를 하지 않습니다.
 
 제3조 (지식재산권)
 1. 회사가 개발한 분석 알고리즘, 특허 출원 기술, 가공 데이터베이스 및 미디어 콘텐츠에 관한 권리는 회사에 귀속됩니다.
@@ -622,6 +640,7 @@
 
 2. 처리하는 개인정보 항목 및 수집 방법
 [제휴 문의] 이메일 주소, 성명, 소속(회사명), 연락처, 문의 내용 — 정보주체가 이메일로 직접 제공한 범위
+[고객 문의(텔레그램 봇)] 텔레그램 계정 식별번호, 표시 이름·사용자명, 문의 내용 — 정보주체가 회사 봇에 직접 보낸 범위
 [유료 구독]
 - 필수: 이름, 휴대폰 번호
 - 결제 정보: 주문번호, 결제 금액·일시, 결제수단, 카드사명과 마스킹된 카드번호, 자동결제용 결제수단 식별값(빌링키), 결제 내역·영수증
@@ -632,7 +651,7 @@
 ※ 회사 웹사이트는 회원가입을 받지 않으며, 쿠키나 방문자 분석 도구를 사용하지 않습니다. 결제 화면의 주문 확인을 위해 이용자 기기의 브라우저 임시 저장소(sessionStorage)를 사용하며, 브라우저를 닫으면 삭제됩니다.
 
 3. 개인정보의 처리 및 보유 기간
-- 제휴 문의: 문의 처리 완료 후 1년
+- 제휴 문의·고객 문의: 문의 처리 완료 후 1년 (고객 문의는 답장 연결용 정보만 회사 서버에 30일 보관하며 문의 내용 자체는 서버에 저장하지 않습니다)
 - 유료 구독: 구독 종료(해지·이용기간 만료·정지) 후 5년
   · 계약 또는 청약철회 등에 관한 기록: 5년
   · 대금결제 및 재화 등의 공급에 관한 기록: 5년
@@ -702,8 +721,8 @@
 회사는 제공 정보의 정확성이나 특정 결과를 보증하지 않으며, 어떠한 경제적 수익도 보장하지 않습니다. 이용자가 해당 정보를 신뢰하여 한 판단과 행위로 발생한 손해에 대하여 회사는 고의 또는 중대한 과실이 없는 한 책임을 지지 않습니다.
 
 3. 사행행위 관련 고지
-회사는 승마투표권의 구매대행·알선·중개, 사설경마 및 불법 도박 사이트와 관련된 어떠한 행위도 하지 않으며, 이를 홍보하거나 연결하지 않습니다. 회사의 이름을 사칭하여 이러한 행위를 권유하는 경우 회사와 무관하므로 피해를 입지 않도록 주의하시기 바랍니다.
-만 19세 미만의 청소년은 승마투표권을 구매할 수 없습니다.
+회사는 경마투표권의 구매대행·알선·중개, 사설경마 및 불법 도박 사이트와 관련된 어떠한 행위도 하지 않으며, 이를 홍보하거나 연결하지 않습니다. 회사의 이름을 사칭하여 이러한 행위를 권유하는 경우 회사와 무관하므로 피해를 입지 않도록 주의하시기 바랍니다.
+만 19세 미만의 청소년은 경마투표권을 구매할 수 없습니다.
 도박 문제 상담: 한국도박문제예방치유원 헬프라인 ☎1336 (24시간, 무료)
 
 4. 외부 링크에 대한 고지
@@ -760,5 +779,6 @@
     });
   </script>
 
+  <script src="contact-button.js" defer></script>
 </body>
 </html>
