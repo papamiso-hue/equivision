@@ -235,6 +235,20 @@
       html { scroll-behavior: auto; }
       * { transition: none !important; }
     }
+    /* 문의 방법 선택 창 */
+    .ct-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.75); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); z-index: 2100; align-items: center; justify-content: center; padding: 1.5rem; }
+    .ct-overlay.open { display: flex; }
+    .ct-box { background: #111827; border: 1px solid #374151; border-radius: 16px; width: 100%; max-width: 440px; padding: 1.6rem 1.5rem 1.4rem; }
+    .ct-box h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: .4rem; }
+    .ct-box p { color: var(--text-sub); font-size: .92rem; margin-bottom: 1.1rem; word-break: keep-all; }
+    .ct-list { display: grid; gap: .6rem; }
+    .ct-item { display: flex; align-items: center; justify-content: center; gap: .5rem; padding: .85rem 1rem; border-radius: 10px; border: 1px solid #374151; background: rgba(255,255,255,.05); color: #e2e8f0; font-weight: 600; font-size: .98rem; text-decoration: none; cursor: pointer; font-family: inherit; width: 100%; }
+    .ct-item:hover { background: rgba(255,255,255,.1); border-color: #4b5563; }
+    .ct-item.primary { background: #229ed9; border-color: #229ed9; color: #fff; }
+    .ct-item.primary:hover { background: #1b87b9; }
+    .ct-addr { margin-top: .9rem; text-align: center; color: var(--text-sub); font-size: .85rem; word-break: break-all; }
+    .ct-close { display: block; margin: 1rem auto 0; background: none; border: none; color: #94a3b8; cursor: pointer; font-size: .9rem; font-family: inherit; }
+    .ct-close:hover { color: #fff; }
   </style>
 </head>
 <body>
@@ -563,6 +577,22 @@
     </div>
   </div>
 
+  <!-- 문의 방법 선택 -->
+  <div id="ctOverlay" class="ct-overlay" aria-hidden="true">
+    <div class="ct-box" role="dialog" aria-modal="true" aria-labelledby="ctTitle">
+      <h3 id="ctTitle">문의 방법을 선택해 주세요</h3>
+      <p>편하신 방법으로 문의해 주시면 확인 후 답변드립니다.</p>
+      <div class="ct-list">
+        <a id="ctTelegram" class="ct-item primary" href="#" target="_blank" rel="noopener">텔레그램으로 문의하기</a>
+        <a id="ctGmail" class="ct-item" href="#" target="_blank" rel="noopener">Gmail로 메일 쓰기</a>
+        <a id="ctMailto" class="ct-item" href="#">내 메일 프로그램으로 보내기</a>
+        <button id="ctCopy" class="ct-item" type="button">이메일 주소 복사</button>
+      </div>
+      <div class="ct-addr" id="ctAddr"></div>
+      <button type="button" class="ct-close" id="ctClose">닫기</button>
+    </div>
+  </div>
+
   <script>
     /* 이메일 주소 조합 (HTML 원문에 주소를 노출하지 않아 수집 봇을 줄임) */
     (function () {
@@ -575,6 +605,33 @@
         } else if (el.dataset.showAddress === 'true') {
           el.textContent = '✉ 공식 협력 및 도입 문의 (' + addr + ')';
         }
+        // 일반 문의 버튼: 메일 프로그램이 없는 PC에서도 되도록 문의 방법 선택 창을 연다
+        if (el.dataset.plain !== 'true') {
+          el.addEventListener('click', function (e) { e.preventDefault(); openContact(el.dataset.subject || '', el); });
+        }
+      });
+
+      const ov = document.getElementById('ctOverlay');
+      let ctFrom = null;
+      function closeContact() { ov.classList.remove('open'); ov.setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; if (ctFrom) ctFrom.focus(); }
+      function openContact(subject, trigger) {
+        ctFrom = trigger;
+        document.getElementById('ctTelegram').href = 'https://t.me/EquivisionReport_bot?start=contact';
+        document.getElementById('ctGmail').href = 'https://mail.google.com/mail/?view=cm&fs=1&to=' + encodeURIComponent(addr) + '&su=' + encodeURIComponent(subject);
+        document.getElementById('ctMailto').href = 'mailto:' + addr + (subject ? '?subject=' + encodeURIComponent(subject) : '');
+        document.getElementById('ctAddr').textContent = addr;
+        document.getElementById('ctCopy').textContent = '이메일 주소 복사';
+        ov.classList.add('open'); ov.setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden';
+        document.getElementById('ctTelegram').focus();
+      }
+      document.getElementById('ctClose').addEventListener('click', closeContact);
+      ov.addEventListener('click', function (e) { if (e.target === ov) closeContact(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && ov.classList.contains('open')) closeContact(); });
+      document.getElementById('ctCopy').addEventListener('click', function () {
+        const btn = this;
+        const done = function () { btn.textContent = '복사되었습니다 ✓'; };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(addr).then(done, function () { window.prompt('이메일 주소를 복사하세요', addr); });
+        else window.prompt('이메일 주소를 복사하세요', addr);
       });
     })();
 
