@@ -20,7 +20,7 @@
     '.tg-float:hover{background:#1b87b9;transform:translateY(-2px)}' +
     '.tg-float:focus-visible{outline:3px solid #fff;outline-offset:3px}' +
     '.tg-float svg{width:22px;height:22px;fill:currentColor;flex:none}' +
-    '@media (max-width:480px){.tg-float{padding:0.75rem;font-size:0}.tg-float svg{width:26px;height:26px}}' +
+    '@media (max-width:480px){.tg-float{padding:0.65rem 0.95rem;font-size:0.88rem;gap:6px}.tg-float svg{width:20px;height:20px}}' +
     '@media print{.tg-float{display:none}}';
   document.head.appendChild(css);
 
