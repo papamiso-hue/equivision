@@ -42,7 +42,7 @@
     const STORE_CONFIG = {
       mailOrderNo: '',                      // 예: '제2026-서울금천-1234호'
       escrowText: '',                       // 예: '토스페이먼츠 구매안전(에스크로) 서비스 가입 사실 확인' — PG 확인증 문구
-      sampleUrl: '',                        // 샘플 리포트 PDF 주소 (예: 'sample-report.pdf')
+      sampleUrl: 'sample-report.pdf',                     // 샘플 리포트 PDF 주소 (예: 'sample-report.pdf')
 
       // 초대 링크 발송 약속
       inviteDeadline: '결제(입금) 확인 후 30분 이내',
@@ -326,7 +326,7 @@
       <h1>예시장 비전 AI로 측정한<br><em>경주마 컨디션 분석 리포트</em></h1>
       <p>출전마의 보행 리듬, 보폭, 좌우 대칭성을 영상으로 분석해 평소 대비 컨디션 변화를 지수로 정리한 리포트를 경주 직전에 보내드립니다.</p>
       <a href="#checkout" class="btn-cta">👇 지금 바로 구독하기</a><br>
-      <a href="#" class="sample-link" id="sampleLink" hidden>📄 샘플 리포트 먼저 보기</a>
+      <a href="#" class="sample-link" id="sampleLink" target="_blank" rel="noopener" hidden>📄 샘플 리포트 먼저 보기</a>
     </section>
 
     <!-- 상품 -->
