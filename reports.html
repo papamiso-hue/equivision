@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0b1220">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="오늘 리포트">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="icon" href="favicon.ico">
+  <title>오늘 리포트 | EquiVision AI</title>
+  <style>
+    :root { --bg: #0b1220; --card: #141d30; --line: #2b3a57; --text: #ffffff; --sub: #c3cde0; --primary: #0ea5e9; --primary-d: #0369a1; --ok: #34d399; --warn: #fbbf24; --bad: #fb7185; }
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body { margin: 0; background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", sans-serif; font-size: 20px; line-height: 1.6; }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 16px 16px 48px; }
+    header.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 0 16px; border-bottom: 1px solid var(--line); margin-bottom: 20px; }
+    .brand { font-size: 1.15rem; font-weight: 800; }
+    .brand em { font-style: normal; color: var(--primary); }
+    h1 { font-size: 1.7rem; line-height: 1.35; margin: 8px 0 12px; }
+    h2 { font-size: 1.35rem; margin: 0 0 8px; }
+    p { margin: 0 0 12px; }
+    .sub { color: var(--sub); }
+    .btn { display: block; width: 100%; min-height: 64px; padding: 14px 18px; border-radius: 14px; border: 2px solid var(--primary); background: var(--primary); color: #fff; font-size: 1.3rem; font-weight: 800; text-align: center; cursor: pointer; font-family: inherit; }
+    .btn:active { background: var(--primary-d); }
+    .btn.line { background: transparent; }
+    .btn.small { min-height: 52px; font-size: 1.1rem; width: auto; display: inline-block; padding: 8px 18px; }
+    .btn[disabled] { opacity: .55; cursor: default; }
+    input[type=tel], input[type=text] { width: 100%; min-height: 64px; font-size: 1.6rem; padding: 10px 16px; border-radius: 14px; border: 2px solid var(--line); background: #0e1626; color: #fff; letter-spacing: 1px; font-family: inherit; }
+    input:focus { outline: 3px solid var(--primary); border-color: var(--primary); }
+    label { display: block; font-weight: 800; margin: 18px 0 8px; font-size: 1.15rem; }
+    .msg { margin: 14px 0; padding: 14px 16px; border-radius: 12px; border: 1px solid var(--line); background: var(--card); }
+    .msg.err { border-color: var(--bad); color: #ffe4e8; }
+    .msg.ok { border-color: var(--ok); }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 18px; margin: 0 0 16px; }
+    .card.morning { border-color: var(--warn); }
+    .card .head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+    .card .title { font-size: 1.5rem; font-weight: 800; }
+    .card .time { font-size: 1.2rem; color: var(--sub); font-weight: 700; }
+    .badge { display: inline-block; background: var(--ok); color: #052e22; font-weight: 800; font-size: .95rem; padding: 2px 10px; border-radius: 999px; margin-left: 8px; vertical-align: middle; }
+    .top3 { font-size: 1.15rem; margin: 6px 0 10px; }
+    .top3 b { color: var(--primary); }
+    .lines { margin: 0 0 14px; padding-left: 22px; color: var(--sub); }
+    .dates { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 16px; }
+    .dates button { min-height: 48px; padding: 6px 16px; border-radius: 999px; border: 2px solid var(--line); background: transparent; color: #fff; font-size: 1.05rem; font-weight: 700; font-family: inherit; cursor: pointer; }
+    .dates button.on { background: var(--primary); border-color: var(--primary); }
+    details { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 4px 16px; margin: 18px 0; }
+    summary { font-weight: 800; font-size: 1.15rem; padding: 12px 0; cursor: pointer; }
+    details ol { margin: 0 0 12px; padding-left: 24px; }
+    .notice { font-size: .9rem; color: var(--sub); margin-top: 28px; padding-top: 16px; border-top: 1px solid var(--line); line-height: 1.7; }
+    .status { font-size: .95rem; color: var(--sub); text-align: center; margin: 12px 0; }
+    [hidden] { display: none !important; }
+    /* 리포트 보기 화면 */
+    #viewer { position: fixed; inset: 0; background: #1b2438; z-index: 50; display: flex; flex-direction: column; }
+    #viewer .bar { display: flex; gap: 8px; padding: 8px; background: var(--bg); border-bottom: 1px solid var(--line); }
+    #viewer .bar .btn { min-height: 56px; font-size: 1.1rem; padding: 6px 10px; }
+    #viewer .bar .grow { flex: 1; }
+    #viewer .tip { background: #0b1220; color: #e2e8f0; font-size: 1rem; padding: 6px 12px 10px; text-align: center; }
+    #pages { flex: 1; overflow: auto; -webkit-overflow-scrolling: touch; padding: 10px 0 40px; text-align: left; }
+    #pages canvas { display: block; margin: 0 auto 14px; background: #fff; box-shadow: 0 2px 10px rgba(0,0,0,.5); -webkit-touch-callout: none; user-select: none; }
+    #pages .pad { display: inline-block; min-width: 100%; }
+    #viewMsg { color: #fff; text-align: center; padding: 28px 16px; font-size: 1.2rem; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">EquiVision <em>AI</em></div>
+    <button class="btn line small" id="btnLogout" hidden style="white-space:nowrap">로그아웃</button>
+  </header>
+
+  <!-- 1) 로그인 -->
+  <section id="viewLogin" hidden>
+    <h1>회원 전용 화면입니다</h1>
+    <p class="sub">결제하실 때 적어 주신 <b>휴대폰 번호</b>로 문자 인증을 하면 오늘 리포트를 볼 수 있습니다.</p>
+
+    <div id="stepPhone">
+      <label for="inPhone">휴대폰 번호</label>
+      <input id="inPhone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="01012345678" maxlength="13">
+      <p class="sub" style="margin-top:8px">숫자만 써도 되고, 하이픈(-)을 넣어도 됩니다.</p>
+      <button class="btn" id="btnSend" style="margin-top:12px">문자로 인증번호 받기</button>
+    </div>
+
+    <div id="stepCode" hidden>
+      <div class="msg ok" id="sentMsg"></div>
+      <label for="inCode">문자로 온 6자리 숫자</label>
+      <input id="inCode" type="tel" inputmode="numeric" autocomplete="one-time-code" placeholder="123456" maxlength="6">
+      <button class="btn" id="btnVerify" style="margin-top:16px">확인</button>
+      <button class="btn line" id="btnBack" style="margin-top:12px">번호를 다시 쓸게요</button>
+    </div>
+    <div class="msg err" id="loginErr" hidden></div>
+
+    <details>
+      <summary>로그인이 안 될 때</summary>
+      <ol>
+        <li>결제하실 때 적은 번호와 같은 번호인지 확인해 주세요.</li>
+        <li>문자가 1~2분 안에 오지 않으면 번호를 다시 확인하고 한 번 더 눌러 주세요.</li>
+        <li>구독이 끝났거나 해지하셨다면 볼 수 없습니다.</li>
+        <li>그래도 안 되면 <a href="https://equivisionai.kr/store.html#faq" style="color:#7dd3fc">자주 묻는 질문</a>을 보시거나 help@equivisionai.kr 로 알려 주세요.</li>
+      </ol>
+    </details>
+  </section>
+
+  <!-- 2) 오늘 리포트 목록 -->
+  <section id="viewList" hidden>
+    <h1 id="listTitle">오늘 리포트</h1>
+    <p class="sub" id="whoAmI"></p>
+    <div class="dates" id="dates"></div>
+    <div id="cards"></div>
+    <div class="status" id="status">새 리포트가 올라오면 이 화면이 저절로 바뀝니다.</div>
+    <button class="btn line" id="btnRefresh">지금 새로 확인하기</button>
+
+    <details>
+      <summary>📱 휴대폰 첫 화면에 바로가기 만들기</summary>
+      <p><b>아이폰</b></p>
+      <ol>
+        <li>사파리(Safari)로 이 화면을 엽니다.</li>
+        <li>아래쪽 가운데 <b>공유 버튼</b>(네모에 위 화살표)을 누릅니다.</li>
+        <li><b>"홈 화면에 추가"</b>를 누르고, 오른쪽 위 <b>추가</b>를 누릅니다.</li>
+      </ol>
+      <p><b>갤럭시(안드로이드)</b></p>
+      <ol>
+        <li>크롬(Chrome)으로 이 화면을 엽니다.</li>
+        <li>오른쪽 위 <b>점 3개(⋮)</b>를 누릅니다.</li>
+        <li><b>"홈 화면에 추가"</b>를 누르고 <b>추가</b>를 누릅니다.</li>
+      </ol>
+      <p class="sub">이렇게 해 두면 다음부터는 바탕화면의 아이콘만 누르면 됩니다.</p>
+    </details>
+  </section>
+
+  <p class="notice">
+    참고용 분석 정보이며 결과·수익을 보장하지 않습니다. 마권 구매를 권유하거나 대행·알선하지 않습니다.
+    만 19세 이상 · 도박 문제 상담 ☎1336<br>
+    리포트에는 보시는 분의 정보가 표시되어 있으며, 무단 전달·재배포를 금지합니다.
+  </p>
+</div>
+
+<!-- 3) 리포트 보기 -->
+<div id="viewer" hidden>
+  <div class="bar">
+    <button class="btn line" id="btnClose">← 목록</button>
+    <div class="grow"></div>
+    <button class="btn line" id="btnZoomOut" aria-label="작게" style="white-space:nowrap">− 작게</button>
+    <button class="btn" id="btnZoomIn" aria-label="크게" style="white-space:nowrap">＋ 크게</button>
+  </div>
+  <div class="tip">💡 글자가 작으면 <b>＋ 크게</b>를 누르거나, 휴대폰을 옆으로 눕혀 보세요.</div>
+  <div id="pages"><div id="viewMsg">리포트를 불러오는 중입니다…</div></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>if (window.pdfjsLib) { pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js'; }</script>
+<script>
+(function () {
+  'use strict';
+  var API = 'https://equivision-pay.papamiso.workers.dev';
+  var TRACK = { seoul: '서울', busan: '부산경남', jeju: '제주', all: '전체' };
+  var POLL_MS = 45000;
+  var token = null, me = null, curDate = null, items = [], knownKeys = null, pollTimer = null, zoom = 1, curKey = null, renderToken = 0;
+
+  function $(id) { return document.getElementById(id); }
+  function store(k, v) { try { if (v === null) localStorage.removeItem(k); else if (v === undefined) return localStorage.getItem(k); else localStorage.setItem(k, v); } catch (e) { return null; } return null; }
+  function el(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
+  function show(id) { ['viewLogin', 'viewList'].forEach(function (v) { $(v).hidden = (v !== id); }); $('btnLogout').hidden = (id !== 'viewList'); }
+  function hhmm(ms) { var d = new Date(ms); return ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2); }
+  function koDate(s) { var p = s.split('-'); var d = new Date(+p[0], +p[1] - 1, +p[2]); return (+p[1]) + '월 ' + (+p[2]) + '일 (' + '일월화수목금토'.charAt(d.getDay()) + ')'; }
+
+  function api(path, opts) {
+    opts = opts || {};
+    var headers = { 'Content-Type': 'application/json' };
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+    return fetch(API + path, { method: opts.method || 'GET', headers: headers, body: opts.body ? JSON.stringify(opts.body) : undefined })
+      .then(function (r) { return r; });
+  }
+  function readJson(r) { return r.json().catch(function () { return {}; }); }
+
+  /* ---------- 로그인 ---------- */
+  function loginError(t) { var e = $('loginErr'); e.textContent = t || ''; e.hidden = !t; }
+  function goLogin(msg) {
+    stopPoll(); token = null; me = null; store('eq_token', null);
+    show('viewLogin'); $('stepPhone').hidden = false; $('stepCode').hidden = true; loginError(msg || '');
+  }
+  $('btnSend').onclick = function () {
+    var phone = $('inPhone').value.replace(/[^0-9]/g, '');
+    loginError('');
+    if (!/^01[016789][0-9]{7,8}$/.test(phone)) { loginError('휴대폰 번호를 다시 확인해 주세요. (예: 01012345678)'); return; }
+    var b = $('btnSend'); b.disabled = true; b.textContent = '보내는 중입니다…';
+    api('/member/otp/request', { method: 'POST', body: { phone: phone } })
+      .then(function (r) { return readJson(r).then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (x) {
+        b.disabled = false; b.textContent = '문자로 인증번호 받기';
+        if (!x.ok) { loginError(x.j.message || '잠시 뒤에 다시 해 주세요.'); return; }
+        $('sentMsg').textContent = x.j.message || '문자로 인증번호가 갑니다.';
+        $('stepPhone').hidden = true; $('stepCode').hidden = false; $('inCode').value = ''; $('inCode').focus();
+      }, function () { b.disabled = false; b.textContent = '문자로 인증번호 받기'; loginError('인터넷 연결을 확인해 주세요.'); });
+  };
+  $('btnBack').onclick = function () { loginError(''); $('stepPhone').hidden = false; $('stepCode').hidden = true; };
+  $('btnVerify').onclick = function () {
+    var phone = $('inPhone').value.replace(/[^0-9]/g, ''), code = $('inCode').value.replace(/[^0-9]/g, '');
+    loginError('');
+    if (code.length !== 6) { loginError('문자로 온 6자리 숫자를 써 주세요.'); return; }
+    var b = $('btnVerify'); b.disabled = true;
+    api('/member/otp/verify', { method: 'POST', body: { phone: phone, code: code } })
+      .then(function (r) { return readJson(r).then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (x) {
+        b.disabled = false;
+        if (!x.ok) { loginError(x.j.message || '확인하지 못했습니다. 다시 해 주세요.'); return; }
+        token = x.j.token; me = x.j.me; store('eq_token', token);
+        $('inPhone').value = ''; $('inCode').value = '';
+        enterList(null);
+      }, function () { b.disabled = false; loginError('인터넷 연결을 확인해 주세요.'); });
+  };
+  $('inCode').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('btnVerify').click(); });
+  $('inPhone').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('btnSend').click(); });
+  $('btnLogout').onclick = function () {
+    api('/member/logout', { method: 'POST' }).catch(function () {});
+    goLogin('로그아웃했습니다.');
+  };
+
+  /* ---------- 목록 ---------- */
+  function enterList(date) {
+    show('viewList'); curDate = date; knownKeys = null;
+    loadList(true); startPoll();
+  }
+  function startPoll() { stopPoll(); pollTimer = setInterval(function () { if (!document.hidden && $('viewer').hidden) loadList(false); }, POLL_MS); }
+  function stopPoll() { if (pollTimer) { clearInterval(pollTimer); pollTimer = null; } }
+  document.addEventListener('visibilitychange', function () { if (!document.hidden && token && $('viewer').hidden && !$('viewList').hidden) loadList(false); });
+  $('btnRefresh').onclick = function () { loadList(true); };
+
+  function loadList(manual) {
+    if (!token) return;
+    var st = $('status');
+    if (manual) st.textContent = '확인하는 중입니다…';
+    api('/member/reports' + (curDate ? '?date=' + encodeURIComponent(curDate) : ''))
+      .then(function (r) { return readJson(r).then(function (j) { return { status: r.status, ok: r.ok, j: j }; }); })
+      .then(function (x) {
+        if (x.status === 401) { goLogin('다시 로그인해 주세요. (구독이 끝났거나 로그인 기간이 지났습니다)'); return; }
+        if (!x.ok) { st.textContent = x.j.message || '잠시 뒤 다시 확인해 주세요.'; return; }
+        me = x.j.me || me; curDate = x.j.date; items = x.j.items || [];
+        render(x.j);
+        st.textContent = '새 리포트가 올라오면 이 화면이 저절로 바뀝니다. (마지막 확인 ' + hhmm(Date.now()) + ')';
+      }, function () { st.textContent = '인터넷이 잠깐 끊겼습니다. 연결되면 다시 확인합니다.'; });
+  }
+
+  function render(data) {
+    var isToday = data.date === data.today;
+    $('listTitle').textContent = (isToday ? '오늘 ' : '') + koDate(data.date) + ' 리포트';
+    $('whoAmI').textContent = me ? me.name + ' 님, 안녕하세요.' : '';
+    // 날짜 고르기
+    var dEl = $('dates'); dEl.textContent = '';
+    if ((data.dates || []).length > 1) {
+      data.dates.forEach(function (d) {
+        var b = el('button', d === data.date ? 'on' : '', (d === data.today ? '오늘' : koDate(d).replace(/ \(.\)/, '')));
+        b.onclick = function () { curDate = d; knownKeys = null; loadList(true); };
+        dEl.appendChild(b);
+      });
+    }
+    // 카드
+    var cards = $('cards');
+    var fresh = {};
+    var firstLoad = (knownKeys === null);
+    cards.textContent = '';
+    if (!items.length) {
+      var e = el('div', 'msg');
+      e.appendChild(el('p', '', isToday ? '아직 올라온 리포트가 없습니다.' : '이 날짜에는 리포트가 없습니다.'));
+      e.appendChild(el('p', 'sub', '경주 출발 약 7분 전에 올라옵니다. 이 화면을 열어 두시면 저절로 나타납니다.'));
+      cards.appendChild(e);
+    }
+    items.forEach(function (it) {
+      var isNew = !firstLoad && knownKeys.indexOf(it.key + '|' + it.updatedAt) < 0;
+      fresh[it.key + '|' + it.updatedAt] = 1;
+      var c = el('div', 'card' + (it.kind === 'morning' ? ' morning' : ''));
+      var head = el('div', 'head');
+      var t = el('div', 'title', it.kind === 'morning' ? '🌅 아침 한눈표' : (TRACK[it.track] || it.track) + ' ' + it.raceNo + '경주');
+      if (isNew) t.appendChild(el('span', 'badge', '새로 올라옴'));
+      head.appendChild(t);
+      if (it.startTime) head.appendChild(el('div', 'time', it.startTime + ' 출발'));
+      c.appendChild(head);
+      if (it.top3 && it.top3.length) {
+        var tp = el('div', 'top3');
+        tp.appendChild(document.createTextNode('AI 종합 평가 상위: '));
+        it.top3.forEach(function (h, i) {
+          if (i) tp.appendChild(document.createTextNode('  ·  '));
+          var b = el('b', '', h.no + '번'); tp.appendChild(b); tp.appendChild(document.createTextNode(' ' + h.name));
+        });
+        c.appendChild(tp);
+      }
+      if (it.lines && it.lines.length) {
+        var ul = el('ul', 'lines');
+        it.lines.forEach(function (l) { ul.appendChild(el('li', '', l)); });
+        c.appendChild(ul);
+      }
+      var btn = el('button', 'btn', '📄 리포트 보기');
+      btn.onclick = function () { openReport(it); };
+      c.appendChild(btn);
+      cards.appendChild(c);
+    });
+    knownKeys = Object.keys(fresh);
+  }
+
+  /* ---------- 리포트 보기 (회원마다 이름이 들어간 워터마크) ---------- */
+  function setViewMsg(t) { var p = $('pages'); p.textContent = ''; var m = el('div', ''); m.id = 'viewMsg'; m.textContent = t; p.appendChild(m); }
+  function openReport(it) {
+    curKey = it.key; zoom = 1;
+    $('viewer').hidden = false; document.body.style.overflow = 'hidden';
+    setViewMsg('리포트를 불러오는 중입니다…');
+    fetch(API + '/member/report?key=' + encodeURIComponent(it.key), { headers: { Authorization: 'Bearer ' + token } })
+      .then(function (r) {
+        if (r.status === 401) { closeViewer(); goLogin('다시 로그인해 주세요.'); throw new Error('login'); }
+        if (!r.ok) throw new Error('fail');
+        return r.arrayBuffer();
+      })
+      .then(function (buf) { return window.pdfjsLib.getDocument({ data: buf }).promise; })
+      .then(function (pdf) { window._eqPdf = pdf; renderPages(); })
+      .catch(function (e) { if (e && e.message === 'login') return; setViewMsg('리포트를 열지 못했습니다. 인터넷을 확인하고 다시 눌러 주세요.'); });
+  }
+  function closeViewer() { $('viewer').hidden = true; document.body.style.overflow = ''; window._eqPdf = null; renderToken++; $('pages').textContent = ''; if (token) loadList(false); }
+  $('btnClose').onclick = closeViewer;
+  $('btnZoomIn').onclick = function () { if (zoom < 3) { zoom = Math.min(3, zoom + 0.5); renderPages(); } };
+  $('btnZoomOut').onclick = function () { if (zoom > 1) { zoom = Math.max(1, zoom - 0.5); renderPages(); } };
+
+  function drawWatermark(ctx, w, h) {
+    var text = (me ? me.name + ' ' + me.last4 : '회원') + ' · EquiVision AI 회원용';
+    var size = Math.max(18, Math.round(w / 22));
+    ctx.save();
+    ctx.globalAlpha = 0.13; ctx.fillStyle = '#7f1d1d'; ctx.font = 'bold ' + size + 'px sans-serif'; ctx.textBaseline = 'middle';
+    ctx.translate(w / 2, h / 2); ctx.rotate(-Math.PI / 6);
+    var step = size * 4.2, span = Math.sqrt(w * w + h * h);
+    for (var y = -span; y < span; y += step) {
+      for (var x = -span; x < span; x += ctx.measureText(text).width + size * 2) { ctx.fillText(text, x + ((Math.round(y / step) % 2) ? size * 3 : 0), y); }
+    }
+    ctx.restore();
+    // 작은 글씨로 한 번 더(잘라서 공유해도 남도록 가장자리에)
+    ctx.save(); ctx.globalAlpha = 0.35; ctx.fillStyle = '#111'; ctx.font = Math.max(10, Math.round(w / 60)) + 'px sans-serif';
+    ctx.fillText((me ? me.name + ' ' + me.last4 : '') + ' · 무단 전달 금지', 8, h - 8);
+    ctx.restore();
+  }
+  function renderPages() {
+    var pdf = window._eqPdf; if (!pdf) return;
+    var my = ++renderToken, box = $('pages');
+    var oldScroll = box.scrollTop;
+    var cw = box.clientWidth || window.innerWidth;
+    var targetW = Math.floor(cw * zoom) - (zoom === 1 ? 16 : 0);
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    box.textContent = '';
+    var pad = el('div', 'pad'); box.appendChild(pad);
+    var chain = Promise.resolve();
+    for (var n = 1; n <= pdf.numPages; n++) {
+      (function (num) {
+        chain = chain.then(function () {
+          if (my !== renderToken) return;
+          return pdf.getPage(num).then(function (page) {
+            var v1 = page.getViewport({ scale: 1 });
+            var scale = (targetW / v1.width) * dpr;
+            var vp = page.getViewport({ scale: scale });
+            var cv = document.createElement('canvas'); cv.width = Math.floor(vp.width); cv.height = Math.floor(vp.height);
+            cv.style.width = Math.floor(vp.width / dpr) + 'px'; cv.style.height = Math.floor(vp.height / dpr) + 'px';
+            cv.oncontextmenu = function () { return false; };
+            if (my !== renderToken) return;
+            pad.appendChild(cv);
+            return page.render({ canvasContext: cv.getContext('2d'), viewport: vp }).promise.then(function () { if (my === renderToken) drawWatermark(cv.getContext('2d'), cv.width, cv.height); });
+          });
+        });
+      })(n);
+    }
+    chain.then(function () { if (my === renderToken) box.scrollTop = oldScroll; });
+  }
+
+  /* ---------- 시작 ---------- */
+  var saved = store('eq_token');
+  if (saved && /^[a-f0-9]{64}$/.test(saved)) {
+    token = saved;
+    api('/member/me').then(function (r) { return readJson(r).then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (x) { if (x.ok) { me = x.j.me; enterList(null); } else { goLogin(''); } }, function () { goLogin(''); });
+  } else { goLogin(''); }
+})();
+</script>
+</body>
+</html>
