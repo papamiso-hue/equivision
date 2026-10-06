@@ -42,6 +42,7 @@
     const STORE_CONFIG = {
       mailOrderNo: '',                      // 예: '제2026-서울금천-1234호'
       escrowText: '',                       // 예: '토스페이먼츠 구매안전(에스크로) 서비스 가입 사실 확인' — PG 확인증 문구
+      bankEnabled: false,                   // 계좌 입금(무통장입금) 신청 화면 — true 로 바꾸고, 서버(Worker)에서도 BANK_TRANSFER_ENABLED=1 일 때만 동작
       sampleUrl: 'sample-report.pdf',                     // 샘플 리포트 PDF 주소 (예: 'sample-report.pdf')
 
       // 초대 링크 발송 약속
@@ -229,6 +230,33 @@
     .summary-total { display: flex; justify-content: space-between; align-items: baseline; padding: 1rem 0 0.5rem; font-weight: 800; }
     .summary-total .amount { font-size: 1.8rem; color: var(--primary-glow); font-variant-numeric: tabular-nums; }
 
+    /* 계좌 입금(무통장입금) — 어르신도 보기 쉽게 큰 글씨 */
+    .bank-box { margin-top: 1.6rem; background: var(--bg-card); border: 2px solid var(--border-dark); border-radius: 16px; padding: 1.3rem 1.1rem; }
+    .bank-h { font-size: 1.35rem; line-height: 1.4; margin: 0 0 0.6rem; }
+    .bank-p { font-size: 1.1rem; line-height: 1.7; margin: 0 0 1rem; color: var(--text-sub); }
+    .bank-p strong { color: #fff; }
+    .bank-big { display: block; width: 100%; min-height: 60px; padding: 0.9rem 1rem; border-radius: 14px; border: 2px solid var(--primary-glow); background: transparent; color: #fff; font-size: 1.25rem; font-weight: 800; font-family: inherit; cursor: pointer; text-align: center; text-decoration: none; }
+    .bank-big.fill { background: var(--primary); border-color: var(--primary); }
+    .bank-big[disabled] { opacity: 0.5; cursor: default; }
+    .bank-field { margin: 1rem 0; }
+    .bank-field label { display: block; font-weight: 800; font-size: 1.1rem; margin-bottom: 0.4rem; }
+    .bank-field input[type=text], .bank-field input[type=tel] { width: 100%; min-height: 58px; font-size: 1.3rem; padding: 0.6rem 0.9rem; border-radius: 12px; border: 2px solid var(--border-dark); background: var(--bg-soft); color: #fff; font-family: inherit; }
+    .bank-field small { display: block; color: var(--text-sub); font-size: 0.95rem; margin-top: 0.3rem; }
+    .bank-consents { border: 1px solid var(--border-dark); border-radius: 12px; margin: 1rem 0; }
+    .bank-consents label { display: flex; gap: 0.7rem; align-items: flex-start; padding: 0.8rem 0.9rem; font-size: 1.02rem; line-height: 1.55; border-bottom: 1px solid var(--border-dark); cursor: pointer; }
+    .bank-consents label:last-child { border-bottom: 0; }
+    .bank-consents input { width: 24px; height: 24px; flex-shrink: 0; margin-top: 0.1rem; accent-color: var(--primary-glow); }
+    .bank-consents .sub { display: block; color: var(--text-sub); font-size: 0.88rem; margin-top: 0.3rem; }
+    .bank-err { color: #fb7185; font-size: 1.05rem; font-weight: 700; margin: 0.8rem 0 0; min-height: 1.2em; }
+    .bank-res h4 { font-size: 1.4rem; margin: 0 0 0.8rem; }
+    .bank-row { background: var(--bg-soft); border-radius: 12px; padding: 0.9rem 1rem; margin: 0 0 0.7rem; }
+    .bank-row .k { display: block; color: var(--text-sub); font-size: 0.98rem; }
+    .bank-row .v { display: block; font-size: 1.5rem; font-weight: 800; line-height: 1.4; word-break: keep-all; overflow-wrap: anywhere; }
+    .bank-row .v.money { color: var(--primary-glow); font-size: 1.8rem; }
+    .bank-row .copy { margin-top: 0.5rem; min-height: 48px; font-size: 1.05rem; padding: 0.4rem 1.1rem; width: auto; display: inline-block; }
+    .bank-steps { margin: 1rem 0; padding-left: 1.4rem; font-size: 1.1rem; line-height: 1.8; }
+    .bank-steps li { margin-bottom: 0.5rem; }
+    .bank-note { font-size: 0.98rem; color: var(--text-sub); line-height: 1.7; margin: 0.8rem 0 0; }
     .plan-pick { display: grid; gap: 0.7rem; margin-bottom: 1.2rem; }
     .plan-pick h3 { font-size: 1.1rem; }
     .plan-opt { display: flex; gap: 0.8rem; align-items: flex-start; background: var(--bg-soft); border: 2px solid var(--border-dark); border-radius: 12px; padding: 0.9rem 1rem; cursor: pointer; }
@@ -407,6 +435,33 @@
         <p class="pay-methods" id="payMethods">토스페이먼츠 결제창에서 카드 · 토스페이 · 네이버페이 · 카카오페이 등을 선택할 수 있습니다.</p>
         <p class="pay-hint" id="payHint" aria-live="polite"></p>
         <p class="pay-hint" id="escrowLine"></p>
+      </div>
+
+      <!-- 계좌 입금(무통장입금): STORE_CONFIG.bankEnabled 가 true 일 때만 보임 -->
+      <div class="bank-box" id="bankBox" hidden>
+        <h3 class="bank-h">🏦 카드·간편결제가 어려우시면<br>계좌로 보내서 결제하실 수 있습니다</h3>
+        <p class="bank-p">은행 앱이나 토스·카카오페이의 <strong>계좌 송금</strong>으로 <strong>40,000원</strong>을 보내시면 됩니다. 매달 저절로 빠져나가지 않고 <strong>1개월만</strong> 이용합니다. 계좌번호는 신청하신 뒤에 알려 드립니다.</p>
+        <button type="button" class="bank-big" id="bankOpen">계좌로 보내서 결제하기 (신청)</button>
+
+        <div id="bankForm" hidden>
+          <div class="bank-field"><label for="bkName">이름 <span style="color:#fb7185">*</span></label><input type="text" id="bkName" autocomplete="name" placeholder="홍길동" maxlength="30"></div>
+          <div class="bank-field"><label for="bkPhone">휴대폰 번호 <span style="color:#fb7185">*</span></label><input type="tel" id="bkPhone" autocomplete="tel" inputmode="numeric" placeholder="01012345678" maxlength="13"><small>해지·환불·입금 확인에 사용합니다.</small></div>
+          <div class="bank-field"><label for="bkTg">텔레그램 사용자명 (선택)</label><input type="text" id="bkTg" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="모르시면 비워 두세요" maxlength="33"><small>몰라도 괜찮습니다. 신청 뒤에 나오는 파란 버튼만 누르면 됩니다.</small></div>
+          <div class="bank-consents">
+            <label><input type="checkbox" id="bkAll"> <strong>아래 필수 항목에 모두 동의합니다</strong></label>
+            <label><input type="checkbox" class="bk-agree"><span><strong>[필수]</strong> 본 상품은 디지털콘텐츠로, <strong>리포트 제공이 시작되면 이미 제공된 부분은 청약철회가 제한</strong>됨을 확인했습니다.</span></label>
+            <label><input type="checkbox" class="bk-agree"><span><strong>[필수]</strong> 이 이용권은 <strong>입금 확인일부터 1개월</strong> 동안 이용하며 <strong>자동으로 갱신되지 않습니다.</strong> 끝나면 유료 채널에서 제외되고, 계속 이용하려면 다시 신청해야 함을 확인했습니다.</span></label>
+            <label><input type="checkbox" class="bk-agree"><span><strong>[필수]</strong> 월 요금은 <strong>경주 수와 관계없는 정액</strong>이며, 경주 취소·순연 등으로 발송되지 않은 리포트는 <strong>환불·기간 연장 대상이 아님</strong>을 확인했습니다.</span></label>
+            <label><input type="checkbox" class="bk-agree"><span><strong>[필수]</strong> 본 리포트는 참고용 분석 정보이며 <strong>특정 결과나 수익을 보장하지 않음</strong>을 확인했습니다.</span></label>
+            <label><input type="checkbox" class="bk-agree"><span><strong>[필수]</strong> 본인은 <strong>만 19세 이상</strong>입니다.</span></label>
+            <label><input type="checkbox" class="bk-agree"><span><strong>[필수]</strong> 개인정보 수집·이용에 동의합니다.<span class="sub">수집 항목: 이름, 휴대폰 번호, 텔레그램 사용자명(입력 시), 텔레그램 계정 식별번호(채널 참여 버튼 이용 시) · 목적: 구독 서비스 제공, 입금 확인, 채널 초대, 해지·환불 처리, 현금영수증 발급 · 보유 기간: 구독 종료 후 5년(전자상거래법상 계약·결제 기록 보존 의무), 입금하지 않은 신청은 입금 기한 후 90일 · 동의를 거부할 수 있으나 거부 시 서비스를 이용할 수 없습니다.</span></span></label>
+            <label><input type="checkbox" class="bk-agree"><span><strong>[필수]</strong> <a href="#refund">환불 정책</a>과 <a href="index.html" target="_blank" rel="noopener">이용약관·개인정보처리방침</a>을 확인했습니다.</span></label>
+          </div>
+          <button type="button" class="bank-big fill" id="bankSubmit" disabled>입금 신청하기</button>
+          <p class="bank-err" id="bankErr" aria-live="polite"></p>
+        </div>
+
+        <div id="bankResult" class="bank-res" hidden></div>
       </div>
 
       <div class="notice">
@@ -1115,5 +1170,86 @@
     })();
   </script>
   <script src="contact-button.js" defer></script>
+<script>
+(function () {
+  'use strict';
+  var C = (typeof STORE_CONFIG !== 'undefined') ? STORE_CONFIG : {};
+  var T = window.TOSS_CONFIG || {};
+  var base = String(T.confirmUrl || '').replace(/\/confirm\/?$/, '');
+  var botName = String(T.telegramBot || '').replace(/^@/, '');
+  if (!C.bankEnabled || !/^https:\/\//.test(base)) return;
+  var $ = function (id) { return document.getElementById(id); };
+  var won = function (n) { return Number(n).toLocaleString('ko-KR') + '원'; };
+  function mk(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
+  function fmt(ms) { var d = new Date(ms); return (d.getMonth() + 1) + '월 ' + d.getDate() + '일'; }
+  function store(k, v) { try { if (v === null) localStorage.removeItem(k); else if (v === undefined) return localStorage.getItem(k); else localStorage.setItem(k, v); } catch (e) {} return null; }
+
+  $('bankBox').hidden = false;
+  $('bankOpen').onclick = function () { $('bankOpen').hidden = true; $('bankForm').hidden = false; $('bkName').focus(); };
+
+  var agree = Array.prototype.slice.call(document.querySelectorAll('.bk-agree'));
+  function check() {
+    var name = $('bkName').value.trim(), phone = $('bkPhone').value.replace(/[^0-9]/g, ''), tg = $('bkTg').value.trim();
+    var good = name.length >= 2 && /^01[016789][0-9]{7,8}$/.test(phone) && (!tg || /^@[A-Za-z][A-Za-z0-9_]{4,31}$/.test(tg)) && agree.every(function (c) { return c.checked; });
+    $('bankSubmit').disabled = !good;
+    var all = agree.every(function (c) { return c.checked; }); $('bkAll').checked = all;
+  }
+  ['bkName', 'bkPhone', 'bkTg'].forEach(function (id) { $(id).addEventListener('input', check); });
+  agree.forEach(function (c) { c.addEventListener('change', check); });
+  $('bkAll').addEventListener('change', function () { var v = $('bkAll').checked; agree.forEach(function (c) { c.checked = v; }); check(); });
+
+  function copyBtn(text) {
+    var b = mk('button', 'bank-big copy', '복사하기');
+    b.type = 'button';
+    b.onclick = function () {
+      function done() { b.textContent = '복사되었습니다 ✓'; setTimeout(function () { b.textContent = '복사하기'; }, 2000); }
+      if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(text).then(done, fallback); } else { fallback(); }
+      function fallback() { var t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); done(); } catch (e) {} document.body.removeChild(t); }
+    };
+    return b;
+  }
+  function row(label, value, cls, copy) {
+    var r = mk('div', 'bank-row'); r.appendChild(mk('span', 'k', label)); r.appendChild(mk('span', 'v' + (cls ? ' ' + cls : ''), value));
+    if (copy) r.appendChild(copyBtn(copy)); return r;
+  }
+  function show(d) {
+    $('bankForm').hidden = true; $('bankOpen').hidden = true;
+    var box = $('bankResult'); box.textContent = ''; box.hidden = false;
+    box.appendChild(mk('h4', '', '✅ 신청되었습니다. 아래대로 보내 주세요'));
+    box.appendChild(row('보내실 금액', won(d.amount), 'money'));
+    box.appendChild(row('받는 계좌', d.bankText, '', d.bankText.replace(/\s*\(.*$/, '').replace(/^\S+\s+/, '')));
+    box.appendChild(row('입금자명 (꼭 이대로 적어 주세요)', d.depositor, '', d.depositor));
+    box.appendChild(row('입금 기한', fmt(d.expiresAt) + '까지'));
+    var ol = mk('ol', 'bank-steps');
+    ['은행 앱이나 토스·카카오페이에서 위 계좌로 금액을 보냅니다. 받는 분 통장에 표시되는 이름(입금자명)에는 위 입금자명을 적어 주세요.',
+     '아래 파란 버튼으로 텔레그램을 열고 [시작]을 누릅니다.',
+     '입금이 확인되면 텔레그램으로 [채널 참여하기] 버튼이 갑니다. 확인은 운영자가 직접 하므로 시간이 걸릴 수 있습니다.'].forEach(function (t) { ol.appendChild(mk('li', '', t)); });
+    box.appendChild(ol);
+    if (botName) {
+      var a = mk('a', 'bank-big fill', '📨 텔레그램 열기'); a.href = 'https://t.me/' + botName + '?start=' + encodeURIComponent(d.orderId); a.target = '_blank'; a.rel = 'noopener'; box.appendChild(a);
+    }
+    box.appendChild(mk('p', 'bank-note', '주문번호: ' + d.orderId + ' (이 화면을 캡처해 두시면 편합니다)'));
+    box.appendChild(mk('p', 'bank-note', '현금영수증이 필요하시면 텔레그램 대화창에 글로 알려 주세요. 입금 기한이 지나면 신청이 닫히며, 이미 보내셨다면 텔레그램에 입금하신 날짜와 입금자명을 남겨 주세요. 환불은 아래 환불 정책 기준을 따릅니다.'));
+    box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  $('bankSubmit').onclick = function () {
+    var b = $('bankSubmit'), err = $('bankErr'); err.textContent = ''; b.disabled = true; b.textContent = '신청하는 중입니다…';
+    fetch(base + '/bank/prepare', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: $('bkName').value.trim(), phone: $('bkPhone').value.replace(/[^0-9]/g, ''), telegram: $('bkTg').value.trim(), agreed: true }) })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (x) {
+        b.textContent = '입금 신청하기';
+        if (!x.ok || !x.j.ok) {
+          err.textContent = x.j.code === 'BANK_OFF' ? '계좌 입금 신청은 아직 열리지 않았습니다. 카드·간편결제를 이용해 주세요.' : (x.j.message || '신청하지 못했습니다. 잠시 뒤 다시 해 주세요.');
+          check(); return;
+        }
+        store('eq_bank', JSON.stringify(x.j)); show(x.j);
+      }, function () { b.textContent = '입금 신청하기'; err.textContent = '인터넷 연결을 확인해 주세요.'; check(); });
+  };
+
+  // 이미 신청한 내용이 남아 있으면(새로고침 등) 다시 보여 줌
+  try { var old = JSON.parse(store('eq_bank') || 'null'); if (old && old.orderId && old.expiresAt > Date.now()) show(old); } catch (e) {}
+})();
+</script>
 </body>
 </html>
