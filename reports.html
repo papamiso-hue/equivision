@@ -72,37 +72,40 @@
     <button class="btn line small" id="btnLogout" hidden style="white-space:nowrap">로그아웃</button>
   </header>
 
-  <!-- 1) 로그인 -->
+  <!-- 1) 처음 들어오셨을 때 -->
   <section id="viewLogin" hidden>
-    <h1>회원 전용 화면입니다</h1>
-    <p class="sub">입금 신청 때 적어 주신 <b>휴대폰 번호</b>를 넣으면, <b>텔레그램 안내 봇</b> 대화창으로 인증번호가 갑니다. 그 번호를 입력하면 오늘 리포트를 볼 수 있습니다.</p>
-
-    <div id="stepPhone">
-      <label for="inPhone">휴대폰 번호</label>
-      <input id="inPhone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="01012345678" maxlength="13">
-      <p class="sub" style="margin-top:8px">숫자만 써도 되고, 하이픈(-)을 넣어도 됩니다.</p>
-      <button class="btn" id="btnSend" style="margin-top:12px">인증번호 받기</button>
-      <a class="btn line" href="https://t.me/EquivisionReport_bot" target="_blank" rel="noopener" style="margin-top:12px">📨 텔레그램 안내 봇 열기</a>
-      <p class="sub" style="margin-top:8px">처음이시면 안내 봇을 먼저 열어 <b>[시작]</b>을 눌러 두세요. 인증번호가 그곳으로 옵니다.</p>
-    </div>
-
-    <div id="stepCode" hidden>
-      <div class="msg ok" id="sentMsg"></div>
-      <label for="inCode">받은 6자리 숫자</label>
-      <input id="inCode" type="tel" inputmode="numeric" autocomplete="one-time-code" placeholder="123456" maxlength="6">
-      <button class="btn" id="btnVerify" style="margin-top:16px">확인</button>
-      <button class="btn line" id="btnBack" style="margin-top:12px">번호를 다시 쓸게요</button>
-    </div>
+    <h1>오늘 리포트</h1>
     <div class="msg err" id="loginErr" hidden></div>
+    <div class="msg" style="font-size:1.25rem;line-height:1.7">
+      <b>텔레그램 안내 봇</b>에서<br><b>[📄 오늘 리포트 보기]</b> 버튼을 누르면<br>바로 열립니다.
+    </div>
+    <a class="btn" href="https://t.me/EquivisionReport_bot" target="_blank" rel="noopener" style="margin-top:14px">📨 텔레그램 안내 봇 열기</a>
+    <p class="sub" style="margin-top:10px">처음이시면 봇을 열어 아래쪽 <b>[시작]</b>을 누르세요. 입금이 확인되면 봇에 [📄 오늘 리포트 보기] 버튼이 생깁니다.</p>
 
     <details>
-      <summary>로그인이 안 될 때</summary>
+      <summary>휴대폰 번호로 들어가기 (다른 방법)</summary>
+      <div id="stepPhone">
+        <label for="inPhone">휴대폰 번호</label>
+        <input id="inPhone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="01012345678" maxlength="13">
+        <p class="sub" style="margin-top:8px">입금 신청 때 적은 번호입니다. 숫자만 써도 됩니다.</p>
+        <button class="btn" id="btnSend" style="margin:12px 0">인증번호 받기</button>
+      </div>
+      <div id="stepCode" hidden>
+        <div class="msg ok" id="sentMsg"></div>
+        <label for="inCode">받은 6자리 숫자</label>
+        <input id="inCode" type="tel" inputmode="numeric" autocomplete="one-time-code" placeholder="123456" maxlength="6">
+        <button class="btn" id="btnVerify" style="margin:16px 0 0">확인</button>
+        <button class="btn line" id="btnBack" style="margin:12px 0">번호를 다시 쓸게요</button>
+      </div>
+    </details>
+
+    <details>
+      <summary>안 열릴 때</summary>
       <ol>
-        <li>결제하실 때 적은 번호와 같은 번호인지 확인해 주세요.</li>
-        <li>인증번호는 <b>텔레그램 안내 봇</b> 대화창으로 갑니다. 아직 안 열어 보셨다면 위의 [텔레그램 안내 봇 열기]로 열어 <b>[시작]</b>을 누른 뒤 다시 눌러 주세요.</li>
-        <li>1~2분 안에 오지 않으면 번호를 다시 확인하고 한 번 더 눌러 주세요.</li>
-        <li>구독이 끝났거나 해지하셨다면 볼 수 없습니다.</li>
-        <li>그래도 안 되면 <a href="https://equivisionai.kr/store.html#faq" style="color:#7dd3fc">자주 묻는 질문</a>을 보시거나 help@equivisionai.kr 로 알려 주세요.</li>
+        <li>구독이 끝났거나 환불하셨다면 볼 수 없습니다.</li>
+        <li>텔레그램 봇에서 [📄 오늘 리포트 보기] 버튼을 <b>다시 눌러</b> 보세요. 누를 때마다 새 링크가 만들어집니다.</li>
+        <li>봇에 버튼이 안 보이면 봇 대화창에 <b>리포트</b>라고 보내 보세요.</li>
+        <li>그래도 안 되면 봇에 글로 문의하시거나 help@equivisionai.kr 로 알려 주세요.</li>
       </ol>
     </details>
   </section>
@@ -170,9 +173,18 @@
   function hhmm(ms) { var d = new Date(ms); return ('0' + d.getHours()).slice(-2) + ':' + ('0' + d.getMinutes()).slice(-2); }
   function koDate(s) { var p = s.split('-'); var d = new Date(+p[0], +p[1] - 1, +p[2]); return (+p[1]) + '월 ' + (+p[2]) + '일 (' + '일월화수목금토'.charAt(d.getDay()) + ')'; }
 
+  function devId() {
+    var d = store('eq_dev');
+    if (!d || !/^[a-f0-9]{16,32}$/.test(d)) {
+      try { var a = new Uint8Array(12); crypto.getRandomValues(a); d = Array.prototype.map.call(a, function (b) { return ('0' + b.toString(16)).slice(-2); }).join(''); }
+      catch (e) { d = (String(Date.now()) + '1234567890123456').slice(0, 24); }
+      store('eq_dev', d);
+    }
+    return d;
+  }
   function api(path, opts) {
     opts = opts || {};
-    var headers = { 'Content-Type': 'application/json' };
+    var headers = { 'Content-Type': 'application/json', 'X-Device': devId() };
     if (token) headers['Authorization'] = 'Bearer ' + token;
     return fetch(API + path, { method: opts.method || 'GET', headers: headers, body: opts.body ? JSON.stringify(opts.body) : undefined })
       .then(function (r) { return r; });
@@ -239,7 +251,7 @@
     api('/member/reports' + (curDate ? '?date=' + encodeURIComponent(curDate) : ''))
       .then(function (r) { return readJson(r).then(function (j) { return { status: r.status, ok: r.ok, j: j }; }); })
       .then(function (x) {
-        if (x.status === 401) { goLogin('다시 로그인해 주세요. (구독이 끝났거나 로그인 기간이 지났습니다)'); return; }
+        if (x.status === 401) { goLogin(x.j.code === 'DEVICE_LIMIT' ? x.j.message : '다시 들어와 주세요. (이용 기간이 끝났거나 링크가 오래되었습니다) 텔레그램 봇에서 [📄 오늘 리포트 보기]를 눌러 주세요.'); return; }
         if (!x.ok) { st.textContent = x.j.message || '잠시 뒤 다시 확인해 주세요.'; return; }
         me = x.j.me || me; curDate = x.j.date; items = x.j.items || [];
         render(x.j);
@@ -309,9 +321,9 @@
     curKey = it.key; zoom = 1;
     $('viewer').hidden = false; document.body.style.overflow = 'hidden';
     setViewMsg('리포트를 불러오는 중입니다…');
-    fetch(API + '/member/report?key=' + encodeURIComponent(it.key), { headers: { Authorization: 'Bearer ' + token } })
+    fetch(API + '/member/report?key=' + encodeURIComponent(it.key), { headers: { Authorization: 'Bearer ' + token, 'X-Device': devId() } })
       .then(function (r) {
-        if (r.status === 401) { closeViewer(); goLogin('다시 로그인해 주세요.'); throw new Error('login'); }
+        if (r.status === 401) { return r.json().catch(function () { return {}; }).then(function (j) { closeViewer(); goLogin(j.code === 'DEVICE_LIMIT' ? j.message : '다시 로그인해 주세요.'); throw new Error('login'); }); }
         if (!r.ok) throw new Error('fail');
         return r.arrayBuffer();
       })
@@ -372,11 +384,13 @@
   }
 
   /* ---------- 시작 ---------- */
+  var hm = /^#t=([a-f0-9]{64})$/.exec(location.hash || '');
+  if (hm) { store('eq_token', hm[1]); try { history.replaceState(null, '', location.pathname); } catch (e) {} }
   var saved = store('eq_token');
   if (saved && /^[a-f0-9]{64}$/.test(saved)) {
     token = saved;
     api('/member/me').then(function (r) { return readJson(r).then(function (j) { return { ok: r.ok, j: j }; }); })
-      .then(function (x) { if (x.ok) { me = x.j.me; enterList(null); } else { goLogin(''); } }, function () { goLogin(''); });
+      .then(function (x) { if (x.ok) { me = x.j.me; enterList(null); } else { goLogin(x.j.code === 'DEVICE_LIMIT' ? x.j.message : (hm ? '이 링크는 더 이상 쓸 수 없습니다. 이용 기간이 끝났거나 링크가 오래되었습니다. 텔레그램 봇에서 [📄 오늘 리포트 보기]를 다시 눌러 주세요.' : '')); } }, function () { goLogin(''); });
   } else { goLogin(''); }
 })();
 </script>

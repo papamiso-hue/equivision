@@ -229,6 +229,25 @@
     .summary-total { display: flex; justify-content: space-between; align-items: baseline; padding: 1rem 0 0.5rem; font-weight: 800; }
     .summary-total .amount { font-size: 1.8rem; color: var(--primary-glow); font-variant-numeric: tabular-nums; }
 
+    /* 한눈에 보이는 3단계 · 더 알아보기 · 입금 안내 카드 */
+    .flow3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.7rem; margin: 1.4rem 0 0.4rem; }
+    .f3 { background: var(--bg-card); border: 2px solid var(--border-dark); border-radius: 14px; padding: 0.9rem 0.5rem; text-align: center; }
+    .f3 b { display: block; font-size: 1.9rem; color: var(--primary-glow); line-height: 1.1; }
+    .f3 span { display: block; font-weight: 800; font-size: 1.3rem; margin: 0.2rem 0; }
+    .f3 small { display: block; color: var(--text-sub); font-size: 1rem; line-height: 1.4; }
+    @media (max-width: 520px) { .flow3 { grid-template-columns: 1fr; } .f3 { display: flex; align-items: center; gap: 1rem; text-align: left; padding: 0.8rem 1.1rem; } .f3 b { font-size: 2.2rem; min-width: 2.2rem; text-align: center; } .f3 span { margin: 0; } }
+    .more-h { font-size: 1.4rem; margin: 2.2rem 0 0.8rem; }
+    details.more { margin: 0 0 0.8rem; }
+    details.more > summary { font-size: 1.2rem; font-weight: 800; padding: 1rem 1.1rem; min-height: 58px; background: var(--bg-card); border: 1px solid var(--border-dark); border-radius: 14px; cursor: pointer; display: flex; align-items: center; }
+    details.more[open] > summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; border-color: var(--primary-glow); }
+    details.more > :not(summary) { }
+    details.more > .more-body { padding: 1rem 0.2rem 0.4rem; }
+    details.receipt-more { margin-top: 0.6rem; }
+    details.receipt-more > summary { font-size: 1.05rem; font-weight: 700; padding: 0.7rem 0; cursor: pointer; }
+    .step-card { background: var(--bg-soft); border: 2px solid var(--primary-glow); border-radius: 16px; padding: 1rem; margin: 0 0 1rem; }
+    .step-no { font-size: 1.4rem; font-weight: 800; margin-bottom: 0.7rem; }
+    .bank-note.big { font-size: 1.15rem; color: #fff; font-weight: 700; line-height: 1.7; }
+    .bank-link { display: inline-block; margin-top: 0.6rem; font-size: 1.05rem; font-weight: 700; }
     /* 계좌 입금(무통장입금) — 어르신도 보기 쉽게 큰 글씨 */
     .bank-box { margin-top: 1.6rem; background: var(--bg-card); border: 2px solid var(--border-dark); border-radius: 16px; padding: 1.3rem 1.1rem; }
     .bank-h { font-size: 1.35rem; line-height: 1.4; margin: 0 0 0.6rem; }
@@ -351,9 +370,9 @@
       <div class="nav-links">
         <a href="index.html">← 홈</a>
         <a href="#checkout" style="color:var(--primary-glow);">신청</a>
-        <a href="#products" class="hide-sm">상품</a>
-        <a href="#telegram">텔레그램 안내</a>
-        <a href="#cancel">환불·종료</a>
+        <a href="reports.html">📄 리포트 보기</a>
+        <a href="#telegram" class="hide-sm">텔레그램 안내</a>
+        <a href="#cancel" class="hide-sm">환불·종료</a>
       </div>
     </div>
   </header>
@@ -363,27 +382,33 @@
 
     <section class="hero">
       <h1>예시장 비전 AI로 측정한<br><em>경주마 컨디션 분석 리포트</em></h1>
-      <p>출전마의 보행 리듬, 보폭, 좌우 대칭성을 영상으로 분석해 평소 대비 컨디션 변화를 지수로 정리한 리포트를 경주 직전에 보내드립니다.</p>
+      <p>경주가 시작되기 전에 <strong>텔레그램</strong>으로 보내 드립니다.</p>
       <div class="hero-btns">
-        <a href="#checkout" class="btn-cta">👇 지금 바로 구독하기</a>
+        <a href="#checkout" class="btn-cta">👇 신청하기</a>
         <a href="#" class="sample-link" id="sampleLink" target="_blank" rel="noopener" hidden>📄 샘플 리포트 먼저 보기 (PDF)</a>
       </div>
     </section>
 
     <!-- 상품 -->
-    <section id="products" aria-labelledby="productsTitle">
+    <section id="products" aria-labelledby="productsTitle" hidden>
       <h2 id="productsTitle" style="text-align:center;">상품 안내</h2>
       <p class="lead" style="text-align:center;">표시된 금액은 부가가치세가 포함된 30일 이용권 금액입니다. 자동으로 다시 결제되지 않으며, 추가 비용은 없습니다.</p>
       <div class="products" id="productList" role="radiogroup" aria-label="상품 선택"></div>
     </section>
 
+    <!-- 진행 순서 (한눈에) -->
+    <section class="flow3" aria-label="진행 순서">
+      <div class="f3"><b>1</b><div><span>신청</span><small>이름·전화번호만 쓰기</small></div></div>
+      <div class="f3"><b>2</b><div><span>입금</span><small>안내된 계좌로 40,000원</small></div></div>
+      <div class="f3"><b>3</b><div><span>텔레그램</span><small>버튼을 눌러 리포트 보기</small></div></div>
+    </section>
+
     <!-- 신청·입금 -->
     <section id="checkout" aria-labelledby="checkoutTitle">
-      <h2 id="checkoutTitle">신청하기 (계좌 입금)</h2>
-      <p class="pre-links">신청 전에 <a href="#infoTitle">상품 정보</a> · <a href="#refund">환불 정책</a> · <a href="#telegram">텔레그램 설치 안내</a>를 확인해 주세요.</p>
+      <h2 id="checkoutTitle">신청하기</h2>
       <div class="checkout">
 
-        <!-- 결제 전에 크게 보여 주는 이용권·환불 안내 -->
+        <!-- 이용권·환불 안내 (정책 문구 그대로) -->
         <div class="policy-box" id="policyBox">
           <h3>📋 이용권 안내</h3>
           <ul>
@@ -400,55 +425,55 @@
           </ul>
         </div>
 
-        <div class="summary-row"><span>상품</span><span id="sumName">-</span></div>
-        <div class="summary-row"><span>이용 기간</span><span id="sumPeriod">-</span></div>
-        <div class="summary-row"><span>결제 방식</span><span id="sumCycle">-</span></div>
-        <div class="summary-row"><span>채널 초대</span><span id="sumInvite">-</span></div>
+        <!-- (화면에는 숨김: 스크립트가 값을 채웁니다) -->
+        <div hidden>
+          <span id="sumName"></span><span id="sumPeriod"></span><span id="sumCycle"></span><span id="sumInvite"></span>
+        </div>
         <div class="summary-total"><span>결제 금액 (VAT 포함)</span><span class="amount" id="sumPrice">-</span></div>
 
         <div id="orderForm">
-          <!-- 구매자 정보 -->
+          <!-- 신청자 정보 -->
           <div class="buyer">
             <h3>신청자 정보</h3>
             <div class="field">
               <label for="buyerName">이름<span class="req">*</span></label>
               <input type="text" id="buyerName" autocomplete="name" placeholder="홍길동" maxlength="30">
+              <span class="help">입금하실 때 쓰시는 이름과 같게 적어 주세요.</span>
               <span class="err" id="errName"></span>
             </div>
             <div class="field">
               <label for="buyerPhone">휴대폰 번호<span class="req">*</span></label>
               <input type="tel" id="buyerPhone" autocomplete="tel" inputmode="numeric" placeholder="01012345678" maxlength="13">
-              <span class="help">입금 확인과 환불 때 본인 확인에 사용합니다.</span>
               <span class="err" id="errPhone"></span>
             </div>
-            <div class="field">
-              <label for="buyerTelegram">텔레그램 사용자명 <span style="color:var(--text-sub);font-weight:600;">(선택)</span></label>
-              <input type="text" id="buyerTelegram" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="모르시면 비워 두세요" maxlength="33">
-              <span class="help">👍 <strong>몰라도 괜찮습니다.</strong> 신청이 끝나면 나오는 <strong>[텔레그램 열기]</strong> 버튼만 누르면 됩니다.</span>
+            <!-- 텔레그램 사용자명: 필수가 아니라서 화면에서 숨김 (몰라도 신청 후 버튼으로 연결됩니다) -->
+            <div class="field" hidden>
+              <input type="text" id="buyerTelegram" autocomplete="off" tabindex="-1">
               <span class="err" id="errTelegram"></span>
             </div>
-            <div class="field">
-              <label for="buyerReceipt">현금영수증 번호 <span style="color:var(--text-sub);font-weight:600;">(선택)</span></label>
-              <input type="tel" id="buyerReceipt" autocomplete="off" inputmode="numeric" placeholder="휴대폰 번호 또는 사업자등록번호 (숫자만)" maxlength="13">
-              <span class="help">현금영수증이 필요하신 분만 적어 주세요. <strong>발급이 끝나면 이 번호는 지웁니다.</strong></span>
-              <span class="err" id="errReceipt"></span>
-            </div>
+            <details class="receipt-more">
+              <summary>현금영수증이 필요하세요? (필요한 분만 열어 보세요)</summary>
+              <div class="field">
+                <label for="buyerReceipt">현금영수증 번호</label>
+                <input type="tel" id="buyerReceipt" autocomplete="off" inputmode="numeric" placeholder="휴대폰 번호 또는 사업자등록번호 (숫자만)" maxlength="13">
+                <span class="help">발급이 끝나면 이 번호는 지웁니다.</span>
+                <span class="err" id="errReceipt"></span>
+              </div>
+            </details>
           </div>
 
           <div class="consents">
-            <label class="consent all"><input type="checkbox" id="agreeAll"> 아래 필수 항목에 모두 동의합니다</label>
+            <label class="consent all"><input type="checkbox" id="agreeAll"> <strong>아래 5가지에 모두 동의합니다</strong></label>
             <label class="consent refund-check"><input type="checkbox" class="agree"><span><span class="req">[필수]</span><strong>위 이용 기간과 환불 안내를 읽고 확인했습니다.</strong></span></label>
-            <label class="consent"><input type="checkbox" class="agree"><span><span class="req">[필수]</span>본 상품은 디지털콘텐츠로, <strong>리포트 제공이 시작되면 이미 제공된 부분은 청약철회가 제한</strong>됩니다. 7일 안에 환불을 신청하시면 이용한 날수만큼 빼고 환불함을 확인했습니다.</span></label>
-            <label class="consent"><input type="checkbox" class="agree"><span><span class="req">[필수]</span>월 요금은 <strong>경주 수와 관계없는 정액</strong>이며, 경주 취소·순연 등으로 발송되지 않은 리포트는 <strong>환불·기간 연장 대상이 아님</strong>을 확인했습니다.</span></label>
-            <label class="consent"><input type="checkbox" class="agree"><span><span class="req">[필수]</span>본 리포트는 참고용 분석 정보이며 <strong>특정 결과나 수익을 보장하지 않음</strong>을 확인했습니다.</span></label>
-            <label class="consent"><input type="checkbox" class="agree"><span><span class="req">[필수]</span>본인은 <strong>만 19세 이상</strong>입니다.</span></label>
+            <label class="consent"><input type="checkbox" class="agree"><span><span class="req">[필수]</span>디지털콘텐츠라서 <strong>리포트 제공이 시작되면 이미 제공된 부분은 청약철회가 제한</strong>됩니다(7일 안에 환불하면 이용한 날수만큼 뺍니다). 월 요금은 <strong>경주 수와 관계없는 정액</strong>이며, 경주 취소·순연 등으로 발송되지 않은 리포트는 <strong>환불·기간 연장 대상이 아님</strong>을 확인했습니다.</span></label>
+            <label class="consent"><input type="checkbox" class="agree"><span><span class="req">[필수]</span>본인은 <strong>만 19세 이상</strong>이며, 리포트는 참고용 분석 정보로 <strong>특정 결과나 수익을 보장하지 않음</strong>을 확인했습니다.</span></label>
             <label class="consent"><input type="checkbox" class="agree"><span><span class="req">[필수]</span>개인정보 수집·이용에 동의합니다.
-              <span class="sub">수집 항목: 이름, 휴대폰 번호, 텔레그램 사용자명(입력 시), 텔레그램 계정 식별번호(채널 참여 버튼 이용 시), 현금영수증 번호(입력 시) · 목적: 구독 서비스 제공, 입금 확인, 채널 초대, 환불 처리, 현금영수증 발급 · 보유 기간: 구독 종료 후 5년(전자상거래법상 계약·결제 기록 보존 의무). 현금영수증 번호는 발급이 끝나면 바로 삭제하며, 입금하지 않은 신청은 입금 기한 후 90일 안에 삭제합니다. 동의를 거부할 수 있으나 거부 시 서비스를 이용할 수 없습니다.</span></span></label>
+              <span class="sub">수집 항목: 이름, 휴대폰 번호, 텔레그램 계정 식별번호(채널 참여 버튼 이용 시), 현금영수증 번호(입력 시) · 목적: 구독 서비스 제공, 입금 확인, 채널 초대, 환불 처리, 현금영수증 발급 · 보유 기간: 구독 종료 후 5년(전자상거래법상 계약·결제 기록 보존 의무). 현금영수증 번호는 발급이 끝나면 바로 삭제하며, 입금하지 않은 신청은 입금 기한 후 90일 안에 삭제합니다. 동의를 거부할 수 있으나 거부 시 서비스를 이용할 수 없습니다.</span></span></label>
             <label class="consent"><input type="checkbox" class="agree"><span><span class="req">[필수]</span><a href="#" id="openRefund2">환불 정책 전문</a>과 <a href="index.html" target="_blank" rel="noopener">이용약관·개인정보처리방침</a>을 확인했습니다.</span></label>
           </div>
 
           <button type="button" class="btn-pay" id="btnPay" disabled>입금 신청하기</button>
-          <p class="pay-methods" id="payMethods">신청하시면 <strong>입금 계좌와 입금자명</strong>이 나옵니다. 은행 앱이나 토스·카카오페이의 계좌 송금으로 보내시면 됩니다. 계좌번호는 신청한 뒤에 알려 드립니다.</p>
+          <p class="pay-methods" id="payMethods">누르면 <strong>입금할 계좌</strong>가 나옵니다. 은행 앱이나 토스·카카오페이의 계좌 송금으로 보내시면 됩니다.</p>
           <p class="pay-hint" id="payHint" aria-live="polite"></p>
           <p class="pay-hint" id="escrowLine"></p>
         </div>
@@ -463,20 +488,23 @@
       </div>
     </section>
 
+    <h2 class="more-h">더 알아보기</h2>
+
     <!-- 이용 방법 -->
     <section aria-labelledby="howTitle">
-      <h2 id="howTitle">이용 방법</h2>
+      <details class="more"><summary id="howTitle">이용 방법</summary><div class="more-body">
       <div class="steps">
         <div class="step"><h3>텔레그램 설치</h3><p>휴대폰에 텔레그램을 설치하고 휴대폰 번호로 가입합니다. <a href="#telegram">설치 안내 보기</a></p></div>
         <div class="step"><h3>결제</h3><p id="stepPay">이 페이지 아래에서 이름·휴대폰 번호를 입력하고 <strong>[입금 신청하기]</strong>를 누르면 입금할 계좌와 입금자명이 나옵니다.</p></div>
         <div class="step"><h3>채널 초대</h3><p><span id="stepInvite"></span><span class="step-note" id="stepInviteNote"></span></p></div>
         <div class="step"><h3>리포트 수신</h3><p><span id="stepDelivery"></span><span class="step-note" id="stepDeliveryNote"></span></p></div>
       </div>
+    </div></details>
     </section>
 
     <!-- 상품 정보 고지 -->
     <section aria-labelledby="infoTitle">
-      <h2 id="infoTitle">상품 정보</h2>
+      <details class="more"><summary id="infoTitle">상품 정보</summary><div class="more-body">
       <table class="info-table">
         <tbody>
           <tr><th scope="row">상품 형태</th><td>디지털콘텐츠 (경주마 컨디션 분석 리포트)</td></tr>
@@ -497,11 +525,12 @@
           <tr><th scope="row">성격</th><td>통계 모델에 기반한 참고용 분석 정보이며, 특정 결과나 수익을 보장하지 않습니다.</td></tr>
         </tbody>
       </table>
+    </div></details>
     </section>
 
     <!-- 텔레그램 설치 안내 -->
     <section id="telegram" aria-labelledby="tgTitle">
-      <h2 id="tgTitle">텔레그램 설치 및 가입 안내</h2>
+      <details class="more"><summary id="tgTitle">텔레그램 설치 및 가입 안내</summary><div class="more-body">
       <p class="lead">리포트는 텔레그램으로만 보내드립니다. 처음 쓰시는 분도 아래 순서대로 따라 하시면 5분이면 준비됩니다.</p>
 
       <div class="tg-qr-row">
@@ -596,11 +625,12 @@
           <div class="tip"><strong>꼭 확인하세요</strong> 리포트는 경주 출발 약 7분 전에 발송되므로 <strong>알림이 꺼져 있으면 놓치기 쉽습니다.</strong> 휴대폰의 절전 모드나 방해 금지 모드가 텔레그램 알림을 막지 않는지도 확인해 주세요. 초대 링크는 본인 전용(1회용)이며 다른 사람에게 공유하면 이용이 제한될 수 있습니다.<br>버튼이 잘 안 되면 걱정하지 마세요. <strong id="guideInvite"></strong> 운영자가 직접 연락드려 초대해 드립니다.</div>
         </div>
       </details>
+    </div></details>
     </section>
 
     <!-- 이용 종료·환불 신청 -->
     <section id="cancel" aria-labelledby="cancelTitle">
-      <h2 id="cancelTitle">이용 종료·환불 신청 방법</h2>
+      <details class="more"><summary id="cancelTitle">이용 종료·환불 신청 방법</summary><div class="more-body">
       <p class="lead">이용권은 <strong>30일이 지나면 저절로 끝나고</strong>, 자동으로 다시 결제되지 않습니다. 그래서 따로 해지하실 필요가 없습니다. <strong>결제 후 7일 안에</strong> 환불을 원하시면 아래 방법으로 신청해 주세요.</p>
       <div class="cancel-box">
         <h3>① 환불 신청하기</h3>
@@ -622,11 +652,12 @@
           <li>이용 종료 <strong>3일 전</strong>에 텔레그램 봇이 안내해 드립니다. 계속 이용하시려면 그때 다시 입금 신청을 해 주세요.</li>
         </ul>
       </div>
+    </div></details>
     </section>
 
     <!-- 환불 요약 -->
     <section id="refund" aria-labelledby="refundTitle">
-      <h2 id="refundTitle">청약철회 및 환불</h2>
+      <details class="more"><summary id="refundTitle">청약철회 및 환불</summary><div class="more-body">
       <div class="refund-summary">
         <ul>
           <li>결제 후 <strong>7일 안</strong>에는 환불을 신청할 수 있습니다. 이미 이용한 날수만큼은 빼고 환불해 드립니다. (이용하신 적이 없으면 <strong>전액</strong> 환불)</li>
@@ -639,6 +670,7 @@
         </ul>
         <button type="button" class="btn-text" id="openRefund">환불 정책 전문 보기</button>
       </div>
+    </div></details>
     </section>
 
   </main>
@@ -658,11 +690,12 @@
   <details class="guide"><summary><span class="num">9</span>현금영수증이나 계산서를 받을 수 있나요?</summary><div class="guide-body"><p>현금영수증은 받으실 수 있어요. 입금 신청 화면의 &#x27;현금영수증 번호&#x27; 칸에 휴대폰 번호나 사업자등록번호를 적어 주세요. 발급이 끝나면 그 번호는 지웁니다.</p><p>신청할 때 못 적으셨다면 안내 봇이나 문의로 번호를 알려 주세요.</p><p>회사용으로 세금계산서가 필요하시면, 회사 이름, 사업자등록번호, 입금한 날짜를 적어 문의해 주세요. 발행할 수 있는지 확인하고 알려 드립니다.</p></div></details>
   <details class="guide"><summary><span class="num">10</span>텔레그램은 어떻게 설치하고 쓰나요?</summary><div class="guide-body"><p>텔레그램은 무료로 쓰는 메신저 앱입니다. 카카오톡과 비슷합니다.</p><ul><li>휴대폰: 앱스토어(아이폰) 또는 플레이스토어(안드로이드)에서 &#x27;Telegram&#x27;을 찾아 설치하고, 휴대폰 번호로 가입합니다.</li><li>컴퓨터: telegram.org 에서 내려받을 수 있습니다.</li></ul><p>&#x27;사용자명(@아이디)&#x27;은 몰라도 괜찮습니다. 입금 신청이 끝나면 나오는 파란 [텔레그램 열기] 버튼만 누르시면 됩니다.</p><p>그림으로 된 설명은 구매 페이지(<a href="https://equivisionai.kr/store.html" rel="noopener">https://equivisionai.kr/store.html</a>)의 &#x27;텔레그램 설치 안내&#x27;에 있습니다.</p></div></details>
   <details class="guide"><summary><span class="num">11</span>리포트에는 무엇이 들어 있나요?</summary><div class="guide-body"><p>경주 전에 말들을 보여 주는 곳(예시장) 영상을 인공지능이 보고, 말마다 &#x27;오늘 컨디션이 어떤지&#x27; 정리해 드립니다.</p><ul><li>걸음걸이의 리듬, 걸음 폭, 좌우 균형을 살펴봅니다.</li><li>그 말의 평소 모습과 비교해 오늘 좋아졌는지 나빠졌는지 점수로 보여 드립니다.</li></ul><p>참고하시라고 드리는 자료입니다. 경주 결과나 이익을 약속하는 것은 아닙니다.</p></div></details>
-  <details class="guide"><summary><span class="num">12</span>이용하기 전에 알아야 할 것이 있나요?</summary><div class="guide-body"><p>이용 전에 알아두세요.</p><ul><li>만 19세 이상만 이용할 수 있습니다.</li><li>한 사람이 한 계정으로만 이용합니다. 리포트를 다른 사람에게 보내거나 올리는 것, 입장 주소(초대 링크)를 다른 사람에게 주는 것은 안 됩니다.</li><li>저희는 경마투표권(마권) 구매를 대신해 드리거나 소개해 드리지 않고, 어떤 마권을 사라고 권하지도 않습니다. 채널에서 돈을 모으거나 함께 사는 일도 없습니다. 저희 이름을 대고 이런 말을 하면 사기이니 조심하세요.</li><li>경마 때문에 힘드시면 한국도박문제예방치유원 ☎1336(24시간, 무료)으로 전화해 상담받으실 수 있습니다.</li></ul></div></details>
-  <details class="guide"><summary><span class="num">13</span>이용 기간이 끝나기 전에 다시 입금하면 어떻게 되나요?</summary><div class="guide-body"><p>이용 기간이 끝나기 전에 다시 신청·입금하셔도 됩니다. 새로 입금이 확인된 날부터 새로 30일이 시작됩니다. 같은 텔레그램 계정으로 이용 중인 다른 이용권이 남아 있으면 채널에서 나가지 않고 계속 볼 수 있습니다.</p><p>계속 이용하시려면 구매 페이지(<a href="https://equivisionai.kr/store.html" rel="noopener">https://equivisionai.kr/store.html</a>)에서 다시 입금 신청을 해 주세요.</p></div></details>
-  <details class="guide"><summary><span class="num">14</span>내 개인정보는 어떻게 쓰이나요?</summary><div class="guide-body"><p>입금 확인과 안내, 환불 처리를 위해 이름, 휴대폰 번호, 텔레그램 정보(적어 주신 경우), 현금영수증 번호(적어 주신 경우)를 받습니다. 현금영수증 번호는 발급이 끝나면 바로 지웁니다. 나머지 정보는 이용이 끝난 뒤에도 5년 동안 보관합니다(법에서 정한 기간입니다). 은행 계좌 비밀번호나 카드 정보는 받지 않습니다. 자세한 내용은 홈페이지 맨 아래 &#x27;개인정보처리방침&#x27;에서 보실 수 있습니다.</p></div></details>
+  <details class="guide"><summary><span class="num">12</span>리포트를 웹 화면에서도 볼 수 있나요?</summary><div class="guide-body"><p>네, 볼 수 있어요. 가장 쉬운 방법입니다.</p><p>1) 텔레그램 안내 봇(@EquivisionReport_bot) 대화창을 엽니다.</p><p>2) 아래쪽의 [📄 오늘 리포트 보기] 버튼을 누릅니다. (입금이 확인되면 생깁니다)</p><p>3) 파란 [📄 오늘 리포트 열기] 버튼을 누르면 로그인 없이 바로 열립니다.</p><ul><li>경주마다 카드가 나오고, 카드를 누르면 리포트가 큰 글씨로 열려요. 글자는 [＋ 크게] 버튼으로 키울 수 있어요.</li><li>버튼이 안 보이면 봇 대화창에 &#x27;리포트&#x27;라고 보내 보세요.</li><li>이 버튼은 본인 전용입니다. 다른 분께 보내지 마세요.</li><li>링크는 3일 동안 쓸 수 있고, 휴대폰·컴퓨터 등 기기 2대까지 열 수 있어요. 3일이 지났거나 열리지 않으면 봇에서 버튼을 다시 누르세요. 다시 누르면 이전 링크는 사라집니다.</li><li>이용 기간이 끝나면 저절로 닫힙니다.</li></ul></div></details>
+  <details class="guide"><summary><span class="num">13</span>이용하기 전에 알아야 할 것이 있나요?</summary><div class="guide-body"><p>이용 전에 알아두세요.</p><ul><li>만 19세 이상만 이용할 수 있습니다.</li><li>한 사람이 한 계정으로만 이용합니다. 리포트를 다른 사람에게 보내거나 올리는 것, 입장 주소(초대 링크)를 다른 사람에게 주는 것은 안 됩니다.</li><li>저희는 경마투표권(마권) 구매를 대신해 드리거나 소개해 드리지 않고, 어떤 마권을 사라고 권하지도 않습니다. 채널에서 돈을 모으거나 함께 사는 일도 없습니다. 저희 이름을 대고 이런 말을 하면 사기이니 조심하세요.</li><li>경마 때문에 힘드시면 한국도박문제예방치유원 ☎1336(24시간, 무료)으로 전화해 상담받으실 수 있습니다.</li></ul></div></details>
+  <details class="guide"><summary><span class="num">14</span>이용 기간이 끝나기 전에 다시 입금하면 어떻게 되나요?</summary><div class="guide-body"><p>이용 기간이 끝나기 전에 다시 신청·입금하셔도 됩니다. 새로 입금이 확인된 날부터 새로 30일이 시작됩니다. 같은 텔레그램 계정으로 이용 중인 다른 이용권이 남아 있으면 채널에서 나가지 않고 계속 볼 수 있습니다.</p><p>계속 이용하시려면 구매 페이지(<a href="https://equivisionai.kr/store.html" rel="noopener">https://equivisionai.kr/store.html</a>)에서 다시 입금 신청을 해 주세요.</p></div></details>
+  <details class="guide"><summary><span class="num">15</span>내 개인정보는 어떻게 쓰이나요?</summary><div class="guide-body"><p>입금 확인과 안내, 환불 처리를 위해 이름, 휴대폰 번호, 텔레그램 정보(적어 주신 경우), 현금영수증 번호(적어 주신 경우)를 받습니다. 현금영수증 번호는 발급이 끝나면 바로 지웁니다. 나머지 정보는 이용이 끝난 뒤에도 5년 동안 보관합니다(법에서 정한 기간입니다). 은행 계좌 비밀번호나 카드 정보는 받지 않습니다. 자세한 내용은 홈페이지 맨 아래 &#x27;개인정보처리방침&#x27;에서 보실 수 있습니다.</p></div></details>
 </section>
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "결제는 어떻게 하나요?", "acceptedAnswer": {"@type": "Answer", "text": "결제는 회사 계좌로 입금하는 방법입니다. 이렇게 하세요.\n1) 구매 페이지(https://equivisionai.kr/store.html)를 엽니다.\n2) 이름과 휴대폰 번호를 쓰고, 이용 기간·환불 안내를 읽은 뒤 안내 글에 모두 체크(동의)합니다.\n3) [입금 신청하기]를 누르면 입금할 계좌와 '입금자명'이 나옵니다.\n4) 은행 앱(또는 토스·카카오페이의 계좌 송금)으로 그 계좌에 40,000원을 보내고, 입금자명을 꼭 안내된 대로 적습니다.\n5) 입금이 확인되면 텔레그램으로 채널 입장 버튼이 갑니다.\n요금은 30일에 40,000원(부가세 포함)입니다.\n입금 기한은 신청한 날부터 3일입니다.\n카드·간편결제는 지금 이용할 수 없습니다.\n회원가입은 필요 없습니다."}}, {"@type": "Question", "name": "자동으로 다시 결제되나요?", "acceptedAnswer": {"@type": "Answer", "text": "아니요. 이용권은 30일이고, 자동으로 다시 결제되지 않아요.\n30일이 지나면 저절로 끝나고 채널에서 제외됩니다.\n끝나기 3일 전에 안내 봇이 알려 드립니다. (안내 봇을 한 번이라도 열어 두셨을 때)\n계속 이용하시려면 기간이 끝나기 전에 다시 입금 신청을 해 주세요."}}, {"@type": "Question", "name": "결제했는데 채널에 들어가는 방법을 모르겠어요. (입장 버튼이 안 와요)", "acceptedAnswer": {"@type": "Answer", "text": "입금 후 채널(리포트를 받는 대화방)에 들어가는 방법입니다.\n1) 입금 신청이 끝난 화면의 파란 [텔레그램 열기] 버튼을 누릅니다.\n2) 텔레그램이 열리면 아래쪽 [시작]을 누릅니다.\n3) 입금이 확인되면 그 대화창으로 [채널 참여하기] 버튼이 옵니다. 누르고, 이어서 [참여]를 누르면 끝입니다.\n신청 화면을 이미 닫으셨다면, 신청 때 받은 '주문번호'(EV로 시작하는 글자)를 안내 봇(@EquivisionReport_bot) 대화창에 그대로 보내 주세요.\n입금 확인은 운영자가 직접 하므로 시간이 걸릴 수 있습니다. 입장 버튼은 신청하신 본인만 쓸 수 있고, 24시간 안에 한 번만 쓸 수 있습니다.\n그래도 안 되면 주문번호와 함께 문의해 주세요."}}, {"@type": "Question", "name": "리포트는 언제 받나요?", "acceptedAnswer": {"@type": "Answer", "text": "경주가 있는 날, 경주마다 출발 5~10분 전에 보내 드립니다. 보통 출발 7분쯤 전에 도착합니다.\n텔레그램에서 이 채널의 알림을 꼭 켜 두세요.\n경주가 취소되거나 미뤄지는 등 저희가 어쩔 수 없는 일이 있으면 리포트가 가지 않을 수 있습니다."}}, {"@type": "Question", "name": "그만두려면 어떻게 하나요?", "acceptedAnswer": {"@type": "Answer", "text": "이용권은 30일이 지나면 저절로 끝나고, 자동으로 다시 결제되지 않습니다. 그래서 따로 해지하실 필요가 없어요.\n결제 후 7일 안에 환불을 원하시면 안내 봇(@EquivisionReport_bot)에 '환불'이라고 보내 주세요. 이메일(help@equivisionai.kr)로도 신청할 수 있습니다.\n7일이 지난 뒤에는 중간에 그만두셔도 환불되지 않고, 남은 기간 동안은 계속 이용하실 수 있습니다.\n안내 봇을 한 번도 열어 보지 않으셨다면, 문의 메시지를 남겨 주세요."}}, {"@type": "Question", "name": "환불받을 수 있나요?", "acceptedAnswer": {"@type": "Answer", "text": "결제 후 7일 안에는 환불을 신청할 수 있어요.\n이미 이용한 날수만큼은 빼고 돌려드려요. (이용하신 적이 없으면 전액)\n7일이 지나면 환불은 되지 않고, 남은 기간 동안 계속 이용하실 수 있어요.\n회사 잘못으로 리포트를 받지 못한 경우에는 소비자분쟁해결기준에 따라 보상해 드려요.\n경마가 취소되어 보내지 못한 리포트는 환불하거나 기간을 늘려 드리지 않아요.\n환불은 결제하신 계좌로 입금해 드리며, 신청일로부터 3영업일 안에 검토하고 알려 드려요. 현금영수증을 받으셨다면 함께 취소합니다.\n신청은 안내 봇에 '환불'이라고 보내거나 이메일(help@equivisionai.kr)로 해 주세요."}}, {"@type": "Question", "name": "이용 기간은 어떻게 계산하나요?", "acceptedAnswer": {"@type": "Answer", "text": "입금이 확인된 날부터 30일 동안 이용하실 수 있어요.\n이용 기간이 끝나는 날은 입금 확인 때 안내 봇이 알려 드립니다.\n끝나기 3일 전에 한 번 더 알려 드려요. (안내 봇을 한 번이라도 열어 두셨을 때)\n기간이 끝나면 채널에서 자동으로 제외됩니다. 계속 이용하시려면 다시 입금 신청을 해 주세요."}}, {"@type": "Question", "name": "입금했는데 채널 입장 버튼이 안 와요.", "acceptedAnswer": {"@type": "Answer", "text": "입금 확인은 운영자가 직접 하기 때문에 시간이 걸릴 수 있어요. 먼저 아래를 확인해 보세요.\n입금자명을 안내된 대로(이름+숫자 4자리) 적으셨는지\n보내신 금액이 40,000원인지\n안내 봇(@EquivisionReport_bot)을 열어서 [시작]을 누르셨는지 (신청 때 받은 주문번호를 봇에 보내 주세요)\n계속 안 오면 입금하신 날짜·시간과 입금자명을 문의로 남겨 주세요.\n입금 기한(신청 후 3일)이 지났어도 이미 보내셨다면 같은 내용을 알려 주세요. 확인해서 처리해 드립니다.\n이미 입금하셨다면 다시 입금하지 마시고 먼저 문의해 주세요. 두 번 입금될 수 있습니다."}}, {"@type": "Question", "name": "현금영수증이나 계산서를 받을 수 있나요?", "acceptedAnswer": {"@type": "Answer", "text": "현금영수증은 받으실 수 있어요. 입금 신청 화면의 '현금영수증 번호' 칸에 휴대폰 번호나 사업자등록번호를 적어 주세요. 발급이 끝나면 그 번호는 지웁니다.\n신청할 때 못 적으셨다면 안내 봇이나 문의로 번호를 알려 주세요.\n회사용으로 세금계산서가 필요하시면, 회사 이름, 사업자등록번호, 입금한 날짜를 적어 문의해 주세요. 발행할 수 있는지 확인하고 알려 드립니다."}}, {"@type": "Question", "name": "텔레그램은 어떻게 설치하고 쓰나요?", "acceptedAnswer": {"@type": "Answer", "text": "텔레그램은 무료로 쓰는 메신저 앱입니다. 카카오톡과 비슷합니다.\n휴대폰: 앱스토어(아이폰) 또는 플레이스토어(안드로이드)에서 'Telegram'을 찾아 설치하고, 휴대폰 번호로 가입합니다.\n컴퓨터: telegram.org 에서 내려받을 수 있습니다.\n'사용자명(@아이디)'은 몰라도 괜찮습니다. 입금 신청이 끝나면 나오는 파란 [텔레그램 열기] 버튼만 누르시면 됩니다.\n그림으로 된 설명은 구매 페이지(https://equivisionai.kr/store.html)의 '텔레그램 설치 안내'에 있습니다."}}, {"@type": "Question", "name": "리포트에는 무엇이 들어 있나요?", "acceptedAnswer": {"@type": "Answer", "text": "경주 전에 말들을 보여 주는 곳(예시장) 영상을 인공지능이 보고, 말마다 '오늘 컨디션이 어떤지' 정리해 드립니다.\n걸음걸이의 리듬, 걸음 폭, 좌우 균형을 살펴봅니다.\n그 말의 평소 모습과 비교해 오늘 좋아졌는지 나빠졌는지 점수로 보여 드립니다.\n참고하시라고 드리는 자료입니다. 경주 결과나 이익을 약속하는 것은 아닙니다."}}, {"@type": "Question", "name": "이용하기 전에 알아야 할 것이 있나요?", "acceptedAnswer": {"@type": "Answer", "text": "이용 전에 알아두세요.\n만 19세 이상만 이용할 수 있습니다.\n한 사람이 한 계정으로만 이용합니다. 리포트를 다른 사람에게 보내거나 올리는 것, 입장 주소(초대 링크)를 다른 사람에게 주는 것은 안 됩니다.\n저희는 경마투표권(마권) 구매를 대신해 드리거나 소개해 드리지 않고, 어떤 마권을 사라고 권하지도 않습니다. 채널에서 돈을 모으거나 함께 사는 일도 없습니다. 저희 이름을 대고 이런 말을 하면 사기이니 조심하세요.\n경마 때문에 힘드시면 한국도박문제예방치유원 ☎1336(24시간, 무료)으로 전화해 상담받으실 수 있습니다."}}, {"@type": "Question", "name": "이용 기간이 끝나기 전에 다시 입금하면 어떻게 되나요?", "acceptedAnswer": {"@type": "Answer", "text": "이용 기간이 끝나기 전에 다시 신청·입금하셔도 됩니다. 새로 입금이 확인된 날부터 새로 30일이 시작됩니다. 같은 텔레그램 계정으로 이용 중인 다른 이용권이 남아 있으면 채널에서 나가지 않고 계속 볼 수 있습니다.\n계속 이용하시려면 구매 페이지(https://equivisionai.kr/store.html)에서 다시 입금 신청을 해 주세요."}}, {"@type": "Question", "name": "내 개인정보는 어떻게 쓰이나요?", "acceptedAnswer": {"@type": "Answer", "text": "입금 확인과 안내, 환불 처리를 위해 이름, 휴대폰 번호, 텔레그램 정보(적어 주신 경우), 현금영수증 번호(적어 주신 경우)를 받습니다. 현금영수증 번호는 발급이 끝나면 바로 지웁니다. 나머지 정보는 이용이 끝난 뒤에도 5년 동안 보관합니다(법에서 정한 기간입니다). 은행 계좌 비밀번호나 카드 정보는 받지 않습니다. 자세한 내용은 홈페이지 맨 아래 '개인정보처리방침'에서 보실 수 있습니다."}}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "결제는 어떻게 하나요?", "acceptedAnswer": {"@type": "Answer", "text": "결제는 회사 계좌로 입금하는 방법입니다. 이렇게 하세요.\n1) 구매 페이지(https://equivisionai.kr/store.html)를 엽니다.\n2) 이름과 휴대폰 번호를 쓰고, 이용 기간·환불 안내를 읽은 뒤 안내 글에 모두 체크(동의)합니다.\n3) [입금 신청하기]를 누르면 입금할 계좌와 '입금자명'이 나옵니다.\n4) 은행 앱(또는 토스·카카오페이의 계좌 송금)으로 그 계좌에 40,000원을 보내고, 입금자명을 꼭 안내된 대로 적습니다.\n5) 입금이 확인되면 텔레그램으로 채널 입장 버튼이 갑니다.\n요금은 30일에 40,000원(부가세 포함)입니다.\n입금 기한은 신청한 날부터 3일입니다.\n카드·간편결제는 지금 이용할 수 없습니다.\n회원가입은 필요 없습니다."}}, {"@type": "Question", "name": "자동으로 다시 결제되나요?", "acceptedAnswer": {"@type": "Answer", "text": "아니요. 이용권은 30일이고, 자동으로 다시 결제되지 않아요.\n30일이 지나면 저절로 끝나고 채널에서 제외됩니다.\n끝나기 3일 전에 안내 봇이 알려 드립니다. (안내 봇을 한 번이라도 열어 두셨을 때)\n계속 이용하시려면 기간이 끝나기 전에 다시 입금 신청을 해 주세요."}}, {"@type": "Question", "name": "결제했는데 채널에 들어가는 방법을 모르겠어요. (입장 버튼이 안 와요)", "acceptedAnswer": {"@type": "Answer", "text": "입금 후 채널(리포트를 받는 대화방)에 들어가는 방법입니다.\n1) 입금 신청이 끝난 화면의 파란 [텔레그램 열기] 버튼을 누릅니다.\n2) 텔레그램이 열리면 아래쪽 [시작]을 누릅니다.\n3) 입금이 확인되면 그 대화창으로 [채널 참여하기] 버튼이 옵니다. 누르고, 이어서 [참여]를 누르면 끝입니다.\n신청 화면을 이미 닫으셨다면, 신청 때 받은 '주문번호'(EV로 시작하는 글자)를 안내 봇(@EquivisionReport_bot) 대화창에 그대로 보내 주세요.\n입금 확인은 운영자가 직접 하므로 시간이 걸릴 수 있습니다. 입장 버튼은 신청하신 본인만 쓸 수 있고, 24시간 안에 한 번만 쓸 수 있습니다.\n그래도 안 되면 주문번호와 함께 문의해 주세요."}}, {"@type": "Question", "name": "리포트는 언제 받나요?", "acceptedAnswer": {"@type": "Answer", "text": "경주가 있는 날, 경주마다 출발 5~10분 전에 보내 드립니다. 보통 출발 7분쯤 전에 도착합니다.\n텔레그램에서 이 채널의 알림을 꼭 켜 두세요.\n경주가 취소되거나 미뤄지는 등 저희가 어쩔 수 없는 일이 있으면 리포트가 가지 않을 수 있습니다."}}, {"@type": "Question", "name": "그만두려면 어떻게 하나요?", "acceptedAnswer": {"@type": "Answer", "text": "이용권은 30일이 지나면 저절로 끝나고, 자동으로 다시 결제되지 않습니다. 그래서 따로 해지하실 필요가 없어요.\n결제 후 7일 안에 환불을 원하시면 안내 봇(@EquivisionReport_bot)에 '환불'이라고 보내 주세요. 이메일(help@equivisionai.kr)로도 신청할 수 있습니다.\n7일이 지난 뒤에는 중간에 그만두셔도 환불되지 않고, 남은 기간 동안은 계속 이용하실 수 있습니다.\n안내 봇을 한 번도 열어 보지 않으셨다면, 문의 메시지를 남겨 주세요."}}, {"@type": "Question", "name": "환불받을 수 있나요?", "acceptedAnswer": {"@type": "Answer", "text": "결제 후 7일 안에는 환불을 신청할 수 있어요.\n이미 이용한 날수만큼은 빼고 돌려드려요. (이용하신 적이 없으면 전액)\n7일이 지나면 환불은 되지 않고, 남은 기간 동안 계속 이용하실 수 있어요.\n회사 잘못으로 리포트를 받지 못한 경우에는 소비자분쟁해결기준에 따라 보상해 드려요.\n경마가 취소되어 보내지 못한 리포트는 환불하거나 기간을 늘려 드리지 않아요.\n환불은 결제하신 계좌로 입금해 드리며, 신청일로부터 3영업일 안에 검토하고 알려 드려요. 현금영수증을 받으셨다면 함께 취소합니다.\n신청은 안내 봇에 '환불'이라고 보내거나 이메일(help@equivisionai.kr)로 해 주세요."}}, {"@type": "Question", "name": "이용 기간은 어떻게 계산하나요?", "acceptedAnswer": {"@type": "Answer", "text": "입금이 확인된 날부터 30일 동안 이용하실 수 있어요.\n이용 기간이 끝나는 날은 입금 확인 때 안내 봇이 알려 드립니다.\n끝나기 3일 전에 한 번 더 알려 드려요. (안내 봇을 한 번이라도 열어 두셨을 때)\n기간이 끝나면 채널에서 자동으로 제외됩니다. 계속 이용하시려면 다시 입금 신청을 해 주세요."}}, {"@type": "Question", "name": "입금했는데 채널 입장 버튼이 안 와요.", "acceptedAnswer": {"@type": "Answer", "text": "입금 확인은 운영자가 직접 하기 때문에 시간이 걸릴 수 있어요. 먼저 아래를 확인해 보세요.\n입금자명을 안내된 대로(이름+숫자 4자리) 적으셨는지\n보내신 금액이 40,000원인지\n안내 봇(@EquivisionReport_bot)을 열어서 [시작]을 누르셨는지 (신청 때 받은 주문번호를 봇에 보내 주세요)\n계속 안 오면 입금하신 날짜·시간과 입금자명을 문의로 남겨 주세요.\n입금 기한(신청 후 3일)이 지났어도 이미 보내셨다면 같은 내용을 알려 주세요. 확인해서 처리해 드립니다.\n이미 입금하셨다면 다시 입금하지 마시고 먼저 문의해 주세요. 두 번 입금될 수 있습니다."}}, {"@type": "Question", "name": "현금영수증이나 계산서를 받을 수 있나요?", "acceptedAnswer": {"@type": "Answer", "text": "현금영수증은 받으실 수 있어요. 입금 신청 화면의 '현금영수증 번호' 칸에 휴대폰 번호나 사업자등록번호를 적어 주세요. 발급이 끝나면 그 번호는 지웁니다.\n신청할 때 못 적으셨다면 안내 봇이나 문의로 번호를 알려 주세요.\n회사용으로 세금계산서가 필요하시면, 회사 이름, 사업자등록번호, 입금한 날짜를 적어 문의해 주세요. 발행할 수 있는지 확인하고 알려 드립니다."}}, {"@type": "Question", "name": "텔레그램은 어떻게 설치하고 쓰나요?", "acceptedAnswer": {"@type": "Answer", "text": "텔레그램은 무료로 쓰는 메신저 앱입니다. 카카오톡과 비슷합니다.\n휴대폰: 앱스토어(아이폰) 또는 플레이스토어(안드로이드)에서 'Telegram'을 찾아 설치하고, 휴대폰 번호로 가입합니다.\n컴퓨터: telegram.org 에서 내려받을 수 있습니다.\n'사용자명(@아이디)'은 몰라도 괜찮습니다. 입금 신청이 끝나면 나오는 파란 [텔레그램 열기] 버튼만 누르시면 됩니다.\n그림으로 된 설명은 구매 페이지(https://equivisionai.kr/store.html)의 '텔레그램 설치 안내'에 있습니다."}}, {"@type": "Question", "name": "리포트에는 무엇이 들어 있나요?", "acceptedAnswer": {"@type": "Answer", "text": "경주 전에 말들을 보여 주는 곳(예시장) 영상을 인공지능이 보고, 말마다 '오늘 컨디션이 어떤지' 정리해 드립니다.\n걸음걸이의 리듬, 걸음 폭, 좌우 균형을 살펴봅니다.\n그 말의 평소 모습과 비교해 오늘 좋아졌는지 나빠졌는지 점수로 보여 드립니다.\n참고하시라고 드리는 자료입니다. 경주 결과나 이익을 약속하는 것은 아닙니다."}}, {"@type": "Question", "name": "리포트를 웹 화면에서도 볼 수 있나요?", "acceptedAnswer": {"@type": "Answer", "text": "네, 볼 수 있어요. 가장 쉬운 방법입니다.\n1) 텔레그램 안내 봇(@EquivisionReport_bot) 대화창을 엽니다.\n2) 아래쪽의 [📄 오늘 리포트 보기] 버튼을 누릅니다. (입금이 확인되면 생깁니다)\n3) 파란 [📄 오늘 리포트 열기] 버튼을 누르면 로그인 없이 바로 열립니다.\n경주마다 카드가 나오고, 카드를 누르면 리포트가 큰 글씨로 열려요. 글자는 [＋ 크게] 버튼으로 키울 수 있어요.\n버튼이 안 보이면 봇 대화창에 '리포트'라고 보내 보세요.\n이 버튼은 본인 전용입니다. 다른 분께 보내지 마세요.\n링크는 3일 동안 쓸 수 있고, 휴대폰·컴퓨터 등 기기 2대까지 열 수 있어요. 3일이 지났거나 열리지 않으면 봇에서 버튼을 다시 누르세요. 다시 누르면 이전 링크는 사라집니다.\n이용 기간이 끝나면 저절로 닫힙니다."}}, {"@type": "Question", "name": "이용하기 전에 알아야 할 것이 있나요?", "acceptedAnswer": {"@type": "Answer", "text": "이용 전에 알아두세요.\n만 19세 이상만 이용할 수 있습니다.\n한 사람이 한 계정으로만 이용합니다. 리포트를 다른 사람에게 보내거나 올리는 것, 입장 주소(초대 링크)를 다른 사람에게 주는 것은 안 됩니다.\n저희는 경마투표권(마권) 구매를 대신해 드리거나 소개해 드리지 않고, 어떤 마권을 사라고 권하지도 않습니다. 채널에서 돈을 모으거나 함께 사는 일도 없습니다. 저희 이름을 대고 이런 말을 하면 사기이니 조심하세요.\n경마 때문에 힘드시면 한국도박문제예방치유원 ☎1336(24시간, 무료)으로 전화해 상담받으실 수 있습니다."}}, {"@type": "Question", "name": "이용 기간이 끝나기 전에 다시 입금하면 어떻게 되나요?", "acceptedAnswer": {"@type": "Answer", "text": "이용 기간이 끝나기 전에 다시 신청·입금하셔도 됩니다. 새로 입금이 확인된 날부터 새로 30일이 시작됩니다. 같은 텔레그램 계정으로 이용 중인 다른 이용권이 남아 있으면 채널에서 나가지 않고 계속 볼 수 있습니다.\n계속 이용하시려면 구매 페이지(https://equivisionai.kr/store.html)에서 다시 입금 신청을 해 주세요."}}, {"@type": "Question", "name": "내 개인정보는 어떻게 쓰이나요?", "acceptedAnswer": {"@type": "Answer", "text": "입금 확인과 안내, 환불 처리를 위해 이름, 휴대폰 번호, 텔레그램 정보(적어 주신 경우), 현금영수증 번호(적어 주신 경우)를 받습니다. 현금영수증 번호는 발급이 끝나면 바로 지웁니다. 나머지 정보는 이용이 끝난 뒤에도 5년 동안 보관합니다(법에서 정한 기간입니다). 은행 계좌 비밀번호나 카드 정보는 받지 않습니다. 자세한 내용은 홈페이지 맨 아래 '개인정보처리방침'에서 보실 수 있습니다."}}]}</script>
 <!-- FAQ-END -->
 
   <footer id="business">
@@ -948,25 +981,35 @@
       }
       function showResult(d) {
         $('orderForm').hidden = true;
+        $('policyBox').hidden = true;
         const box = $('bankResult'); box.textContent = ''; box.hidden = false;
-        box.appendChild(mk('h4', '', '✅ 신청되었습니다. 아래대로 보내 주세요'));
-        box.appendChild(row('보내실 금액', won(d.amount), 'money'));
-        box.appendChild(row('받는 계좌', d.bankText, '', String(d.bankText).replace(/\s*\(.*$/, '').replace(/^\S+\s+/, '')));
-        box.appendChild(row('입금자명 (꼭 이대로 적어 주세요)', d.depositor, '', d.depositor));
-        box.appendChild(row('입금 기한', fmtDay(d.expiresAt) + '까지'));
-        const ol = mk('ol', 'bank-steps');
-        ['은행 앱이나 토스·카카오페이에서 위 계좌로 금액을 보냅니다. 받는 분 통장에 표시되는 이름(입금자명)에는 위 입금자명을 적어 주세요.',
-         '아래 파란 버튼으로 텔레그램을 열고 [시작]을 누릅니다.',
-         '입금이 확인되면 텔레그램으로 [채널 참여하기] 버튼이 갑니다. 확인은 운영자가 직접 하므로 시간이 걸릴 수 있습니다.'].forEach(function (t) { ol.appendChild(mk('li', '', t)); });
-        box.appendChild(ol);
+        box.appendChild(mk('h4', '', '✅ 신청이 접수되었습니다'));
+        box.appendChild(mk('p', 'bank-note', '이제 아래 두 가지만 하시면 됩니다.'));
+
+        const c1 = mk('div', 'step-card');
+        c1.appendChild(mk('div', 'step-no', '① 입금하기'));
+        c1.appendChild(row('보내실 금액', won(d.amount), 'money'));
+        c1.appendChild(row('받는 계좌', d.bankText, '', String(d.bankText).replace(/\s*\(.*$/, '').replace(/^\S+\s+/, '')));
+        c1.appendChild(row('보내는 분 이름', d.name ? d.name + ' (신청하신 이름 그대로)' : '신청하신 이름 그대로'));
+        c1.appendChild(row('입금 기한', fmtDay(d.expiresAt) + '까지'));
+        c1.appendChild(mk('p', 'bank-note', '은행 앱이나 토스·카카오페이의 계좌 송금으로 보내시면 됩니다. 통장 표시(입금자명) 칸이 있으면 ' + d.depositor + ' 라고 적어 주세요. (없으면 안 적으셔도 됩니다)'));
+        box.appendChild(c1);
+
+        const c2 = mk('div', 'step-card');
+        c2.appendChild(mk('div', 'step-no', '② 텔레그램 열기'));
         if (botName) {
-          const a = mk('a', 'bank-big fill', '📨 텔레그램 열기'); a.href = 'https://t.me/' + botName + '?start=' + encodeURIComponent(d.orderId); a.target = '_blank'; a.rel = 'noopener'; box.appendChild(a);
+          const a = mk('a', 'bank-big fill', '📨 텔레그램 열기'); a.href = 'https://t.me/' + botName + '?start=' + encodeURIComponent(d.orderId); a.target = '_blank'; a.rel = 'noopener'; c2.appendChild(a);
         }
+        c2.appendChild(mk('p', 'bank-note', '텔레그램이 열리면 아래쪽 [시작]을 한 번만 누르세요.'));
+        const first = mk('a', '', '텔레그램이 처음이세요? 설치 방법 보기'); first.href = '#telegram'; first.className = 'bank-link'; c2.appendChild(first);
+        box.appendChild(c2);
+
+        box.appendChild(mk('p', 'bank-note big', '💡 입금이 확인되면 텔레그램에 [📢 채널 참여하기]와 [📄 오늘 리포트 보기] 버튼이 옵니다. 확인에는 시간이 걸릴 수 있습니다.'));
+        box.appendChild(mk('p', 'bank-note', '이용 기간은 입금이 확인된 날부터 30일이며, 자동으로 다시 결제되지 않습니다. 입금 기한이 지나면 신청이 닫힙니다. 이미 보내셨다면 텔레그램에 입금하신 날짜를 남겨 주세요.'));
         box.appendChild(mk('p', 'bank-note', '주문번호: ' + d.orderId + ' (이 화면을 캡처해 두시면 편합니다)'));
-        box.appendChild(mk('p', 'bank-note', '이용 기간은 입금이 확인된 날부터 30일이며, 자동으로 다시 결제되지 않습니다. 입금 기한이 지나면 신청이 닫히며, 이미 보내셨다면 텔레그램에 입금하신 날짜와 입금자명을 남겨 주세요. 환불은 위 환불 정책을 따릅니다.'));
         const again = mk('button', 'bank-big', '↩ 처음부터 다시 신청하기');
         again.type = 'button'; again.style.marginTop = '1rem';
-        again.onclick = function () { store('eq_bank', null); box.hidden = true; box.textContent = ''; $('orderForm').hidden = false; render(); $('orderForm').scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+        again.onclick = function () { store('eq_bank', null); box.hidden = true; box.textContent = ''; $('orderForm').hidden = false; $('policyBox').hidden = false; render(); $('checkout').scrollIntoView({ behavior: 'smooth', block: 'start' }); };
         box.appendChild(again);
         box.appendChild(mk('p', 'bank-note', '※ 같은 휴대폰 번호로 다시 신청하면, 아직 입금 기한이 남은 기존 신청이 그대로 나옵니다. 잘못 입력하셨다면 텔레그램 문의로 알려 주세요.'));
         box.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -983,11 +1026,31 @@
               hintEl.textContent = x.j.code === 'BANK_OFF' ? '입금 신청이 아직 열리지 않았습니다. 잠시 뒤에 다시 해 주세요.' : (x.j.message || '신청하지 못했습니다. 잠시 뒤 다시 해 주세요.');
               hintEl.classList.add('error'); render(); return;
             }
-            store('eq_bank', JSON.stringify(x.j)); showResult(x.j);
+            x.j.name = b.name; store('eq_bank', JSON.stringify(x.j)); showResult(x.j);
           }, function () { btn.textContent = '입금 신청하기'; hintEl.textContent = '인터넷 연결을 확인해 주세요.'; hintEl.classList.add('error'); render(); });
       });
       // 이미 신청한 내용이 남아 있으면(새로고침 등) 다시 보여 줌
       try { const old = JSON.parse(store('eq_bank') || 'null'); if (old && old.orderId && old.expiresAt > Date.now()) showResult(old); } catch (e) {}
+
+
+      /* 접어 둔 안내로 가는 링크(#telegram, #refund …)를 누르면 펼쳐서 보여 줌 */
+      function openFor(hash) {
+        if (!hash || hash.length < 2) return;
+        let el = null; try { el = document.querySelector(hash); } catch (e) { return; }
+        if (!el) return;
+        let d = el.matches('details') ? el : el.closest('details');
+        if (!d) d = el.querySelector(':scope > details.more');
+        while (d) { d.open = true; d = d.parentElement ? d.parentElement.closest('details') : null; }
+        setTimeout(function () { el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 60);
+      }
+      document.addEventListener('click', function (e) {
+        const a = e.target.closest && e.target.closest('a[href^="#"]');
+        if (!a || a.id === 'openRefund2' || a.getAttribute('href') === '#') return;
+        const h = a.getAttribute('href');
+        if (h.length > 1) { openFor(h); }
+      });
+      window.addEventListener('hashchange', function () { openFor(location.hash); });
+      if (location.hash && location.hash !== '#refund-full') openFor(location.hash);
 
       render();
       if (location.hash === '#refund-full') showRefund();
