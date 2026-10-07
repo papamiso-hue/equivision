@@ -4,243 +4,34 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <title>결제 결과 | EquiVision AI</title>
+  <title>이용 안내 | EquiVision AI</title>
   <meta name="theme-color" content="#090d16">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23090d16'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial,sans-serif' font-weight='800' font-size='38' fill='%2338bdf8'%3EE%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <script src="toss-config.js"></script>
   <style>
-    :root { --primary: #0284c7; --glow: #38bdf8; --bg: #090d16; --card: #111827; --soft: #0f1624; --border: #1f2937; --mid: #374151; --text: #f8fafc; --body: #e2e8f0; --sub: #a3b0c2; --ok: #86efac; --warn: #fde68a; --danger: #fca5a5; }
+    :root { --primary: #0284c7; --bg: #090d16; --card: #111827; --soft: #0f1624; --border: #1f2937; --mid: #374151; --text: #f8fafc; --sub: #a3b0c2; }
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Pretendard Variable", Pretendard, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif; }
-    [hidden] { display: none !important; }
     body { background: var(--bg); color: var(--text); font-size: 17px; line-height: 1.75; word-break: keep-all; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; }
-    .box { width: 100%; max-width: 560px; background: var(--card); border: 1px solid var(--mid); border-radius: 18px; padding: 2rem 1.6rem; }
-    .icon { font-size: 2.6rem; text-align: center; }
-    h1 { font-size: 1.55rem; text-align: center; margin: 0.4rem 0 0.4rem; }
-    .lead { text-align: center; color: var(--sub); margin-bottom: 1.4rem; }
-    .row { display: flex; justify-content: space-between; gap: 1rem; padding: 0.55rem 0; border-bottom: 1px dashed var(--border); }
-    .row span:first-child { color: var(--sub); flex-shrink: 0; }
-    .row span:last-child { font-weight: 700; text-align: right; word-break: break-all; }
-    .panel { margin-top: 1.3rem; border-radius: 12px; padding: 1rem 1.1rem; font-size: 0.95rem; }
-    .panel.ok { background: rgba(134, 239, 172, 0.08); border: 1px solid rgba(134, 239, 172, 0.4); }
-    .panel.warn { background: rgba(250, 204, 21, 0.07); border: 1px solid rgba(250, 204, 21, 0.35); }
-    .panel.err { background: rgba(252, 165, 165, 0.08); border: 1px solid rgba(252, 165, 165, 0.4); }
-    .panel strong { color: #fff; }
-    .panel ol, .panel ul { padding-left: 1.2rem; margin-top: 0.3rem; }
-    .panel li { margin: 0.25rem 0; }
+    .box { width: 100%; max-width: 520px; background: var(--card); border: 1px solid var(--mid); border-radius: 18px; padding: 2rem 1.6rem; text-align: center; }
+    .icon { font-size: 2.6rem; }
+    h1 { font-size: 1.5rem; margin: 0.4rem 0; }
+    p { color: var(--sub); }
+    .detail { margin-top: 1.2rem; background: var(--soft); border: 1px solid var(--border); border-radius: 10px; padding: 0.8rem 1rem; font-size: 0.9rem; color: var(--sub); text-align: left; word-break: break-all; }
     .actions { display: flex; flex-wrap: wrap; gap: 0.7rem; margin-top: 1.5rem; justify-content: center; }
     .btn { display: inline-block; text-decoration: none; font-weight: 700; padding: 0.8rem 1.3rem; border-radius: 10px; }
     .btn.primary { background: var(--primary); color: #fff; }
     .btn.ghost { border: 1px solid var(--mid); color: #cbd5e1; }
-    .spinner { width: 34px; height: 34px; border: 4px solid var(--mid); border-top-color: var(--glow); border-radius: 50%; margin: 0 auto; animation: spin 0.9s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    code { font-size: 0.85em; background: var(--soft); padding: 0 0.3rem; border-radius: 4px; }
-    .join { margin-top: 1.3rem; text-align: center; background: var(--soft); border: 2px solid var(--glow); border-radius: 14px; padding: 1.3rem 1rem; }
-    .join h2 { font-size: 1.15rem; margin-bottom: 0.3rem; }
-    .join p { color: var(--sub); font-size: 0.93rem; }
-    .btn-join { display: block; margin: 0.9rem auto 0; max-width: 360px; background: #229ED9; color: #fff; text-decoration: none; font-size: 1.2rem; font-weight: 800; padding: 1rem; border-radius: 12px; }
-    .join ol { text-align: left; max-width: 360px; margin: 0.9rem auto 0; padding-left: 1.3rem; color: var(--body); font-size: 0.95rem; }
-    .join-qr { margin: 1rem auto 0; width: 150px; height: 150px; background: #fff; border-radius: 10px; padding: 9px; }
-    .join-qr img, .join-qr canvas { width: 132px !important; height: 132px !important; }
-    .join .pc { margin-top: 0.4rem; font-size: 0.85rem; }
   </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
   <main class="box">
-    <div id="icon" class="icon"><div class="spinner" aria-hidden="true"></div></div>
-    <h1 id="title">결제를 확인하고 있습니다</h1>
-    <p class="lead" id="lead">잠시만 기다려 주세요. 이 창을 닫지 마세요.</p>
-
-    <div id="details" hidden>
-      <div class="row"><span>주문번호</span><span id="dOrder"></span></div>
-      <div class="row"><span>상품</span><span id="dName"></span></div>
-      <div class="row"><span>결제 금액</span><span id="dAmount"></span></div>
-      <div class="row" id="rowCard" hidden><span>등록 카드</span><span id="dCard"></span></div>
-      <div class="row" id="rowNext" hidden><span>다음 결제일</span><span id="dNext"></span></div>
-      <div class="row" id="rowExp" hidden><span>이용 종료일</span><span id="dExp"></span></div>
-      <div class="row" id="rowTg" hidden><span>텔레그램</span><span id="dTg"></span></div>
-    </div>
-
-    <div id="join" class="join" hidden>
-      <h2>📲 이제 채널에 참여하세요</h2>
-      <p>아래 버튼 하나면 됩니다. 텔레그램 사용자명은 몰라도 됩니다.</p>
-      <a class="btn-join" id="btnJoin" href="#" target="_blank" rel="noopener">텔레그램에서 채널 참여하기</a>
-      <ol>
-        <li>위 파란 버튼을 누르면 텔레그램이 열립니다.</li>
-        <li>화면 아래 <strong>[시작]</strong>(START)을 누릅니다.</li>
-        <li>바로 오는 메시지의 <strong>[채널 참여하기]</strong> → <strong>[참여]</strong>를 누르면 끝!</li>
-      </ol>
-      <div class="join-qr" id="joinQr" aria-label="텔레그램 참여 QR코드"></div>
-      <p class="pc">💻 PC로 보고 계시면 휴대폰 카메라로 이 QR코드를 비추세요.</p>
-      <p class="pc" style="margin-top:0.8rem;">📌 <strong>이 화면을 닫으셨나요?</strong> 텔레그램에서 <strong id="botHandle"></strong>에게 위 <strong>주문번호</strong>를 그대로 보내면 초대 링크가 옵니다. 주문번호를 꼭 저장해 두세요.</p>
-    </div>
-
-    <div id="panel" class="panel" hidden></div>
-
+    <div class="icon">ℹ️</div>
+    <h1>결제 방식이 계좌 입금으로 바뀌었습니다</h1>
+    <p>카드·간편결제와 자동결제는 더 이상 사용하지 않습니다.<br>구매 페이지에서 <strong>입금 신청</strong>을 하시면 입금 계좌와 입금자명을 알려 드립니다.<br>이미 신청하셨다면 신청 때 받은 주문번호를 텔레그램 안내 봇에 보내 주세요.</p>
     <div class="actions">
-      <a class="btn primary" href="store.html#telegram">텔레그램 안내 보기</a>
-      <a class="btn ghost" href="index.html">홈으로</a>
+      <a class="btn primary" href="store.html#checkout">입금 신청하러 가기</a>
+      <a class="btn ghost" href="store.html#cancel">환불·종료 안내</a>
     </div>
   </main>
-
-  <script>
-    (async function () {
-      const T = window.TOSS_CONFIG || {};
-      const $ = function (id) { return document.getElementById(id); };
-      const esc = function (s) { return String(s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); };
-      const won = function (n) { return Number(n).toLocaleString('ko-KR') + '원'; };
-      const fmtDate = function (ms) { const d = new Date(Number(ms) + 9 * 3600 * 1000); return d.getUTCFullYear() + '년 ' + (d.getUTCMonth() + 1) + '월 ' + d.getUTCDate() + '일'; };
-      const isHttps = function (u) { return /^https:\/\//i.test(u || ''); };
-
-      const q = new URLSearchParams(location.search);
-      const paymentKey = q.get('paymentKey');
-      const orderIdParam = q.get('orderId');
-      const amount = q.get('amount');
-      const authKey = q.get('authKey');
-      const customerKey = q.get('customerKey');
-      const isTest = /^test_/.test(String(T.clientKey || ''));
-      const workerBase = String(T.confirmUrl || '').replace(/\/confirm\/?$/, '');
-
-      const botName = String(T.telegramBot || '').replace(/^@/, '');
-      const hasBot = /^[A-Za-z][A-Za-z0-9_]{3,31}$/.test(botName);
-
-      function show(kind, icon, title, lead, panelHtml) {
-        $('icon').textContent = icon;
-        $('title').textContent = title;
-        $('lead').textContent = lead;
-        const p = $('panel');
-        p.className = 'panel ' + kind;
-        p.innerHTML = panelHtml;
-        p.hidden = !panelHtml;
-      }
-
-      function showJoin(oid) {
-        if (!hasBot) return;
-        const link = 'https://t.me/' + botName + '?start=' + encodeURIComponent(oid);
-        $('btnJoin').href = link;
-        $('botHandle').textContent = '@' + botName;
-        $('join').hidden = false;
-        if (typeof QRCode === 'function') {
-          new QRCode($('joinQr'), { text: link, width: 132, height: 132, colorDark: '#000000', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
-        } else {
-          $('joinQr').hidden = true;
-        }
-      }
-
-      const inviteMsg = hasBot
-        ? '위 <strong>[텔레그램에서 채널 참여하기]</strong> 버튼으로 바로 참여하실 수 있습니다. 버튼이 잘 안 되면 운영자가 확인 후 직접 연락드립니다.'
-        : '운영자가 결제를 확인한 뒤 텔레그램으로 채널 초대 링크를 보내드립니다.';
-
-      /* ================= 자동결제: 카드 등록 완료 → 서버에서 첫 결제 ================= */
-      if (authKey && customerKey) {
-        $('details').hidden = false;
-        $('dOrder').textContent = '확인 중…';
-        $('dName').textContent = '경주마 컨디션 리포트 월간 구독';
-        $('dAmount').textContent = '-';
-        if (!isHttps(T.confirmUrl)) {
-          show('err', '⚠️', '결제를 완료하지 못했습니다', '결제 서버 설정이 필요합니다.', '고객센터로 문의해 주세요. 카드가 등록되었더라도 결제는 이루어지지 않았습니다.');
-          return;
-        }
-        try {
-          const res = await fetch(workerBase + '/billing/start', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ authKey: authKey, customerKey: customerKey })
-          });
-          const data = await res.json().catch(function () { return {}; });
-          if (res.ok && data.status === 'DONE') {
-            const oid = data.orderId;
-            $('dOrder').textContent = oid;
-            $('dName').textContent = data.orderName || '경주마 컨디션 리포트 월간 구독';
-            $('dAmount').textContent = won(data.totalAmount);
-            if (data.card) { $('rowCard').hidden = false; $('dCard').textContent = data.card; }
-            if (data.nextChargeAt) { $('rowNext').hidden = false; $('dNext').textContent = fmtDate(data.nextChargeAt) + ' (자동결제)'; }
-            const receipt = data.receipt && data.receipt.url ? '<p style="margin-top:0.6rem;"><a href="' + esc(data.receipt.url) + '" target="_blank" rel="noopener">영수증 보기</a></p>' : '';
-            show('ok', '✅', isTest ? '테스트 구독 시작' : '구독이 시작되었습니다', '카드가 등록되고 첫 달 요금이 결제되었습니다.',
-              inviteMsg +
-              '<ul><li>🔔 리포트는 경주 출발 약 7분 전에 오므로 <strong>채널 알림을 꼭 켜 주세요.</strong></li>' +
-              '<li>📅 <strong>매월 같은 날 자동 결제</strong>되며, 결제 3일 전에 텔레그램으로 안내해 드립니다.</li>' +
-              '<li>🛑 해지는 텔레그램 봇 대화창에 <strong>/cancel</strong> 을 보내면 바로 접수됩니다. (결제일 전날까지)</li></ul>' + receipt);
-            showJoin(oid);
-          } else {
-            show('err', '⚠️', '구독을 시작하지 못했습니다', '카드 등록 또는 첫 결제 중 문제가 발생했습니다.',
-              esc(data.message || '알 수 없는 오류') + (data.code ? ' <code>' + esc(data.code) + '</code>' : '') +
-              '<p style="margin-top:0.5rem;">결제가 이루어지지 않았다면 청구되지 않습니다. 카드 한도·잔액을 확인하고 <a href="store.html#checkout">다시 시도</a>해 주세요. 계속되면 고객센터로 문의해 주세요.</p>');
-          }
-        } catch (e) {
-          show('err', '⚠️', '결제 확인에 실패했습니다', '네트워크 오류가 발생했습니다.',
-            '이 페이지를 <strong>새로고침</strong>하거나 고객센터로 문의해 주세요. (새로고침해도 중복 결제되지 않습니다)');
-        }
-        return;
-      }
-
-      /* ================= 단건 결제: 결제 승인 ================= */
-      const orderId = orderIdParam;
-      let order = null;
-      try { order = JSON.parse(sessionStorage.getItem('ev_order_' + orderId) || 'null'); } catch (e) {}
-
-      if (!paymentKey || !orderId || !amount) {
-        show('err', '⚠️', '잘못된 접근입니다', '결제 정보가 없습니다.', '<a href="store.html#checkout">결제 페이지로 돌아가기</a>');
-        return;
-      }
-
-      $('details').hidden = false;
-      $('dOrder').textContent = orderId;
-      $('dName').textContent = order ? order.orderName : '-';
-      $('dAmount').textContent = won(amount);
-      if (order && order.telegram && order.telegram !== '-') { $('rowTg').hidden = false; $('dTg').textContent = order.telegram; }
-
-      /* 금액 위변조 1차 확인 (최종 검증은 반드시 승인 서버에서) */
-      if (order && Number(amount) !== Number(order.amount)) {
-        show('err', '⚠️', '결제 금액이 일치하지 않습니다', '결제가 완료되지 않았습니다.',
-          '주문 금액(' + won(order.amount) + ')과 결제 요청 금액(' + won(amount) + ')이 달라 결제를 진행하지 않았습니다. 다시 시도하거나 고객센터로 문의해 주세요.');
-        return;
-      }
-
-      /* 승인 서버가 없을 때: 테스트 모드에서는 '인증 완료'까지만 확인 */
-      if (!isHttps(T.confirmUrl)) {
-        if (isTest) {
-          show('warn', '🧪', '테스트 결제 인증 완료', '결제창 연동이 정상적으로 동작했습니다.',
-            '<strong>운영자 확인용 안내</strong><ul>' +
-            '<li>토스 결제창에서 <strong>결제 인증</strong>까지 성공했습니다.</li>' +
-            '<li>실제 결제가 끝나려면 서버가 시크릿 키로 <strong>결제 승인(confirm)</strong>을 10분 안에 요청해야 합니다. 현재 <code>toss-config.js</code>의 <code>confirmUrl</code>이 비어 있어 승인은 하지 않았습니다.</li>' +
-            '<li>paymentKey: <code>' + esc(paymentKey) + '</code></li></ul>');
-        } else {
-          show('err', '⚠️', '결제를 완료하지 못했습니다', '결제 승인 설정이 필요합니다.', '고객센터로 문의해 주세요. 카드 승인은 이루어지지 않았습니다.');
-        }
-        return;
-      }
-
-      try {
-        const res = await fetch(T.confirmUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ paymentKey: paymentKey, orderId: orderId, amount: Number(amount) })
-        });
-        const data = await res.json().catch(function () { return {}; });
-        if (res.ok && data.status === 'DONE') {
-          const receipt = data.receipt && data.receipt.url ? '<p style="margin-top:0.6rem;"><a href="' + esc(data.receipt.url) + '" target="_blank" rel="noopener">영수증 보기</a></p>' : '';
-          let expInfo = '';
-          if (data.expiresAt) {
-            $('rowExp').hidden = false;
-            $('dExp').textContent = fmtDate(data.expiresAt) + ' (자동 갱신 없음)';
-            expInfo = '<li>📅 <strong>1개월 이용권</strong>이며 자동으로 갱신되지 않습니다. 종료 3일 전에 텔레그램으로 안내해 드리고, 종료일에 유료 채널에서 제외됩니다.</li>' +
-                      '<li>🔁 계속 이용하시려면 종료 전후에 <a href="store.html#checkout">다시 결제</a>하시면 됩니다. 매월 자동결제를 원하시면 결제 화면에서 <strong>[매월 자동결제]</strong>를 선택하세요.</li>';
-          }
-          show('ok', '✅', isTest ? '테스트 결제 완료' : '결제가 완료되었습니다', '구독해 주셔서 감사합니다.',
-            inviteMsg + '<ul><li>🔔 리포트는 경주 출발 약 7분 전에 오므로 <strong>채널 알림을 꼭 켜 주세요.</strong></li>' + expInfo + '</ul>' + receipt);
-          showJoin(orderId);
-        } else {
-          show('err', '⚠️', '결제를 완료하지 못했습니다', '결제 승인 중 문제가 발생했습니다.',
-            esc(data.message || '알 수 없는 오류') + (data.code ? ' <code>' + esc(data.code) + '</code>' : '') +
-            '<p style="margin-top:0.5rem;">돈이 빠져나갔다면 자동으로 취소되거나 환불됩니다. 계속되면 고객센터로 문의해 주세요.</p>');
-        }
-      } catch (e) {
-        show('err', '⚠️', '결제 확인에 실패했습니다', '네트워크 오류가 발생했습니다.',
-          '이 페이지를 새로고침하거나 고객센터로 문의해 주세요. 주문번호: <code>' + esc(orderId) + '</code>');
-      }
-    })();
-  </script>
 </body>
 </html>
