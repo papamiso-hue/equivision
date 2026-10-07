@@ -964,6 +964,11 @@
         }
         box.appendChild(mk('p', 'bank-note', '주문번호: ' + d.orderId + ' (이 화면을 캡처해 두시면 편합니다)'));
         box.appendChild(mk('p', 'bank-note', '이용 기간은 입금이 확인된 날부터 30일이며, 자동으로 다시 결제되지 않습니다. 입금 기한이 지나면 신청이 닫히며, 이미 보내셨다면 텔레그램에 입금하신 날짜와 입금자명을 남겨 주세요. 환불은 위 환불 정책을 따릅니다.'));
+        const again = mk('button', 'bank-big', '↩ 처음부터 다시 신청하기');
+        again.type = 'button'; again.style.marginTop = '1rem';
+        again.onclick = function () { store('eq_bank', null); box.hidden = true; box.textContent = ''; $('orderForm').hidden = false; render(); $('orderForm').scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+        box.appendChild(again);
+        box.appendChild(mk('p', 'bank-note', '※ 같은 휴대폰 번호로 다시 신청하면, 아직 입금 기한이 남은 기존 신청이 그대로 나옵니다. 잘못 입력하셨다면 텔레그램 문의로 알려 주세요.'));
         box.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
       $('btnPay').addEventListener('click', function () {
