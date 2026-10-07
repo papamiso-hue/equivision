@@ -751,6 +751,16 @@
       function mk(tag, cls, text) { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; }
       function fmtDay(ms) { const d = new Date(ms); return (d.getMonth() + 1) + '월 ' + d.getDate() + '일'; }
 
+      /* 소개 링크(?ref=코드): 처음 들어온 링크 기준으로 30일 기억 (유튜버 정산용) */
+      let refCode = '';
+      (function () {
+        let cur = null; try { cur = JSON.parse(store('eq_ref') || 'null'); } catch (e) {}
+        const now = Date.now();
+        if (cur && cur.ref && now - cur.at < 30 * 86400000) refCode = cur.ref;
+        let q = ''; try { q = (new URLSearchParams(location.search).get('ref') || '').trim().toLowerCase(); } catch (e) {}
+        if (!refCode && /^[a-z0-9_\-가-힣]{1,30}$/.test(q)) { refCode = q; store('eq_ref', JSON.stringify({ ref: q, at: now })); }
+      })();
+
       /* 이메일 (원문 노출 최소화) */
       const addr = ['help', 'equivisionai.kr'].join('@');
       $('footMail').href = 'mailto:' + addr + '?subject=' + encodeURIComponent('[이퀴비젼AI] 리포트 구독 문의');
@@ -1018,7 +1028,7 @@
         if ($('btnPay').disabled) return;
         const b = buyer(), btn = $('btnPay'), hintEl = $('payHint');
         hintEl.textContent = ''; btn.disabled = true; btn.textContent = '신청하는 중입니다…';
-        fetch(base + '/bank/prepare', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: b.name, phone: b.phone, telegram: b.telegram, cashReceipt: b.receipt, agreed: true }) })
+        fetch(base + '/bank/prepare', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name: b.name, phone: b.phone, telegram: b.telegram, cashReceipt: b.receipt, ref: refCode, agreed: true }) })
           .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; }); })
           .then(function (x) {
             btn.textContent = '입금 신청하기';
