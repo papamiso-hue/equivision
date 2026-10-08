@@ -83,10 +83,10 @@
     <h1>오늘 리포트</h1>
     <div class="msg err" id="loginErr" hidden></div>
     <div class="msg" style="font-size:1.25rem;line-height:1.7">
-      <b>텔레그램 안내 봇</b>에서<br><b>[📄 오늘 리포트 보기]</b> 버튼을 누르면<br>바로 열립니다.
+      <b>텔레그램 안내방</b>에서<br><b>[📄 오늘 리포트 보기]</b> 버튼을 누르면<br>바로 열립니다.
     </div>
-    <a class="btn" href="https://t.me/EquivisionReport_bot" target="_blank" rel="noopener" style="margin-top:14px">📨 텔레그램 안내 봇 열기</a>
-    <p class="sub" style="margin-top:10px">처음이시면 봇을 열어 아래쪽 <b>[시작]</b>을 누르세요. 입금이 확인되면 봇에 [📄 오늘 리포트 보기] 버튼이 생깁니다.</p>
+    <a class="btn" href="https://t.me/EquivisionReport_bot" target="_blank" rel="noopener" style="margin-top:14px">📨 텔레그램 열기</a>
+    <p class="sub" style="margin-top:10px">처음이시면 위 버튼을 눌러 텔레그램을 열고, 아래쪽 <b>[시작]</b>을 누르세요. 입금이 확인되면 안내방에 [📄 오늘 리포트 보기] 버튼이 생깁니다.</p>
 
     <details>
       <summary>휴대폰 번호로 들어가기 (다른 방법)</summary>
@@ -95,6 +95,7 @@
         <input id="inPhone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="01012345678" maxlength="13">
         <p class="sub" style="margin-top:8px">입금 신청 때 적은 번호입니다. 숫자만 써도 됩니다.</p>
         <button class="btn" id="btnSend" style="margin:12px 0">인증번호 받기</button>
+        <p class="sub" style="margin-top:0">텔레그램 안내방으로 인증번호가 갑니다.</p>
       </div>
       <div id="stepCode" hidden>
         <div class="msg ok" id="sentMsg"></div>
@@ -109,9 +110,9 @@
       <summary>안 열릴 때</summary>
       <ol>
         <li>구독이 끝났거나 환불하셨다면 볼 수 없습니다.</li>
-        <li>텔레그램 봇에서 [📄 오늘 리포트 보기] 버튼을 <b>다시 눌러</b> 보세요. 누를 때마다 새 링크가 만들어집니다.</li>
-        <li>봇에 버튼이 안 보이면 봇 대화창에 <b>리포트</b>라고 보내 보세요.</li>
-        <li>그래도 안 되면 봇에 글로 문의하시거나 equivisionai@gmail.com 로 알려 주세요.</li>
+        <li>텔레그램 안내방에서 [📄 오늘 리포트 보기] 버튼을 <b>다시 눌러</b> 보세요. 누를 때마다 새로 열립니다. 예전에 받은 주소는 쓸 수 없게 됩니다.</li>
+        <li>버튼이 안 보이면, 텔레그램 아래쪽 글 쓰는 칸에 <b>리포트</b> 두 글자를 쓰고 보내기(↑) 버튼을 눌러 보세요.</li>
+        <li>그래도 안 되면 안내방에 글로 문의하시거나 equivisionai@gmail.com 로 알려 주세요.</li>
       </ol>
     </details>
   </section>
@@ -156,7 +157,7 @@
   <p class="notice">
     참고용 분석 정보이며 결과·수익을 보장하지 않습니다. 마권 구매를 권유하거나 대행·알선하지 않습니다.
     만 19세 이상 · 도박 문제 상담 ☎1336<br>
-    리포트에는 보시는 분의 정보가 표시되어 있으며, 무단 전달·재배포를 금지합니다.
+    리포트에는 보시는 분의 이름이 표시되어 있습니다. 다른 사람에게 보내거나 인터넷에 올리지 마세요.
   </p>
 </div>
 
@@ -267,7 +268,7 @@
     api('/member/reports' + (curDate ? '?date=' + encodeURIComponent(curDate) : ''))
       .then(function (r) { return readJson(r).then(function (j) { return { status: r.status, ok: r.ok, j: j }; }); })
       .then(function (x) {
-        if (x.status === 401) { goLogin(x.j.code === 'DEVICE_LIMIT' ? x.j.message : '다시 들어와 주세요. (이용 기간이 끝났거나 링크가 오래되었습니다) 텔레그램 봇에서 [📄 오늘 리포트 보기]를 눌러 주세요.'); return; }
+        if (x.status === 401) { goLogin(x.j.code === 'DEVICE_LIMIT' ? x.j.message : '다시 들어와 주세요. (이용 기간이 끝났거나, 예전에 받은 주소라서 더는 열리지 않습니다) 텔레그램 안내방에서 [📄 오늘 리포트 보기]를 눌러 주세요.'); return; }
         if (!x.ok) { st.textContent = x.j.message || '잠시 뒤 다시 확인해 주세요.'; return; }
         me = x.j.me || me; curDate = x.j.date; items = x.j.items || [];
         render(x.j);
@@ -406,7 +407,7 @@
   if (saved && /^[a-f0-9]{64}$/.test(saved)) {
     token = saved;
     api('/member/me').then(function (r) { return readJson(r).then(function (j) { return { ok: r.ok, j: j }; }); })
-      .then(function (x) { if (x.ok) { me = x.j.me; enterList(null); } else { goLogin(x.j.code === 'DEVICE_LIMIT' ? x.j.message : (hm ? '이 링크는 더 이상 쓸 수 없습니다. 이용 기간이 끝났거나 링크가 오래되었습니다. 텔레그램 봇에서 [📄 오늘 리포트 보기]를 다시 눌러 주세요.' : '')); } }, function () { goLogin(''); });
+      .then(function (x) { if (x.ok) { me = x.j.me; enterList(null); } else { goLogin(x.j.code === 'DEVICE_LIMIT' ? x.j.message : (hm ? '이 주소로는 더 열 수 없습니다. 이용 기간이 끝났거나, 예전에 받은 주소입니다. 텔레그램 안내방에서 [📄 오늘 리포트 보기]를 다시 눌러 주세요.' : '')); } }, function () { goLogin(''); });
   } else { goLogin(''); }
 })();
 </script>
