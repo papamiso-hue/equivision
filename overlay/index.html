@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>EquiVision 방송 오버레이</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--
+  EquiVision 방송 오버레이 (OBS / 프리즘 라이브 스튜디오 "브라우저 소스"용)
+
+  사용법: 이 폴더는 이퀴비전\사이트_올리기.bat 으로 https://equivisionai.kr/overlay/ 에 올라갑니다.
+  방송 프로그램에 아래 주소를 브라우저 소스로 추가합니다. 너비 1920, 높이 1080.
+      https://equivisionai.kr/overlay/index.html?p=파트너코드        (예: ?p=testtv)
+  파트너 정보는 partners/파트너코드.json (name, link, tag) 에 따로 둡니다 — 다른 파트너 이름이 공개되지 않도록 한 사람씩 파일을 나눕니다.
+  주소 옵션
+      p=파트너코드      partners/코드.json 이 있는 코드 (영문 소문자·숫자·_·-, 없으면 official)
+      pos=br|bl|tr|tl   배너 위치: 오른쪽 아래(기본) / 왼쪽 아래 / 오른쪽 위 / 왼쪽 위
+      scale=1.0         배너 크기 배율 (예: 0.8, 1.2)
+      preview=1         방송 화면 대신 회색 배경을 깔아 위치 확인 (방송에는 쓰지 마세요)
+
+  문구·링크는 config.json만 고쳐서 다시 올리면, 켜져 있는 모든 방송에 1분 안에 반영됩니다.
+  경주 알림은 notice.json — Colab이 텔레그램 발송을 마치면 자동으로 고칩니다 (20초마다 확인).
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@500;700&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root {
+    --card: rgba(250, 251, 249, 0.96);
+    --ink: #16211c;
+    --muted: #55625b;
+    --turf: #1f6b45;
+    --cloth: #b3261e;
+    --notice: #fff4d6;
+    --scale: 1;
+    --font: "IBM Plex Sans KR", "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+  }
+  html, body { margin: 0; width: 100%; height: 100%; background: transparent; overflow: hidden; }
+  body.preview { background: repeating-linear-gradient(45deg, #3a4540 0 40px, #333d38 40px 80px); }
+  .banner {
+    position: fixed; display: flex; gap: 18px; align-items: center;
+    background: var(--card); color: var(--ink); font-family: var(--font);
+    border-radius: 14px; padding: 14px 22px 14px 14px;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.28);
+    transform: scale(var(--scale));
+    max-width: 640px;
+  }
+  .pos-br { right: 40px; bottom: 40px; transform-origin: bottom right; }
+  .pos-bl { left: 40px; bottom: 40px; transform-origin: bottom left; }
+  .pos-tr { right: 40px; top: 40px; transform-origin: top right; }
+  .pos-tl { left: 40px; top: 40px; transform-origin: top left; }
+  .qr { width: 120px; height: 120px; flex: none; background: #fff; border-radius: 8px; padding: 6px; box-sizing: border-box; }
+  .qr img, .qr canvas { width: 100% !important; height: 100% !important; display: block; }
+  .text { display: grid; gap: 6px; min-width: 0; }
+  .brand { display: flex; align-items: center; gap: 10px; font-size: 26px; font-weight: 700; line-height: 1.2; }
+  .cloth { display: inline-grid; place-items: center; width: 26px; height: 31px; flex: none; background: var(--cloth);
+    color: #fff; font-size: 14px; font-weight: 700; border-radius: 3px 3px 8px 8px; }
+  .msg { font-size: 22px; font-weight: 500; line-height: 1.35; min-height: 30px; transition: opacity 0.5s ease; }
+  .msg.fade { opacity: 0; }
+  .msg.notice { background: var(--notice); border-radius: 6px; padding: 2px 8px; margin-left: -8px; font-weight: 700; }
+  .foot { display: flex; gap: 10px; align-items: center; font-size: 15px; color: var(--muted); }
+  .ad { border: 1.5px solid var(--muted); border-radius: 4px; padding: 0 6px; font-weight: 700; font-size: 13px; }
+  .partner { color: var(--turf); font-weight: 700; }
+  @media (prefers-reduced-motion: reduce) { .msg { transition: none; } }
+</style>
+</head>
+<body>
+<div class="banner pos-br" id="banner">
+  <div class="qr" id="qr" aria-label="가입 QR 코드"></div>
+  <div class="text">
+    <div class="brand"><span class="cloth">EV</span><span id="brand">EquiVision 예시장 AI 분석</span></div>
+    <div class="msg" id="msg">출발 7분 전, 경주별 분석 리포트 발송</div>
+    <div class="foot"><span class="ad">광고</span><span class="partner" id="partner">EquiVision 공식</span><span id="tag">공식</span></div>
+  </div>
+</div>
+<script>
+(function () {
+  // config.json을 못 읽을 때(파일로 직접 열었을 때 등) 쓰는 기본값
+  var DEFAULT_CONFIG = {
+    rotate_sec: 8, refresh_sec: 60, brand: "EquiVision 예시장 AI 분석",
+    messages: ["출발 7분 전, 경주별 분석 리포트를 보내 드립니다", "말의 걸음·보폭·뒷다리 탄력을 영상으로 측정",
+               "QR을 찍으면 샘플 리포트와 신청 안내를 볼 수 있어요",
+               "참고용 분석 정보 · 결과·수익을 보장하지 않습니다 · 만 19세 이상",
+               "도박 문제 상담 ☎1336 (24시간, 무료)"],
+    notice: { text: "", until: "" },
+    partners: { official: { name: "EquiVision 공식", link: "https://equivisionai.kr/store.html", tag: "공식" } }
+  };
+
+  var params = new URLSearchParams(location.search);
+  var partnerKey = String(params.get("p") || "official").toLowerCase();
+  if (!/^[a-z0-9_-]{1,30}$/.test(partnerKey)) partnerKey = "official";
+  var partnerFile = null;              // partners/코드.json (이 방송의 파트너 한 명 정보)
+  var pos = ({ br: 1, bl: 1, tr: 1, tl: 1 })[params.get("pos")] ? params.get("pos") : "br";
+  var scale = parseFloat(params.get("scale"));
+  if (params.get("preview") === "1") document.body.classList.add("preview");
+  var banner = document.getElementById("banner");
+  banner.className = "banner pos-" + pos;
+  if (scale > 0.2 && scale < 3) document.documentElement.style.setProperty("--scale", String(scale));
+
+  var cfg = DEFAULT_CONFIG, idx = 0, rotateTimer = null, lastLink = null;
+  var fileNotice = null;               // notice.json (Colab이 텔레그램 발송 후 자동으로 고치는 경주 알림)
+  var msgEl = document.getElementById("msg");
+
+  function partner() {
+    var ps = cfg.partners || {};
+    return partnerFile || ps[partnerKey] || ps.official || DEFAULT_CONFIG.partners.official;
+  }
+
+  function fill(text) { return String(text || "").split("{name}").join(partner().name); }
+
+  function live(n) {
+    if (!n || !n.text) return "";
+    if (n.until) {
+      var until = new Date(n.until);
+      if (!isNaN(until) && new Date() > until) return "";
+    }
+    return fill(n.text);
+  }
+
+  function activeNotice() {             // 자동 알림(notice.json)이 우선, 없으면 config.json의 수동 알림
+    return live(fileNotice) || live(cfg.notice);
+  }
+
+  function drawQR(link) {
+    if (link === lastLink) return;
+    lastLink = link;
+    var box = document.getElementById("qr");
+    box.innerHTML = "";
+    if (window.QRCode) {
+      new QRCode(box, { text: link, width: 216, height: 216, colorDark: "#16211c", colorLight: "#ffffff",
+                        correctLevel: QRCode.CorrectLevel.M });
+    } else {
+      box.textContent = link;          // QR 라이브러리를 못 불러오면 주소를 글자로 표시
+      box.style.fontSize = "11px";
+    }
+  }
+
+  function showMessage() {
+    var notice = activeNotice();
+    var list = (cfg.messages && cfg.messages.length) ? cfg.messages : DEFAULT_CONFIG.messages;
+    var text = notice || fill(list[idx % list.length]);
+    msgEl.classList.add("fade");
+    setTimeout(function () {
+      msgEl.textContent = text;
+      msgEl.classList.toggle("notice", !!notice);
+      msgEl.classList.remove("fade");
+    }, 500);
+    idx += 1;
+  }
+
+  function apply() {
+    document.getElementById("brand").textContent = cfg.brand || DEFAULT_CONFIG.brand;
+    document.getElementById("partner").textContent = partner().name;
+    document.getElementById("tag").textContent = partner().tag || (partnerKey === "official" ? "공식" : "수익 배분 제휴");
+    drawQR(partner().link);
+    clearInterval(rotateTimer);
+    rotateTimer = setInterval(showMessage, Math.max(3, cfg.rotate_sec || 8) * 1000);
+    showMessage();
+  }
+
+  function loadPartner() {
+    if (partnerKey === "official") { partnerFile = null; return Promise.resolve(); }
+    return fetch("partners/" + partnerKey + ".json?t=" + Date.now(), { cache: "no-store" })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (p) { partnerFile = (p && p.name && /^https:\/\//.test(p.link || "")) ? p : null; })
+      .catch(function () { /* 파일이 없으면 official 로 표시 */ });
+  }
+  function load() {
+    loadPartner()
+      .then(function () { return fetch("config.json?t=" + Date.now(), { cache: "no-store" }); })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (c) { cfg = c; apply(); })
+      .catch(function () { if (cfg === DEFAULT_CONFIG) apply(); })
+      .then(function () { setTimeout(load, Math.max(15, cfg.refresh_sec || 60) * 1000); });
+  }
+  function loadNotice() {
+    fetch("notice.json?t=" + Date.now(), { cache: "no-store" })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.json(); })
+      .then(function (n) {
+        var changed = JSON.stringify(n) !== JSON.stringify(fileNotice);
+        fileNotice = n;
+        if (changed && live(n)) showMessage();      // 새 알림은 기다리지 않고 바로 표시
+      })
+      .catch(function () {})
+      .then(function () { setTimeout(loadNotice, 20000); });
+  }
+  load();
+  loadNotice();
+})();
+</script>
+</body>
+</html>

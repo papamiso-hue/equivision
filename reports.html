@@ -9,6 +9,7 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="오늘 리포트">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.json">
   <link rel="icon" href="favicon.ico">
   <title>오늘 리포트 | EquiVision AI</title>
   <style>
@@ -105,7 +106,7 @@
         <li>구독이 끝났거나 환불하셨다면 볼 수 없습니다.</li>
         <li>텔레그램 봇에서 [📄 오늘 리포트 보기] 버튼을 <b>다시 눌러</b> 보세요. 누를 때마다 새 링크가 만들어집니다.</li>
         <li>봇에 버튼이 안 보이면 봇 대화창에 <b>리포트</b>라고 보내 보세요.</li>
-        <li>그래도 안 되면 봇에 글로 문의하시거나 help@equivisionai.kr 로 알려 주세요.</li>
+        <li>그래도 안 되면 봇에 글로 문의하시거나 equivisionai@gmail.com 로 알려 주세요.</li>
       </ol>
     </details>
   </section>
@@ -162,7 +163,7 @@
 (function () {
   'use strict';
   var API = 'https://equivision-pay.papamiso.workers.dev';
-  var TRACK = { seoul: '서울', busan: '부산경남', jeju: '제주', all: '전체' };
+  var TRACK = { seoul: '서울', busan: '부산경남', jeju: '제주', yeongcheon: '영천', all: '전체' };
   var POLL_MS = 45000;
   var token = null, me = null, curDate = null, items = [], knownKeys = null, pollTimer = null, zoom = 1, curKey = null, renderToken = 0;
 
@@ -393,6 +394,9 @@
       .then(function (x) { if (x.ok) { me = x.j.me; enterList(null); } else { goLogin(x.j.code === 'DEVICE_LIMIT' ? x.j.message : (hm ? '이 링크는 더 이상 쓸 수 없습니다. 이용 기간이 끝났거나 링크가 오래되었습니다. 텔레그램 봇에서 [📄 오늘 리포트 보기]를 다시 눌러 주세요.' : '')); } }, function () { goLogin(''); });
   } else { goLogin(''); }
 })();
+</script>
+<script>
+if ('serviceWorker' in navigator) { window.addEventListener('load', function () { try { navigator.serviceWorker.register('/sw.js'); } catch (e) {} }); }
 </script>
 </body>
 </html>
