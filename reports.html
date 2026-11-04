@@ -156,7 +156,7 @@
 
   <p class="notice">
     참고용 분석 정보이며 결과·수익을 보장하지 않습니다. 마권 구매를 권유하거나 대행·알선하지 않습니다.
-    만 19세 이상 · 도박 문제 상담 ☎1336<br>
+    만 19세 이상 · 마권 구매대행·알선 안 함<br>
     리포트에는 보시는 분의 이름이 표시되어 있습니다. 다른 사람에게 보내거나 인터넷에 올리지 마세요.
   </p>
 </div>
@@ -224,7 +224,7 @@
       .then(function (x) {
         b.disabled = false; b.textContent = '인증번호 받기';
         if (!x.ok) { loginError(x.j.message || '잠시 뒤에 다시 해 주세요.'); return; }
-        $('sentMsg').textContent = x.j.message || '문자로 인증번호가 갑니다.';
+        $('sentMsg').textContent = x.j.message || '텔레그램 안내방으로 인증번호가 갑니다.';
         $('stepPhone').hidden = true; $('stepCode').hidden = false; $('inCode').value = ''; $('inCode').focus();
       }, function () { b.disabled = false; b.textContent = '인증번호 받기'; loginError('인터넷 연결을 확인해 주세요.'); });
   };
@@ -297,7 +297,7 @@
     if (!items.length) {
       var e = el('div', 'msg');
       e.appendChild(el('p', '', isToday ? '아직 올라온 리포트가 없습니다.' : '이 날짜에는 리포트가 없습니다.'));
-      e.appendChild(el('p', 'sub', '경주 출발 약 5분 전(영상 확인이 늦으면 약 3분 전)에 올라옵니다. 이 화면을 열어 두시면 저절로 나타납니다.'));
+      e.appendChild(el('p', 'sub', '경주 출발 약 20분 전에 AI 분석 리포트, 약 5분 전에 예시장 영상 분석이 올라옵니다(영상 분석은 영상 상태에 따라 늦거나 없을 수 있습니다). 이 화면을 열어 두시면 저절로 나타납니다.'));
       cards.appendChild(e);
     }
     items.forEach(function (it) {
