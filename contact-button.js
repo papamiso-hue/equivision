@@ -7,6 +7,8 @@
                             비워 두면 버튼이 나타나지 않습니다.
    ===================================================================== */
 (function () {
+  var ENABLED = false;   // ★ 텔레그램 문의 버튼 표시 스위치 (2026-11-05 대표 결정으로 꺼 둠). 되살리려면 true
+  if (!ENABLED) return;
   var CONTACT_TELEGRAM_URL = 'https://t.me/EquivisionReport_bot?start=contact';
   var CONTACT_LABEL = '텔레그램 문의';
 
