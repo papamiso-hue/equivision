@@ -137,6 +137,7 @@
   <section id="viewList" hidden>
     <h1 id="listTitle">오늘 리포트</h1>
     <p class="sub" id="whoAmI"></p>
+    <div class="msg ok" id="renewNote" hidden></div>
     <div class="dates" id="dates"></div>
     <div id="cards"></div>
     <div class="status" id="status">새 리포트가 올라오면 이 화면이 저절로 바뀝니다.</div>
@@ -320,6 +321,9 @@
   function render(data) {
     var isToday = data.date === data.today;
     $('listTitle').textContent = (isToday ? '오늘 ' : '') + koDate(data.date) + ' 리포트';
+    (function () { var n = $('renewNote'); n.hidden = true; n.textContent = '';
+      if (me && me.validUntil) { var left = Math.ceil((me.validUntil - Date.now()) / 86400000);
+        if (left <= 7 && left >= 0) { n.appendChild(el('p', '', '이용 종료까지 ' + (left === 0 ? '오늘이 마지막입니다.' : left + '일 남았습니다.') + ' 계속 보시려면 입금 신청을 해 주세요. (30일 15,000원, VAT 포함, 자동 결제 없음)')); var a = el('a', 'btn', '계속 이용하기 (입금 신청)'); a.href = '/store.html#checkout'; a.style.textAlign = 'center'; a.style.textDecoration = 'none'; n.appendChild(a); n.hidden = false; } } })();
     $('whoAmI').textContent = me ? me.name + ' 님, 안녕하세요.' + (me.validUntil ? ' (이용 종료일 ' + koDay(me.validUntil) + ')' : '') : '';
     // 날짜 고르기
     var dEl = $('dates'); dEl.textContent = '';

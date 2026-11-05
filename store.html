@@ -397,40 +397,16 @@
       <p class="sample-note">리포트 형식을 보여 드리는 샘플입니다. 특정 경주를 예로 든 것이며 성능이나 결과를 나타내는 자료가 아닙니다. 참고용 분석 정보로 결과·수익을 보장하지 않습니다.</p>
     </section>
 
-    <!-- 상품 -->
-    <section id="products" aria-labelledby="productsTitle" hidden>
-      <h2 id="productsTitle" style="text-align:center;">상품 안내</h2>
-      <p class="lead" style="text-align:center;">표시된 금액은 부가가치세가 포함된 30일 이용권 금액입니다. 자동으로 다시 결제되지 않으며, 추가 비용은 없습니다.</p>
-      <div class="products" id="productList" role="radiogroup" aria-label="상품 선택"></div>
-    </section>
-
-    <!-- 상품 요약(정적: 스크립트 없이도 보이는 안내. 금액·기간을 STORE_CONFIG 에서 바꾸면 여기 문구도 함께 고칠 것) -->
-    <section id="productSummary" aria-labelledby="productSummaryTitle" style="max-width:760px;margin:1.5rem auto;padding:1.2rem 1.3rem;background:var(--bg-card);border:1px solid var(--border-dark);border-radius:14px;">
-      <h2 id="productSummaryTitle" style="font-size:1.2rem;margin-bottom:0.6rem;">판매 상품 요약</h2>
-      <p><strong>상품명</strong>: 경주마 컨디션 분석 리포트 월간 이용권 (30일)</p>
-      <p><strong>가격</strong>: 15,000원 (부가가치세 포함) · 자동으로 다시 결제되지 않으며 추가 비용은 없습니다.</p>
-      <p><strong>제공 내용</strong>: 예시장 영상 딥러닝 AI 비전으로 측정한 경주마 컨디션 분석 리포트를 경주 출발 약 20분 전에, 예시장 영상 분석(영상 반영 AI 종합 점수 포함)을 약 5분 전에 리포트 앱에 올려 드립니다. 영상 분석은 영상 상태에 따라 늦거나 없을 수 있습니다. 이용 기간은 입금 확인 후 30일입니다.</p>
-      <p><strong>결제 방식</strong>: 계좌 입금(무통장입금), 입금 확인 후 이용권이 시작되며, 리포트 앱에서 휴대폰 번호와 주문번호로 열람합니다.</p>
-      <p><strong>청약철회·환불</strong>: 결제 후 7일 이내 청약철회는 이용한 일수만큼 공제 후 환불합니다(이용 기록이 없으면 전액). 7일이 지나면 중도 환불·일할 환불은 없고 이용 종료일에 자동 종료됩니다. 경주 취소 등으로 발송되지 못한 리포트는 환불·기간 연장 대상이 아닙니다. 자세한 기준은 아래 환불정책과 <a href="terms.html">이용약관</a>을 확인해 주세요.</p>
-      <p style="color:var(--text-sub);font-size:0.9rem;">참고용 분석 정보이며 결과·수익을 보장하지 않습니다. 만 19세 이상 이용 · 마권 구매대행·알선을 하지 않습니다.</p>
-    </section>
-    <!-- 진행 순서 (한눈에) -->
-    <section class="flow3" aria-label="진행 순서">
-      <div class="f3"><b>1</b><div><span>신청</span><small>이름·전화번호만 쓰기</small></div></div>
-      <div class="f3"><b>2</b><div><span>입금</span><small>안내된 계좌로 15,000원</small></div></div>
-      <div class="f3"><b>3</b><div><span>리포트 앱</span><small>입금 확인 후 바로 보기</small></div></div>
-    </section>
-
     <!-- 신청 후 30일 무료 이용 (STORE_CONFIG.freeEnabled 와 서버 /free/status 가 모두 켜졌을 때만 보임) -->
     <section id="freeSection" aria-labelledby="freeTitle" hidden>
       <h2 id="freeTitle">무료 이용 신청</h2>
       <div class="checkout">
         <div class="policy-box">
-          <h3>📋 2026년 11월 6일부터 · 신청일부터 30일 무료 이용 · 이후 30일 이용권 15,000원 (VAT 포함)</h3>
+          <h3>📋 2026년 11월 6일부터 · 신청만 하면 바로 30일 무료 이용 · 한 달 뒤부터 30일 이용권 15,000원 (VAT 포함, 입금)</h3>
           <ul>
             <li>처음 신청하는 분, <strong>1인 1회</strong>, 만 19세 이상이 신청할 수 있습니다.</li>
             <li>무료 이용 기간에는 유료 이용권과 같은 리포트를 리포트 앱에서 보실 수 있습니다.</li>
-            <li>30일이 지나면 리포트 앱에서 열리지 않게 되며, <strong>자동으로 결제되지 않습니다.</strong> 이용 종료일은 리포트 앱 화면에 표시됩니다. 계속 이용하시려면 그 전에 직접 유료 이용권(30일 이용권 15,000원, VAT 포함)을 신청해 주세요.</li>
+            <li>30일이 지나면 리포트 앱에서 열리지 않게 되며, <strong>자동으로 결제되지 않습니다.</strong> 이용 종료일은 리포트 앱 화면에 표시됩니다. 계속 이용하시려면 무료 기간이 끝나기 전에 이 페이지 아래 <a href="#checkout">신청·입금</a>에서 유료 이용권(30일 이용권 15,000원, VAT 포함)을 신청하고 입금해 주세요. 입금이 확인되면 무료 기간이 끝난 날부터 이어서 이용됩니다.</li>
             <li>무료 이용은 결제가 없어 환불 대상이 아닙니다.</li>
             <li>여러 번 신청하거나 다른 사람 번호를 쓰면 이용이 제한될 수 있습니다. 리포트를 다른 사람에게 보내거나 주문번호·로그인을 알려 주는 것은 안 됩니다.</li>
             <li>받는 정보: 휴대폰 번호(원문은 저장하지 않고 1인 1회 확인에만 사용), 텔레그램 계정 식별번호. 이름은 받지 않습니다.</li>
@@ -456,6 +432,30 @@
       <div class="notice">
         <strong>안내</strong> 참고용 분석 정보이며 결과·수익을 보장하지 않습니다. 만 19세 이상 이용. 이퀴비젼에이아이는 경마투표권의 구매대행·알선이나 베팅 권유를 하지 않습니다.
       </div>
+    </section>
+
+    <!-- 상품 -->
+    <section id="products" aria-labelledby="productsTitle" hidden>
+      <h2 id="productsTitle" style="text-align:center;">상품 안내</h2>
+      <p class="lead" style="text-align:center;">표시된 금액은 부가가치세가 포함된 30일 이용권 금액입니다. 자동으로 다시 결제되지 않으며, 추가 비용은 없습니다.</p>
+      <div class="products" id="productList" role="radiogroup" aria-label="상품 선택"></div>
+    </section>
+
+    <!-- 상품 요약(정적: 스크립트 없이도 보이는 안내. 금액·기간을 STORE_CONFIG 에서 바꾸면 여기 문구도 함께 고칠 것) -->
+    <section id="productSummary" aria-labelledby="productSummaryTitle" style="max-width:760px;margin:1.5rem auto;padding:1.2rem 1.3rem;background:var(--bg-card);border:1px solid var(--border-dark);border-radius:14px;">
+      <h2 id="productSummaryTitle" style="font-size:1.2rem;margin-bottom:0.6rem;">판매 상품 요약</h2>
+      <p><strong>상품명</strong>: 경주마 컨디션 분석 리포트 월간 이용권 (30일)</p>
+      <p><strong>가격</strong>: 15,000원 (부가가치세 포함) · 자동으로 다시 결제되지 않으며 추가 비용은 없습니다.</p>
+      <p><strong>제공 내용</strong>: 예시장 영상 딥러닝 AI 비전으로 측정한 경주마 컨디션 분석 리포트를 경주 출발 약 20분 전에, 예시장 영상 분석(영상 반영 AI 종합 점수 포함)을 약 5분 전에 리포트 앱에 올려 드립니다. 영상 분석은 영상 상태에 따라 늦거나 없을 수 있습니다. 이용 기간은 입금 확인 후 30일입니다.</p>
+      <p><strong>결제 방식</strong>: 계좌 입금(무통장입금), 입금 확인 후 이용권이 시작되며, 리포트 앱에서 휴대폰 번호와 주문번호로 열람합니다.</p>
+      <p><strong>청약철회·환불</strong>: 결제 후 7일 이내 청약철회는 이용한 일수만큼 공제 후 환불합니다(이용 기록이 없으면 전액). 7일이 지나면 중도 환불·일할 환불은 없고 이용 종료일에 자동 종료됩니다. 경주 취소 등으로 발송되지 못한 리포트는 환불·기간 연장 대상이 아닙니다. 자세한 기준은 아래 환불정책과 <a href="terms.html">이용약관</a>을 확인해 주세요.</p>
+      <p style="color:var(--text-sub);font-size:0.9rem;">참고용 분석 정보이며 결과·수익을 보장하지 않습니다. 만 19세 이상 이용 · 마권 구매대행·알선을 하지 않습니다.</p>
+    </section>
+    <!-- 진행 순서 (한눈에) -->
+    <section class="flow3" aria-label="진행 순서">
+      <div class="f3"><b>1</b><div><span>신청</span><small>이름·전화번호만 쓰기</small></div></div>
+      <div class="f3"><b>2</b><div><span>입금</span><small>안내된 계좌로 15,000원</small></div></div>
+      <div class="f3"><b>3</b><div><span>리포트 앱</span><small>입금 확인 후 바로 보기</small></div></div>
     </section>
 
     <!-- 신청·입금 -->
@@ -1116,7 +1116,10 @@
         const sec = $('freeSection'), phone = $('freePhone'), age = $('freeAge'), agree = $('freeAgree'), btn = $('btnFree'), hint = $('freeHint'), box = $('freeResult');
         function check() { btn.disabled = !(/^01[016789][0-9]{7,8}$/.test(phone.value.replace(/[^0-9]/g, '')) && age.checked && agree.checked); }
         [phone, age, agree].forEach(function (e) { e.addEventListener('input', check); e.addEventListener('change', check); });
-        fetch(base + '/free/status').then(function (r) { return r.json(); }).then(function (j) { if (j && j.enabled) { sec.hidden = false; const l = document.querySelector('a[href="#checkout"]'); } }).catch(function () {});
+        fetch(base + '/free/status').then(function (r) { return r.json(); }).then(function (j) { if (j && j.enabled) { sec.hidden = false;
+          const cta = document.querySelector('.hero .btn-cta'); if (cta) { cta.setAttribute('href', '#freeSection'); cta.textContent = '👇 30일 무료로 시작하기'; }
+          const nl = document.querySelector('.nav-links a[href="#checkout"]'); if (nl) { nl.setAttribute('href', '#freeSection'); nl.textContent = '무료 신청'; }
+          const f3 = document.querySelectorAll('.flow3 .f3'); if (f3.length === 3) { const t = [['휴대폰 번호', '번호만 쓰고 신청'], ['바로 이용', '30일 무료, 결제 없음'], ['한 달 뒤', '계속 보려면 15,000원 입금']]; f3.forEach(function (e, i) { e.querySelector('span').textContent = t[i][0]; e.querySelector('small').textContent = t[i][1]; }); } } }).catch(function () {});
         btn.addEventListener('click', function () {
           if (btn.disabled) return;
           hint.textContent = ''; hint.classList.remove('error'); btn.disabled = true; btn.textContent = '신청하는 중입니다…';
