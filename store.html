@@ -12,14 +12,14 @@
   <meta property="og:url" content="https://equivisionai.kr/store.html">
   <meta property="og:locale" content="ko_KR">
   <meta property="og:site_name" content="EquiVision AI">
-  <meta property="og:title" content="경주마 컨디션 분석 리포트 | EquiVision AI">
+  <meta property="og:title" content="경마 분석 리포트 | EquiVision AI">
   <meta property="og:description" content="예시장 영상 딥러닝 AI 비전 기반 출전마 컨디션 분석 리포트 30일 이용권 안내">
   <meta property="og:image" content="https://equivisionai.kr/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="EquiVision AI 경주마 컨디션 분석 리포트">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="경주마 컨디션 분석 리포트 | EquiVision AI">
+  <meta name="twitter:title" content="경마 분석 리포트 | EquiVision AI">
   <meta name="twitter:description" content="예시장 영상 딥러닝 AI 비전 기반 출전마 컨디션 분석 리포트 30일 이용권 안내">
   <meta name="twitter:image" content="https://equivisionai.kr/og-image.png">
   <link rel="icon" href="favicon.ico" sizes="any">
@@ -368,6 +368,14 @@
       .qr-card { flex-direction: column; text-align: center; }
     }
   </style>
+  <style>
+    #sampleBox{margin-top:1rem;padding:1.1rem 1.2rem;border:2px solid var(--border-dark);border-radius:14px;background:var(--bg-card);}
+    @media (min-width: 900px){
+      #freeSection .checkout{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:20px;align-items:start;}
+      #freeSection .checkout > .policy-box,#freeSection .checkout > #freeForm,#freeSection .checkout > #freeResult{grid-column:1;}
+      #freeSection .checkout > #sampleBox{grid-column:2;grid-row:1 / span 3;margin-top:0;position:sticky;top:90px;}
+    }
+  </style>
 </head>
 <body>
 
@@ -388,7 +396,7 @@
     <div class="status-bar" id="statusBar" role="status" hidden></div>
 
     <section class="hero">
-      <h1>예시장 영상 딥러닝 AI 비전으로 측정한<br><em>경주마 컨디션 분석 리포트</em></h1>
+      <h1>딥러닝+머신러닝 활용한 데이터분석과<br>예시장 영상 딥러닝 AI 비전으로 측정한<br><em>경마 분석 리포트</em></h1>
       <p>경주가 시작되기 전에 이 사이트의 <strong>리포트 앱</strong>에 올려 드립니다.</p>
       <div class="hero-btns">
         <a href="#checkout" class="btn-cta">👇 신청하기</a>
@@ -402,7 +410,9 @@
       <h2 id="freeTitle">무료 이용 신청</h2>
       <div class="checkout">
         <div class="policy-box">
-          <h3>📋 2026년 11월 6일부터 · 신청만 하면 바로 30일 무료 이용 · 한 달 뒤부터 30일 이용권 15,000원 (VAT 포함, 입금)</h3>
+          <h3 style="font-size:1.4rem;">📋 휴대폰 번호만 넣으면 30일 무료</h3>
+          <p style="font-size:1.15rem;line-height:1.7;margin:.4rem 0;">결제 없음 · 자동 결제 없음 · 11월 6일부터<br>한 달 뒤 계속 보시려면 그때 15,000원(VAT 포함)을 입금하시면 됩니다.</p>
+          <details><summary style="cursor:pointer;font-weight:700;padding:.6rem 0;">무료 이용 자세한 안내 (눌러서 보기)</summary>
           <ul>
             <li>처음 신청하는 분, <strong>1인 1회</strong>, 만 19세 이상이 신청할 수 있습니다.</li>
             <li>무료 이용 기간에는 유료 이용권과 같은 리포트를 리포트 앱에서 보실 수 있습니다.</li>
@@ -411,6 +421,7 @@
             <li>여러 번 신청하거나 다른 사람 번호를 쓰면 이용이 제한될 수 있습니다. 리포트를 다른 사람에게 보내거나 주문번호·로그인을 알려 주는 것은 안 됩니다.</li>
             <li>받는 정보: 휴대폰 번호(원문은 저장하지 않고 1인 1회 확인에만 사용), 텔레그램 계정 식별번호. 이름은 받지 않습니다.</li>
           </ul>
+          </details>
         </div>
         <div id="freeForm">
           <div class="buyer">
@@ -428,6 +439,12 @@
           <p class="pay-hint" id="freeHint" aria-live="polite"></p>
         </div>
         <div id="freeResult" class="bank-res" hidden></div>
+        <aside id="sampleBox" aria-label="샘플 리포트">
+          <h3 style="font-size:1.25rem;margin:0 0 .6rem;">📄 샘플 리포트</h3>
+          <p style="margin:0 0 .8rem;line-height:1.6;">리포트가 어떤 모양인지 미리 볼 수 있습니다.</p>
+          <a href="sample-report.pdf" id="sampleLink2" class="btn-cta" target="_blank" rel="noopener" style="display:block;text-align:center;text-decoration:none;">샘플 리포트 보기 (PDF)</a>
+          <p style="margin:.8rem 0 0;font-size:.9rem;color:var(--text-sub);line-height:1.6;">형식을 보여 드리는 샘플이며 특정 경주를 예로 든 것입니다. 성능이나 결과를 나타내는 자료가 아니고, 참고용 분석 정보로 결과·수익을 보장하지 않습니다.</p>
+        </aside>
       </div>
       <div class="notice">
         <strong>안내</strong> 참고용 분석 정보이며 결과·수익을 보장하지 않습니다. 만 19세 이상 이용. 이퀴비젼에이아이는 경마투표권의 구매대행·알선이나 베팅 권유를 하지 않습니다.
@@ -441,12 +458,14 @@
       <div class="products" id="productList" role="radiogroup" aria-label="상품 선택"></div>
     </section>
 
+    <details id="moreInfo" open style="max-width:760px;margin:1.5rem auto;">
+      <summary style="cursor:pointer;font-size:1.25rem;font-weight:800;padding:1rem 1.1rem;border:2px solid var(--border-dark);border-radius:14px;">유료 이용권 입금 신청 · 환불 · 자세한 안내 (눌러서 보기)</summary>
     <!-- 상품 요약(정적: 스크립트 없이도 보이는 안내. 금액·기간을 STORE_CONFIG 에서 바꾸면 여기 문구도 함께 고칠 것) -->
     <section id="productSummary" aria-labelledby="productSummaryTitle" style="max-width:760px;margin:1.5rem auto;padding:1.2rem 1.3rem;background:var(--bg-card);border:1px solid var(--border-dark);border-radius:14px;">
       <h2 id="productSummaryTitle" style="font-size:1.2rem;margin-bottom:0.6rem;">판매 상품 요약</h2>
       <p><strong>상품명</strong>: 경주마 컨디션 분석 리포트 월간 이용권 (30일)</p>
       <p><strong>가격</strong>: 15,000원 (부가가치세 포함) · 자동으로 다시 결제되지 않으며 추가 비용은 없습니다.</p>
-      <p><strong>제공 내용</strong>: 예시장 영상 딥러닝 AI 비전으로 측정한 경주마 컨디션 분석 리포트를 경주 출발 약 20분 전에, 예시장 영상 분석(영상 반영 AI 종합 점수 포함)을 약 5분 전에 리포트 앱에 올려 드립니다. 영상 분석은 영상 상태에 따라 늦거나 없을 수 있습니다. 이용 기간은 입금 확인 후 30일입니다.</p>
+      <p><strong>제공 내용</strong>: 딥러닝+머신러닝 활용한 데이터분석과 예시장 영상 딥러닝 AI 비전으로 측정한 경마 분석 리포트를 경주 출발 약 20분 전에, 예시장 영상 분석(영상 반영 AI 종합 점수 포함)을 약 5분 전에 리포트 앱에 올려 드립니다. 영상 분석은 영상 상태에 따라 늦거나 없을 수 있습니다. 이용 기간은 입금 확인 후 30일입니다.</p>
       <p><strong>결제 방식</strong>: 계좌 입금(무통장입금), 입금 확인 후 이용권이 시작되며, 리포트 앱에서 휴대폰 번호와 주문번호로 열람합니다.</p>
       <p><strong>청약철회·환불</strong>: 결제 후 7일 이내 청약철회는 이용한 일수만큼 공제 후 환불합니다(이용 기록이 없으면 전액). 7일이 지나면 중도 환불·일할 환불은 없고 이용 종료일에 자동 종료됩니다. 경주 취소 등으로 발송되지 못한 리포트는 환불·기간 연장 대상이 아닙니다. 자세한 기준은 아래 환불정책과 <a href="terms.html">이용약관</a>을 확인해 주세요.</p>
       <p style="color:var(--text-sub);font-size:0.9rem;">참고용 분석 정보이며 결과·수익을 보장하지 않습니다. 만 19세 이상 이용 · 마권 구매대행·알선을 하지 않습니다.</p>
@@ -730,6 +749,8 @@
       </div>
     </div></details>
     </section>
+
+    </details>
 
   </main>
 
@@ -1117,6 +1138,10 @@
         function check() { btn.disabled = !(/^01[016789][0-9]{7,8}$/.test(phone.value.replace(/[^0-9]/g, '')) && age.checked && agree.checked); }
         [phone, age, agree].forEach(function (e) { e.addEventListener('input', check); e.addEventListener('change', check); });
         fetch(base + '/free/status').then(function (r) { return r.json(); }).then(function (j) { if (j && j.enabled) { sec.hidden = false;
+          const more = document.getElementById('moreInfo'); if (more) more.open = false;
+          const hb = document.querySelector('.hero .hero-btns'); if (hb) hb.hidden = true;
+          const hp = document.querySelector('.hero > p:not(.sample-note)'); if (hp) hp.hidden = true;
+          const fl = document.querySelector('.flow3'); if (fl) fl.hidden = true;
           const cta = document.querySelector('.hero .btn-cta'); if (cta) { cta.setAttribute('href', '#freeSection'); cta.textContent = '👇 30일 무료로 시작하기'; }
           const nl = document.querySelector('.nav-links a[href="#checkout"]'); if (nl) { nl.setAttribute('href', '#freeSection'); nl.textContent = '무료 신청'; }
           const f3 = document.querySelectorAll('.flow3 .f3'); if (f3.length === 3) { const t = [['휴대폰 번호', '번호만 쓰고 신청'], ['바로 이용', '30일 무료, 결제 없음'], ['한 달 뒤', '계속 보려면 15,000원 입금']]; f3.forEach(function (e, i) { e.querySelector('span').textContent = t[i][0]; e.querySelector('small').textContent = t[i][1]; }); } } }).catch(function () {});
