@@ -100,6 +100,7 @@
       <p class="sub" style="margin-top:8px">신청이 끝났을 때 화면에 나온 주문번호입니다. 숫자·영문 그대로 쓰시면 됩니다.</p>
       <button class="btn" id="btnOrderLogin" style="margin:12px 0">리포트 보기</button>
       <button class="btn line" id="btnRetry" hidden style="margin:0 0 12px">입금 확인됐는지 다시 보기</button>
+      <a class="btn line" id="btnFreeNew" hidden href="/store.html#freeSection" style="margin:0 0 12px;text-align:center;text-decoration:none">처음부터 다시 하기 (30일 무료 신청)</a>
     </div>
     <p class="sub">아직 신청 전이시면 <a href="/store.html#checkout" style="color:#7dd3fc">여기서 신청</a>하실 수 있습니다.</p>
 
@@ -232,7 +233,7 @@
   function goLogin(msg, keep) {      // keep=true: 입금 확인 중처럼 로그인 정보를 지우지 않고 기다릴 때
     stopPoll(); me = null; if (!keep) { token = null; store('eq_token', null); }
     show('viewLogin'); $('stepPhone').hidden = false; $('stepCode').hidden = true; loginError(msg || '');
-    $('btnRetry').hidden = !keep;
+    $('btnRetry').hidden = !keep; $('btnFreeNew').hidden = !keep;
     var o = store('eq_order'); if (o && !$('inOrder').value) $('inOrder').value = o;
   }
   function loginMsg(j, dflt) { return j && (j.code === 'PENDING' || j.code === 'DEVICE_LIMIT') ? j.message : dflt; }
@@ -462,6 +463,7 @@
   }
   start();
 })();
+document.getElementById('btnFreeNew').addEventListener('click', function () { try { localStorage.removeItem('eq_token'); localStorage.removeItem('eq_order'); } catch (e) {} });
 </script>
 <script>
 if ('serviceWorker' in navigator) { window.addEventListener('load', function () { try { navigator.serviceWorker.register('/sw.js'); } catch (e) {} }); }
