@@ -275,6 +275,31 @@
   </header>
 
   <main>
+  <!-- 리포트 구독 / 리포트 보기 큰 버튼 (구독 중이면 '리포트 보기'로 바뀜) -->
+  <style>
+    .rp-cta{max-width:960px;margin:14px auto 0;padding:0 16px}
+    .rp-cta a{display:flex;align-items:center;justify-content:center;gap:10px;min-height:76px;border-radius:18px;background:#0f766e;color:#fff;font-size:1.6rem;font-weight:800;text-decoration:none;border:3px solid #5eead4;box-shadow:0 8px 24px rgba(15,118,110,.45)}
+    .rp-cta a:active{filter:brightness(.9)}
+    .rp-cta a:focus-visible{outline:3px solid #fff;outline-offset:3px}
+    .rp-cta small{display:block;text-align:center;color:#c3cde0;font-size:.95rem;margin-top:8px;line-height:1.5}
+  </style>
+  <div class="rp-cta" id="rpCta">
+    <a href="store.html" id="rpBtn">📄 리포트 구독</a>
+    <small id="rpSub">텔레그램이 없어도 앱에서 볼 수 있습니다 · 참고용 분석 정보, 결과·수익 비보장 · 만 19세 이상</small>
+  </div>
+  <script>
+  (function () {
+    try {
+      var t = localStorage.getItem('eq_token'), d = localStorage.getItem('eq_dev');
+      if (!t || !/^[a-f0-9]{64}$/.test(t)) return;
+      var h = { 'Authorization': 'Bearer ' + t }; if (d) h['X-Device'] = d;
+      fetch('https://equivision-pay.papamiso.workers.dev/member/me', { headers: h })
+        .then(function (r) { if (!r.ok) return; var b = document.getElementById('rpBtn'); b.href = '/reports/'; b.textContent = '📄 리포트 보기'; document.getElementById('rpSub').textContent = '오늘 올라온 리포트를 바로 볼 수 있습니다'; })
+        .catch(function () {});
+    } catch (e) {}
+  })();
+  </script>
+
   <!-- Hero Section -->
   <section class="hero">
     <div class="badge">
