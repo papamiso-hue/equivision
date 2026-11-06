@@ -51,7 +51,7 @@
     .top5h { font-size: 1.15rem; font-weight: 700; margin-bottom: 4px; }
     .top5l { list-style: none; margin: 0 0 6px; padding: 0; font-size: 1.15rem; }
     .top5l li { padding: 3px 0; font-weight: 400; }
-    .top5n { font-size: .85rem; color: var(--sub); margin: 4px 0 0; line-height: 1.4; }
+    .top5n { font-size: 1rem; color: var(--text); margin: 6px 0 0; line-height: 1.5; }
     .lines { margin: 0 0 14px; padding-left: 22px; color: var(--sub); }
     .dates { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 16px; }
     .dates button { min-height: 48px; padding: 6px 16px; border-radius: 999px; border: 2px solid var(--line); background: transparent; color: #fff; font-size: 1.05rem; font-weight: 700; font-family: inherit; cursor: pointer; }
@@ -424,14 +424,15 @@
       if (it.startTime) head.appendChild(el('div', 'time', it.startTime + ' 출발'));
       c.appendChild(head);
       var hasTop5 = it.top5 && it.top5.length;
-      if (hasTop5) {
-        // AI 종합 점수가 높은 순 나열 (순위·확률·예상 아님, 모든 말 같은 색·같은 크기)
+      var topList = hasTop5 ? it.top5 : ((it.top3 && it.top3.length) ? it.top3 : null);
+      if (topList) {
+        // AI 종합 점수가 높은 순 나열 (순위·확률·예상 아님, 모든 말 같은 색·같은 크기·같은 굵기) — 5두·3두 같은 고지·가림 (다온 11/6)
         var t5 = el('div', 'top5');
-        t5.appendChild(el('div', 'top5h', 'AI 종합 점수 순 5두'));
+        t5.appendChild(el('div', 'top5h', 'AI 종합 점수 순 ' + (hasTop5 ? '5두' : '3두')));
         var ol5 = el('ul', 'top5l'), masked = false;
-        // 영상과 같은 가림 규칙: 이름에 아래 낱말이 들어 있으면 번호만 표기 (다온 11/6)
-        var BAN5 = ['왕', '필승', '베스트', '승부', '우승', '대박', '위너', '챔프', '퀸', '불패', '최강', '무적', '황제', '정답', '적중', '최고'];
-        it.top5.forEach(function (h) {
+        // 영상과 같은 가림 규칙: 이름에 아래 낱말이 들어 있으면 번호만 표기
+        var BAN5 = ['왕', '필승', '베스트', '승부', '우승', '대박', '위너', '챔프', '퀸', '불패', '최강', '무적', '황제', '정답', '적중', '최고', '축하', '축포', '축배'];
+        topList.forEach(function (h) {
           var nm = String(h.name || ''), hide = BAN5.some(function (w) { return nm.indexOf(w) >= 0; });
           if (hide) masked = true;
           ol5.appendChild(el('li', '', h.no + '번' + (hide ? '' : ' ' + nm)));
@@ -440,14 +441,6 @@
         if (masked) t5.appendChild(el('p', 'top5n', '※ 일부 마명은 번호로만 표기합니다.'));
         t5.appendChild(el('p', 'top5n', '점수 순 정렬이며 확률·순위·예상이 아니고 추천이 아닙니다. 결과·수익을 보장하지 않습니다. 참고용 분석 정보 · 만 19세 이상 · 마권 구매대행·알선 안 함'));
         c.appendChild(t5);
-      } else if (it.top3 && it.top3.length) {
-        var tp = el('div', 'top3');
-        tp.appendChild(document.createTextNode('AI 종합 평가 상위: '));
-        it.top3.forEach(function (h, i) {
-          if (i) tp.appendChild(document.createTextNode('  ·  '));
-          var b = el('b', '', h.no + '번'); tp.appendChild(b); tp.appendChild(document.createTextNode(' ' + h.name));
-        });
-        c.appendChild(tp);
       }
       if (!hasTop5 && it.lines && it.lines.length) {
         var ul = el('ul', 'lines');
