@@ -14,10 +14,22 @@
       return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true;
     } catch (e) { return false; }
   }
+  // 설치 횟수만 세는 신호 (개인 정보·쿠키 없음). once=true 이면 같은 기기에서 하루 한 번만 보냄
+  function count(k, once) {
+    try {
+      if (once) {
+        var today = new Date().toISOString().slice(0, 10), mark = 'eq_i_' + k;
+        try { if (localStorage.getItem(mark) === today) return; localStorage.setItem(mark, today); } catch (e) { /* 저장이 막히면 매번 셈 */ }
+      }
+      var API = 'https://equivision-pay.papamiso.workers.dev/hit', b = JSON.stringify({ k: k });
+      if (navigator.sendBeacon) navigator.sendBeacon(API, new Blob([b], { type: 'text/plain' }));
+      else fetch(API, { method: 'POST', body: b, keepalive: true, mode: 'no-cors', headers: { 'Content-Type': 'text/plain' } });
+    } catch (e) { /* 집계가 안 돼도 사이트는 그대로 */ }
+  }
   var DONE_KEY = 'eq_pwa_installed';
   function markInstalled() { try { localStorage.setItem(DONE_KEY, '1'); } catch (e) { /* 저장 불가여도 괜찮음 */ } }
   function wasInstalled() { try { return localStorage.getItem(DONE_KEY) === '1'; } catch (e) { return false; } }
-  if (standalone()) { markInstalled(); return; }
+  if (standalone()) { markInstalled(); count('i:open', true); return; }
   if (wasInstalled()) return;
 
   var HIDE_KEY = 'eq_pwa_hide_until';
@@ -130,6 +142,7 @@
   }
 
   function onInstallClick() {
+    count('i:click', false);
     if (inApp) { showInApp(); return; }
     if (deferred) {
       var p = deferred;
@@ -152,6 +165,7 @@
 
   function showBar() {
     if (bar || standalone()) return;
+    count('i:shown', true);
     bar = el('div', 'pwa-bar');
     bar.setAttribute('role', 'region');
     bar.setAttribute('aria-label', '홈 화면에 설치');
@@ -170,7 +184,7 @@
     deferred = ev;
     showBar();
   });
-  window.addEventListener('appinstalled', function () { markInstalled(); deferred = null; removeBar(); closeModal(); });
+  window.addEventListener('appinstalled', function () { count('i:done', false); markInstalled(); deferred = null; removeBar(); closeModal(); });
 
   function start() {
     // 휴대폰에서는 항상 버튼을 보여 주고, 컴퓨터에서는 설치 가능 신호(beforeinstallprompt)가 올 때만 보여 줍니다.

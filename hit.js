@@ -13,11 +13,17 @@
   var today = new Date().toISOString().slice(0, 10), mark = 'eq_v_' + p, seen = false;
   try { seen = localStorage.getItem(mark) === today; if (!seen) localStorage.setItem(mark, today); } catch (e) { /* 저장이 막힌 브라우저는 매번 셈 */ }
   if (!seen) { send('v:' + p); if (p === 'store' && /[?&]ref=/.test(location.search)) send('v:store:ref'); }
+  // 눌러 본 곳 (텔레그램 버튼 횟수는 더 이상 세지 않음)
+  var BTN = { btnFree: 'c:free', btnPay: 'c:bank', btnSend: 'c:login' };   // 무료 신청 / 입금 신청 / 리포트 화면 인증번호 받기
   document.addEventListener('click', function (e) {
-    var a = e.target && e.target.closest ? e.target.closest('a') : null;
+    var t = e.target;
+    if (!t || !t.closest) return;
+    var b = t.closest('button');
+    if (b && b.id && BTN[b.id] && !b.disabled) { send(BTN[b.id]); return; }
+    var a = t.closest('a');
     if (!a) return;
     var h = a.getAttribute('href') || '';
-    if (h.indexOf('t.me/') >= 0) send('c:tg:' + p);
-    else if (h.indexOf('sample-report') >= 0) send('c:sample');
+    if (h.indexOf('sample-report') >= 0) send('c:sample');
+    else if (p === 'index' && /^(\.\/|\/)?store\.html/.test(h)) send('c:go:store');
   }, true);
 })();

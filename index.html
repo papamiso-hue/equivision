@@ -274,7 +274,7 @@ if (EQ_TELEGRAM_ENABLED) document.documentElement.classList.add('tg-on');
         <a href="#methodology">분석 방법론</a>
         <a href="#services">사업 포트폴리오</a>
         <a href="#patent">지식재산권</a>
-        <a href="store.html" class="nav-store">리포트 구독</a>
+        <a href="store.html" class="nav-store">경마 리포트 구독</a>
         <a href="#contact">협력 문의</a>
       </nav>
     </div>
@@ -290,7 +290,7 @@ if (EQ_TELEGRAM_ENABLED) document.documentElement.classList.add('tg-on');
     .rp-cta small{display:block;text-align:center;color:#c3cde0;font-size:.95rem;margin-top:8px;line-height:1.5}
   </style>
   <div class="rp-cta" id="rpCta">
-    <a href="store.html" id="rpBtn">📄 리포트 구독</a>
+    <a href="store.html" id="rpBtn">📄 경마 리포트 구독</a>
     <small id="rpSub">회원가입 없이 앱에서 바로 볼 수 있습니다 · 참고용 분석 정보, 결과·수익 비보장 · 만 19세 이상</small>
   </div>
   <script>
@@ -300,7 +300,7 @@ if (EQ_TELEGRAM_ENABLED) document.documentElement.classList.add('tg-on');
       if (!t || !/^[a-f0-9]{64}$/.test(t)) return;
       var h = { 'Authorization': 'Bearer ' + t }; if (d) h['X-Device'] = d;
       fetch('https://equivision-pay.papamiso.workers.dev/member/me', { headers: h })
-        .then(function (r) { if (r.status === 401) { return r.json().then(function (j) { if (j && j.code === 'PENDING') { var p = document.getElementById('rpBtn'); p.href = '/reports/'; p.textContent = '📄 입금 확인 중 · 리포트 앱 열기'; document.getElementById('rpSub').innerHTML = '입금이 확인되면 같은 화면에서 바로 열립니다<br><a href="/store.html#freeSection" id="rpFree" style="color:#5eead4;font-weight:800;font-size:1.15rem">▶ 처음부터 다시 하기 (30일 무료 신청)</a>'; document.getElementById('rpFree').addEventListener('click', function () { try { localStorage.removeItem('eq_token'); localStorage.removeItem('eq_order'); } catch (e) {} }); } }); } if (!r.ok) return; var b = document.getElementById('rpBtn'); b.href = '/reports/'; b.textContent = '📄 리포트 보기'; document.getElementById('rpSub').textContent = '오늘 올라온 리포트를 바로 볼 수 있습니다'; })
+        .then(function (r) { if (r.status === 401) { return r.json().then(function (j) { if (j && j.code === 'PENDING') { var p = document.getElementById('rpBtn'); p.href = '/reports/'; p.textContent = '📄 입금 확인 중 · 리포트 앱 열기'; document.getElementById('rpSub').innerHTML = '입금이 확인되면 같은 화면에서 바로 열립니다<br><a href="/store.html#freeSection" id="rpFree" style="color:#5eead4;font-weight:800;font-size:1.15rem">▶ 처음부터 다시 하기 (30일 무료 신청)</a>'; document.getElementById('rpFree').addEventListener('click', function () { try { localStorage.removeItem('eq_token'); localStorage.removeItem('eq_order'); } catch (e) {} }); } }); } if (!r.ok) return; var b = document.getElementById('rpBtn'); b.href = '/reports/'; b.textContent = '📄 경마 리포트 보기'; document.getElementById('rpSub').textContent = '오늘 올라온 리포트를 바로 볼 수 있습니다'; })
         .catch(function () {});
     } catch (e) {}
   })();

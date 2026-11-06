@@ -98,7 +98,7 @@
       <label for="inOrder" style="margin-top:12px;display:block">주문번호 (EV로 시작)</label>
       <input id="inOrder" type="text" autocomplete="off" autocapitalize="characters" placeholder="EVB1234567890ABCDEF" maxlength="64">
       <p class="sub" style="margin-top:8px">신청이 끝났을 때 화면에 나온 주문번호입니다. 숫자·영문 그대로 쓰시면 됩니다.</p>
-      <button class="btn" id="btnOrderLogin" style="margin:12px 0">리포트 보기</button>
+      <button class="btn" id="btnOrderLogin" style="margin:12px 0">경마 리포트 보기</button>
       <button class="btn line" id="btnRetry" hidden style="margin:0 0 12px">입금 확인됐는지 다시 보기</button>
       <a class="btn line" id="btnFreeNew" hidden href="/store.html#freeSection" style="margin:0 0 12px;text-align:center;text-decoration:none">처음부터 다시 하기 (30일 무료 신청)</a>
     </div>
@@ -247,12 +247,12 @@
     api('/member/login/order', { method: 'POST', body: { phone: phone, orderId: oid } })
       .then(function (r) { return readJson(r).then(function (j) { return { ok: r.ok, j: j }; }); })
       .then(function (x) {
-        b.disabled = false; b.textContent = '리포트 보기';
+        b.disabled = false; b.textContent = '경마 리포트 보기';
         if (!x.ok) { loginError(x.j.message || '확인하지 못했습니다. 잠시 뒤에 다시 해 주세요.'); return; }
         token = x.j.token; me = x.j.me; store('eq_token', token); store('eq_order', oid);
         $('inPhoneO').value = '';
         enterList(null);
-      }, function () { b.disabled = false; b.textContent = '리포트 보기'; loginError('인터넷 연결을 확인해 주세요.'); });
+      }, function () { b.disabled = false; b.textContent = '경마 리포트 보기'; loginError('인터넷 연결을 확인해 주세요.'); });
   };
   $('inOrder').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('btnOrderLogin').click(); });
   $('inPhoneO').addEventListener('keydown', function (e) { if (e.key === 'Enter') $('inOrder').focus(); });
@@ -370,7 +370,7 @@
         it.lines.forEach(function (l) { ul.appendChild(el('li', '', l)); });
         c.appendChild(ul);
       }
-      var btn = el('button', 'btn', '📄 리포트 보기');
+      var btn = el('button', 'btn', '📄 경마 리포트 보기');
       btn.onclick = function () { openReport(it); };
       c.appendChild(btn);
       cards.appendChild(c);
