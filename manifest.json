@@ -1,7 +1,7 @@
 {
   "id": "/",
-  "name": "EquiVision AI",
-  "short_name": "EquiVision",
+  "name": "이퀴비젼",
+  "short_name": "이퀴비젼",
   "description": "EquiVision AI 경주마 컨디션 분석 리포트 (참고용 정보)",
   "lang": "ko",
   "start_url": "/?source=pwa",
