@@ -442,17 +442,19 @@
         // AI 종합 점수가 높은 순 나열 (순위·확률·예상 아님, 모든 말 같은 색·같은 크기·같은 굵기) — 5두·3두 같은 고지·가림 (다온 11/6)
         var t5 = el('div', 'top5');
         t5.appendChild(el('div', 'top5h', 'AI 종합 점수 순 ' + (hasTop5 ? '5두' : '3두')));
+        // 마명 가림은 영상 전용 규칙(11/6 다온). 회원 앱은 리포트·아래 설명 줄에 마명이 그대로 나오므로 카드에서만 빼면 '말 이름이 빠졌다'로 보임 → 끔 (대표 11/7). 다시 켜려면 true
+        var MASK5 = false;
         var ol5 = el('ul', 'top5l'), masked = false;
         // 영상과 같은 가림 규칙: 이름에 아래 낱말이 들어 있으면 번호만 표기
         var BAN5 = ['왕', '필승', '베스트', '승부', '우승', '대박', '위너', '챔프', '퀸', '불패', '최강', '무적', '황제', '정답', '적중', '최고', '축하', '축포', '축배'];
         topList.forEach(function (h) {
-          var nm = String(h.name || ''), hide = BAN5.some(function (w) { return nm.indexOf(w) >= 0; });
+          var nm = String(h.name || ''), hide = MASK5 && BAN5.some(function (w) { return nm.indexOf(w) >= 0; });
           if (hide) masked = true;
           ol5.appendChild(el('li', '', h.no + '번' + (hide ? '' : ' ' + nm)));
         });
         t5.appendChild(ol5);
         if (masked) t5.appendChild(el('p', 'top5n', '※ 일부 마명은 번호로만 표기합니다.'));
-        t5.appendChild(el('p', 'top5n', '점수 순 정렬이며 확률·순위·예상이 아니고 추천이 아닙니다. 결과·수익을 보장하지 않습니다. 참고용 분석 정보 · 만 19세 이상 · 마권 구매대행·알선 안 함'));
+        t5.appendChild(el('p', 'top5n', '점수 순 정렬이며 확률·순위·예상이 아니고 추천이 아닙니다. 결과·수익을 보장하지 않습니다. 참고용 분석 정보 · 만 19세 이상 · 마권 구매대행·알선 안 함. 마명은 경주마의 공식 이름이며 분석 내용·결과와 관련이 없습니다.'));
         c.appendChild(t5);
       }
       if (!hasTop5 && it.lines && it.lines.length) {
